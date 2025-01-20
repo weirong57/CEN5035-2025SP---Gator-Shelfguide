@@ -1,8 +1,8 @@
 # Shelfguide
 
 1.Group Members:  
-Rong Wei(backend); Abhinav Lakkapragada(backend);   
-Anirudh Ramesh(frontend);Yichen Pan(frontend)
+Rong Wei(backend);   Abhinav Lakkapragada(backend);   
+Anirudh Ramesh(frontend);  Yichen Pan(frontend)
 
 2.Basic:   
 1.User registration, login and authentication.(Ordinary users and administrators)
