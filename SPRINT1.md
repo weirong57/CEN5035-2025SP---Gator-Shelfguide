@@ -2,7 +2,7 @@
 |  NAME   | GITHUB NAME  | EMAIL |
 |  :----:  | :----:  | :----:  |
 | Rong Wei  |  | rong.weig@ufl.edu |
-| Abhinav Lakkapragada  | xx |  |
+| Abhinav Lakkapragada  | xx | lakkapragada.a@ufl.edu |
 | Anirudh Ramesh  | xx |  |
 | Yichen Pan  | xxx |  |
 # What is Accomplished at Back End side in Sprint1
