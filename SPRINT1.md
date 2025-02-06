@@ -4,7 +4,7 @@
 ## **Team Members**
 | NAME               | GITHUB NAME | EMAIL                         |
 |--------------------|------------|-------------------------------|
-| Rong Wei          | xx         | [rong.weig@ufl.edu](mailto:rong.weig@ufl.edu) |
+| Rong Wei          | weirong57 | [rong.weig@ufl.edu](mailto:rong.weig@ufl.edu) |
 | Abhinav Lakkapragada | xx         | [lakkapragada.a@ufl.edu](mailto:lakkapragada.a@ufl.edu) |
 | Anirudh Ramesh    | xx         | xx                            |
 | Yichen Pan        | xx         | xx                            |
