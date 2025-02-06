@@ -1,0 +1,10 @@
+
+.ant-layout {
+    background: transparent !important;
+  }
+  
+
+  .ant-layout-sider {
+    background: #fff !important;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.15) !important;
+  }
