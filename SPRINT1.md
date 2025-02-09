@@ -64,5 +64,5 @@ Sprint 1 successfully laid the foundation for our **Library Management System**,
 
 ---
 
-### **🚀 Let's keep up the momentum for Sprint 2!**
+
 
