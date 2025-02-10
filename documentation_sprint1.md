@@ -1,18 +1,27 @@
-**Sprint 1 Progress Report**
 
-**Team Members**
+# **Sprint 1 Progress Report**
 
-  ------------------------------------------------------------------------
-  **Name**               **GitHub Username**    **Email**
-  ---------------------- ---------------------- --------------------------
-  Rong Wei               weirong57              <rong.weig@ufl.edu>
+## **Team Members**
+| NAME               | GITHUB NAME | EMAIL                         |
+|--------------------|------------|-------------------------------|
+| Rong Wei          | weirong57 | [rong.weig@ufl.edu](mailto:rong.weig@ufl.edu) |
+| Abhinav Lakkapragada | AbhinavLakkapragada         | [lakkapragada.a@ufl.edu](mailto:lakkapragada.a@ufl.edu) |
+| Anirudh Ramesh    | Anir11        | [ramesh.anirudh@ufl.edu](mailto:ramesh.anirudh@ufl.edu) |                           
+| Yichen Pan        | lishuang1103         | [panyichen@ufl.edu](mailto:panyichen@ufl.edu) |
 
-  Abhinav Lakkapragada   AbhinavLakkapragada    <lakkapragada.a@ufl.edu>
+---
 
-  Anirudh Ramesh         Anir11                 <ramesh.anirudh@ufl.edu>
+**Demos:**
+- Frontend Demo: (Abhinav：https://youtu.be/ltjNf8S4mcw)(Rong:)
+- Backend Demo: (https://youtu.be/RrBt6CoGP2k)
 
-  Yichen Pan             lishuang1103           <panyichen@ufl.edu>
-  ------------------------------------------------------------------------
+---
+
+## **📌 Sprint 1 Goals (Ends on February 10th)**  
+### **Goal:**
+Establish the foundational system infrastructure, including environment setup and user management.
+
+---
 
 **Backend Achievements in Sprint 1**
 
@@ -117,25 +126,18 @@ they need efficiently.
 
 **👥 Labor Division (Backend Team)**
 
-+------------------------------------------+---------------------------+
-| **Task**                                 | **Developer(s)**          |
-+==========================================+===========================+
-| Initial Node.js Backend Setup            | Abhinav & Rong Wei        |
-+------------------------------------------+---------------------------+
-| Migration to Golang Backend              | Rong Wei                  |
-+------------------------------------------+---------------------------+
-| Database Schema Design                   | Abhinav & Rong Wei        |
-+------------------------------------------+---------------------------+
-| User Authentication (JWT)                | Abhinav Lakkapragada      |
-+------------------------------------------+---------------------------+
-| Role-Based Access Control (RBAC)         | Rong Wei                  |
-|                                          |                           |
-| Book Management System (CRUD)            | Rong Wei                  |
-+------------------------------------------+---------------------------+
-| Borrowing & Returning Books              | Abhinav Lakkapragada      |
-+------------------------------------------+---------------------------+
-| API Testing & Debugging                  | Abhinav & Rong Wei        |
-+------------------------------------------+---------------------------+
+| Task               | Developer(s) | 
+|--------------------|------------|
+| Initial Node.js Backend Setup      | Abhinav & Rong Wei | 
+| Migration to Golang Backend | Rong Wei | 
+| Database Schema Design | Abhinav & Rong Wei |                           
+| User Authentication (JWT)   | Abhinav Lakkapragada   |
+| Role-Based Access Control (RBAC)    | Rong Wei     |                      
+| Book Management System (CRUD)       | Rong Wei     |
+| Borrowing & Returning Books   | Abhinav Lakkapragada     |                
+| API Testing & Debugging       | Abhinav & Rong Wei   |
+
+---
 
 **📌 Next Steps (Sprint 2 & Sprint 3 Plans)**
 
