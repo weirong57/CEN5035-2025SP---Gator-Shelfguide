@@ -8,6 +8,7 @@ import (
 
 	"library-backend/config"
 	"library-backend/middleware"
+	"library-backend/routes"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -33,6 +34,10 @@ func main() {
 
 	// 设置路由
 	r := mux.NewRouter()
+
+	routes.AuthRoutes(r)
+	routes.BookRoutes(r)
+	routes.BorrowRoutes(r)
 
 	// 添加受 JWT 保护的路由
 	r.Handle("/protected", middleware.VerifyToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

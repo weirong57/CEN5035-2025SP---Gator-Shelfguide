@@ -1,12 +1,17 @@
-// routes/borrowRoutes.js
-const express = require('express');
-const router = express.Router();
-const borrowController = require('../controllers/borrowController');
+package routes
 
-// 借书 routes/borrowRoutes.js
-router.post('/', borrowController.borrowBook);
+import (
+	"library-backend/controllers"
+	"net/http"
 
-// 还书 routes/borrowRoutes.js
-router.post('/return', borrowController.returnBook);
+	"github.com/gorilla/mux"
+)
 
-module.exports = router;
+// BorrowRoutes 处理借书和还书的路由
+func BorrowRoutes(router *mux.Router) {
+	// 借书
+	router.HandleFunc("/borrow", controllers.BorrowBook).Methods(http.MethodPost)
+
+	// 还书
+	router.HandleFunc("/borrow/return", controllers.ReturnBook).Methods(http.MethodPost)
+}
