@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';  // Import CSS for styling
+import './Login.css';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -10,15 +10,13 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log('Logging in:', username, password);
-    // TODO: Add your login authentication logic here
-    navigate('/'); // Redirect to main page after login
+    navigate('/mainlayout'); 
   };
 
   const handleSignup = (e) => {
     e.preventDefault();
     console.log('Signing up:', username, password);
-    // TODO: Add your signup logic here
-    navigate('/'); // Redirect to main page after signup
+    navigate('/mainlayout'); 
   };
 
   return (

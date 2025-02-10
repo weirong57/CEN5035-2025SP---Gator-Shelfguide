@@ -5,16 +5,15 @@ import MainLayout from './mainlayout'; // Main layout for the app (after login)
 
 function App() {
   return (
-    <Routes>
-      {/* Public Route for Authentication */}
-      <Route path="/login" element={<Login />} />
 
-      {/* Protected Routes */}
-      <Route path="/*" element={<MainLayout />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
 
-      {/* Redirect any unknown routes to /login */}
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+        <Route path="/mainlayout" element={<MainLayout />} />
+
+        <Route path="/" element={<Navigate to="/login" replace />} />
+      </Routes>
+  
   );
 }
 
