@@ -39,7 +39,7 @@ Establish the foundational system infrastructure, including environment setup an
 
 ### **3️⃣ Initial UI and Navigation Layout**
 - ✅ Define the overall **system layout** and **navigation scheme**, ensuring a seamless user experience.
-- ✅ Set up **placeholder pages** or sections for upcoming functionalities, such as:
+- ✅ Set up **placeholder pages** and  **login page** or sections for upcoming functionalities, such as:
   - 📚 **Book Management**
   - 🏠 **User Center**
   - 📊 **Admin Dashboard**
