@@ -6,7 +6,7 @@
 |--------------------|------------|-------------------------------|
 | Rong Wei          | weirong57 | [rong.weig@ufl.edu](mailto:rong.weig@ufl.edu) |
 | Abhinav Lakkapragada | xx         | [lakkapragada.a@ufl.edu](mailto:lakkapragada.a@ufl.edu) |
-| Anirudh Ramesh    | xx         | xx                            |
+| Anirudh Ramesh    | Anir11        | [ramesh.anirudh@ufl.edu](mailto:ramesh.anirudh@ufl.edu) |                           
 | Yichen Pan        | lishuang1103         | [panyichen@ufl.edu](mailto:panyichen@ufl.edu) |
 
 ---
