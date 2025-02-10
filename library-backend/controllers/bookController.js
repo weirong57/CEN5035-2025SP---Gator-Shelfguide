@@ -54,12 +54,13 @@ exports.addBook = async (req, res) => {
       genre,
       language,
       shelf_number,
-      available_copies
+      available_copies,
+      isbn // Add isbn field
     } = req.body;
 
     const [result] = await db.query(
-      'INSERT INTO Books (title, author, genre, language, shelf_number, available_copies) VALUES (?, ?, ?, ?, ?, ?)',
-      [title, author, genre, language, shelf_number, available_copies || 1]
+      'INSERT INTO Books (title, author, genre, language, shelf_number, available_copies, isbn) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [title, author, genre, language, shelf_number, available_copies || 1, isbn] // Include isbn in query
     );
 
     res.status(201).json({ message: 'Book added', bookId: result.insertId });
@@ -68,6 +69,7 @@ exports.addBook = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 /**
  * 更新图书信息/by id
