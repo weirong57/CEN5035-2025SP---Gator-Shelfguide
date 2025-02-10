@@ -16,7 +16,7 @@ Librarians often face challenges tracking the availability of books. Our project
 
 **Demos:**
 - Frontend Demo: *(To be linked once available)*
-- Backend Demo: *(To be linked once available)*
+- Backend Demo: (https://youtu.be/RrBt6CoGP2k)
 
 ---
 
