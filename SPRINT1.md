@@ -15,7 +15,7 @@
 Librarians often face challenges tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need.
 
 **Demos:**
-- Frontend Demo: (https://youtu.be/ltjNf8S4mcw)
+- Frontend Demo: (Abhinav：https://youtu.be/ltjNf8S4mcw)(Rong:https://www.youtube.com/watch?v=pYfmaCYOyfQ)
 - Backend Demo: (https://youtu.be/RrBt6CoGP2k)
 
 ---
