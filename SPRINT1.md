@@ -46,6 +46,26 @@ Automatically calculate fines (if overdue) upon return
 ### **Objective**
 Librarians often face challenges in tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need efficiently.
 
+| Feature                                    | Status  | Description |
+|--------------------------------------------|---------|-------------|
+| **Migration from Node.js to Golang**       | ✅ Done | Migrated from Node.js (Express.js) to Golang (Gorilla Mux) for better performance, maintainability, and scalability. Refactored API endpoints and database interaction layers. |
+| **Database Schema Design & Implementation** | ✅ Done | Designed and implemented MySQL schema with `Users`, `Books`, and `BorrowingRecords` tables. Optimized database with indexes. |
+| **User Authentication & Role Management**  | ✅ Done | Implemented JWT-based authentication, user registration, and login. Established Role-Based Access Control (RBAC) for Students and Librarians. |
+| **Backend API Testing & Debugging**        | ✅ Done | Used Postman for API testing. Fixed database schema mapping issues, MySQL column mismatches, and role validation logic inconsistencies. |
+
+
+**👥 Labor Division (Backend Team)**
+
+| Task               | Developer(s) | 
+|--------------------|------------|
+| Initial Node.js Backend Setup      | Abhinav & Rong Wei | 
+| Migration to Golang Backend | Rong Wei | 
+| Database Schema Design | Abhinav & Rong Wei |                           
+| User Authentication (JWT)   | Abhinav Lakkapragada   |
+| Role-Based Access Control (RBAC)    | Rong Wei     |                              
+| API Testing & Debugging       | Abhinav & Rong Wei   |
+
+
 ## **📌 Sprint 1 Goals (Ends on February 10th)**  
 ### **Goal:**
 Establish the foundational system infrastructure, including environment setup and user management.
