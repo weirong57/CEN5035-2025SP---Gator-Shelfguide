@@ -88,8 +88,6 @@ Librarians often face challenges in tracking the availability of books. Our proj
 | Role-Based Access Control (RBAC)    | Rong Wei     |                              
 | API Testing & Debugging       | Abhinav & Rong Wei   |
 
----
-
 ## **📌 Next Steps**
 - 🔜 Implement **Book Management**: CRUD operations for books.
 - 🔜 Develop **Borrowing & Return Features**: Allow users to borrow and return books.
