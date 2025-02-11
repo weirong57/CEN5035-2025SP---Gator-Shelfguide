@@ -100,8 +100,15 @@ Establish the foundational system infrastructure, including environment setup an
 ---
 
 ### **📝 Notes**
-- The team is actively **collaborating** on both frontend and backend.
-- Weekly meetings are scheduled to track progress and address challenges.
+
+-   Migration from **Node.js to Golang** was a major improvement in
+    terms of **performance and scalability**.
+
+-   Regular **weekly progress meetings** ensured smooth coordination
+    among team members.
+
+-   The **backend structure is now stable**, allowing us to focus on new
+    feature development in Sprint 2.
 
 ---
 
