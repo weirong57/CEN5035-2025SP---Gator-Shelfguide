@@ -25,22 +25,19 @@ Establish the foundational system infrastructure, including environment setup an
 
 **Backend Achievements in Sprint 1**
 
-**Objective**
-
 Librarians often face challenges in tracking the availability of books.
 Our project aims to integrate existing features and provide a more
 intuitive system for students and librarians to locate the resources
 they need efficiently.
 
-**✅ Migration from Node.js to Golang**
-
--   Initially, we implemented the backend using **Node.js** with
-    **Express.js**.
+**✅ Migration from Node.js to Golang**:Initially, we implemented the backend using **Node.js** with **Express.js**.
 
 -   Midway through Sprint 1, we migrated to **Golang with Gorilla Mux**
     to improve:
 
-    -   **Performance** -- Faster execution speed.-   **Maintainability** -- Easier long-term support. -   **Scalability** -- Better concurrency handling.
+    -   **Performance** -- Faster execution speed.-
+    -   **Maintainability** -- Easier long-term support. -
+    -   **Scalability** -- Better concurrency handling.
 
 -   Refactored API endpoints and database interaction layers to align
     with the new Golang structure.
@@ -74,40 +71,6 @@ they need efficiently.
     -   **Librarians** -- Can manage book records and track borrowing
         history.
 
-**✅ Book Management System**
-
-• Implemented **CRUD operations** for books, including:
-
--   **Add a book** -- Librarians can add new books to the system.
-
--   **Update book details** -- Modify book information when needed.
-
--   **Delete books** -- Remove outdated or unavailable books.
-
--   **Retrieve book details** -- View book information.\
-    • Developed **book search and filtering features**, allowing users
-    to:
-
--   Search by id.
-
--   Filter available books for borrowing.
-
-**✅ Book Borrowing & Returning System**
-
--   Implemented API endpoints for **book borrowing and returning**:
-
-    -   Borrow Book API: Users can check out books.
-
-    -   Return Book API: Updates book status upon return.
-
--   Added backend validation and error handling for scenarios such as:
-
-    -   Attempting to borrow an already checked-out book.
-
-    -   Exceeding borrowing limits.
-
-    -   Returning a non-borrowed book.
-
 **✅ Backend API Testing & Debugging**
 
 -   Utilized **Postman** for API testing and validation.
@@ -128,9 +91,7 @@ they need efficiently.
 | Migration to Golang Backend | Rong Wei | 
 | Database Schema Design | Abhinav & Rong Wei |                           
 | User Authentication (JWT)   | Abhinav Lakkapragada   |
-| Role-Based Access Control (RBAC)    | Rong Wei     |                      
-| Book Management System (CRUD)       | Rong Wei     |
-| Borrowing & Returning Books   | Abhinav Lakkapragada     |                
+| Role-Based Access Control (RBAC)    | Rong Wei     |                              
 | API Testing & Debugging       | Abhinav & Rong Wei   |
 
 ---
