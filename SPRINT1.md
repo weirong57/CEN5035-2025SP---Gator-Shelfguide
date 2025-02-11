@@ -64,9 +64,13 @@ Establish the foundational system infrastructure, including environment setup an
   - 📊 **Admin Dashboard**
 
 ---
+---
+## **Frontend  in Sprint 1**
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+---
+
 
 ## **Backend  in Sprint 1**
-### **Objective**
 Librarians often face challenges in tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need efficiently.
 
 | Feature                                    | Status  | Description |
@@ -91,8 +95,6 @@ Librarians often face challenges in tracking the availability of books. Our proj
 ## **📌 Next Steps**
 - 🔜 Implement **Book Management**: CRUD operations for books.
 - 🔜 Develop **Borrowing & Return Features**: Allow users to borrow and return books.
-- 🔜 Improve **User Interface**: Enhance the frontend for better user experience.
-
 ---
 
 ### **📝 Notes**
