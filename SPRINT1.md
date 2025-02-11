@@ -17,7 +17,7 @@
 
 ---
 
-##**User story:**
+## **User story:**
 User Story 1: Regular User Registration  
 Role: Unregistered User  
 Goal: Register an account to access borrowing features  
