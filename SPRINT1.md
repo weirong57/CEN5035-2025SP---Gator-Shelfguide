@@ -42,7 +42,30 @@ Send daily email/in-app notifications after overdue
 Automatically calculate fines (if overdue) upon return
 
 ---
-## **Backend Achievements in Sprint 1**
+## **📌 Sprint 1 Goals (Ends on February 10th)**  
+### **Goal:**
+Establish the foundational system infrastructure, including environment setup and user management.
+## **🛠 Key Tasks（Include Frontend and Backend ）**
+
+### **1️⃣ Project Environment & Database Structure**
+- ✅ Set up the development environment and confirm the tech stack (front-end framework, back-end language, database type, etc.).
+- ✅ Design an initial database schema, including core tables such as `Users`, `Books`, and `Borrowing Records`.
+
+### **2️⃣ User & Role Management**
+- ✅ Implement **registration, login, and authentication**, ensuring secure password storage (hashed passwords).
+- ✅ Differentiate **user permissions** (e.g., Normal User vs. Admin), with corresponding access restrictions.
+- ✅ Provide **logout functionality** and session-based or **JWT-based authentication**.
+
+### **3️⃣ Initial UI and Navigation Layout**
+- ✅ Define the overall **system layout** and **navigation scheme**, ensuring a seamless user experience.
+- ✅ Set up **placeholder pages** and  **login page** or sections for upcoming functionalities, such as:
+  - 📚 **Book Management**
+  - 🏠 **User Center**
+  - 📊 **Admin Dashboard**
+
+---
+
+## **Backend  in Sprint 1**
 ### **Objective**
 Librarians often face challenges in tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need efficiently.
 
@@ -64,31 +87,6 @@ Librarians often face challenges in tracking the availability of books. Our proj
 | User Authentication (JWT)   | Abhinav Lakkapragada   |
 | Role-Based Access Control (RBAC)    | Rong Wei     |                              
 | API Testing & Debugging       | Abhinav & Rong Wei   |
-
-
-## **📌 Sprint 1 Goals (Ends on February 10th)**  
-### **Goal:**
-Establish the foundational system infrastructure, including environment setup and user management.
-
----
-
-## **🛠 Key Tasks**
-
-### **1️⃣ Project Environment & Database Structure**
-- ✅ Set up the development environment and confirm the tech stack (front-end framework, back-end language, database type, etc.).
-- ✅ Design an initial database schema, including core tables such as `Users`, `Books`, and `Borrowing Records`.
-
-### **2️⃣ User & Role Management**
-- ✅ Implement **registration, login, and authentication**, ensuring secure password storage (hashed passwords).
-- ✅ Differentiate **user permissions** (e.g., Normal User vs. Admin), with corresponding access restrictions.
-- ✅ Provide **logout functionality** and session-based or **JWT-based authentication**.
-
-### **3️⃣ Initial UI and Navigation Layout**
-- ✅ Define the overall **system layout** and **navigation scheme**, ensuring a seamless user experience.
-- ✅ Set up **placeholder pages** and  **login page** or sections for upcoming functionalities, such as:
-  - 📚 **Book Management**
-  - 🏠 **User Center**
-  - 📊 **Admin Dashboard**
 
 ---
 
