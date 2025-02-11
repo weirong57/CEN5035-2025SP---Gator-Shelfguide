@@ -13,7 +13,7 @@
 
 **Demos:**
 - Frontend Demo: (https://youtu.be/ltjNf8S4mcw)
-- Backend Demo: (https://youtu.be/RrBt6CoGP2k)
+- Backend Demo: (Rong:https://www.youtube.com/watch?v=fNTUai8AgsQ) (Abhinav:https://www.youtube.com/watch?v=RrBt6CoGP2k)
 
 ---
 
@@ -71,7 +71,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 ## **Backend  in Sprint 1**
-Librarians often face challenges in tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need efficiently.
+Librarians often face challenges in tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need efficiently.We planned to complete the following functions in node 1, user registration and login , administrator functions (book management, borrowing records), user borrowing. In node 1 we completed all the tasks that we expected and successfully realized them. The table shows the objectives of the tasks we accomplished.
 
 | Feature                                    | Status  | Description |
 |--------------------------------------------|---------|-------------|
