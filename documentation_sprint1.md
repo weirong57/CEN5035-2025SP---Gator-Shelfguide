@@ -12,8 +12,8 @@
 ---
 
 **Demos:**
-- Frontend Demo: (Abhinav：https://youtu.be/ltjNf8S4mcw)(Rong:)
-- Backend Demo: (https://youtu.be/RrBt6CoGP2k)
+- Frontend Demo:
+- Backend Demo: 
 
 ---
 
@@ -40,11 +40,7 @@ they need efficiently.
 -   Midway through Sprint 1, we migrated to **Golang with Gorilla Mux**
     to improve:
 
-    -   **Performance** -- Faster execution speed.
-
-    -   **Maintainability** -- Easier long-term support.
-
-    -   **Scalability** -- Better concurrency handling.
+    -   **Performance** -- Faster execution speed.-   **Maintainability** -- Easier long-term support. -   **Scalability** -- Better concurrency handling.
 
 -   Refactored API endpoints and database interaction layers to align
     with the new Golang structure.
