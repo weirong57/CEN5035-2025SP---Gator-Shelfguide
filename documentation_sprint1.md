@@ -30,58 +30,17 @@ Our project aims to integrate existing features and provide a more
 intuitive system for students and librarians to locate the resources
 they need efficiently.
 
-**✅ Migration from Node.js to Golang**:Initially, we implemented the backend using **Node.js** with **Express.js**.
+## Backend Achievements in Sprint 1
 
--   Midway through Sprint 1, we migrated to **Golang with Gorilla Mux**
-    to improve:
+Librarians often face challenges in tracking the availability of books. Our project aims to integrate existing features and provide a more intuitive system for students and librarians to locate the resources they need efficiently.
 
-    -   **Performance** -- Faster execution speed.-
-    -   **Maintainability** -- Easier long-term support. -
-    -   **Scalability** -- Better concurrency handling.
+| Feature                                    | Status  | Description |
+|--------------------------------------------|---------|-------------|
+| **Migration from Node.js to Golang**       | ✅ Done | Migrated from Node.js (Express.js) to Golang (Gorilla Mux) for better performance, maintainability, and scalability. Refactored API endpoints and database interaction layers. |
+| **Database Schema Design & Implementation** | ✅ Done | Designed and implemented MySQL schema with `Users`, `Books`, and `BorrowingRecords` tables. Optimized database with indexes. |
+| **User Authentication & Role Management**  | ✅ Done | Implemented JWT-based authentication, user registration, and login. Established Role-Based Access Control (RBAC) for Students and Librarians. |
+| **Backend API Testing & Debugging**        | ✅ Done | Used Postman for API testing. Fixed database schema mapping issues, MySQL column mismatches, and role validation logic inconsistencies. |
 
--   Refactored API endpoints and database interaction layers to align
-    with the new Golang structure.
-
-**✅ Database Schema Design & Implementation**
-
--   Designed and implemented a **relational database** using **MySQL**.
-
--   Core tables created:
-
-    -   **Users** -- Stores user details and roles (Student, Librarian).
-
-    -   **Books** -- Maintains book records.
-
-    -   **BorrowingRecords** -- Tracks book borrowing and return
-        transactions.
-
--   Optimized database schema with **indexes** for frequently queried
-    columns.
-
-**✅ User Authentication & Role Management**
-
--   Implemented **JWT-based authentication** for secure user sessions.
-
--   Developed **user registration and login functionality**.
-
--   Established **Role-Based Access Control (RBAC)**:
-
-    -   **Students** -- Can search for and borrow books.
-
-    -   **Librarians** -- Can manage book records and track borrowing
-        history.
-
-**✅ Backend API Testing & Debugging**
-
--   Utilized **Postman** for API testing and validation.
-
--   Debugged and fixed issues related to:
-
-    -   Incorrect **database schema mapping**.
-
-    -   MySQL **column naming mismatches** (e.g., record_id → id).
-
-    -   Role validation logic inconsistencies.
 
 **👥 Labor Division (Backend Team)**
 
