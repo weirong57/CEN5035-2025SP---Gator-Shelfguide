@@ -24,7 +24,7 @@ Goal: Register an account to access borrowing features
 Requirements:  
 Enter account (username/email), password, and name to complete registration.
  
-User Story 2.1: Manage Books
+User Story 2: Manage Books
 Role: Administrator  
 Goal: Maintain library book data  
 Requirements:  
@@ -32,34 +32,14 @@ Add new books (title, author, category, shelf number, etc.)
 Edit or delete existing books  
 Bulk import books
  
-User Story 2.2: View Borrowing Records  
-Role: Administrator  
-Goal: Monitor user borrowing behavior  
-Requirements:  
-Filter records by user, book, or time range  
-User Story 3.1: Search and Borrow Books  
-Role: Regular User  
-Goal: Quickly find and borrow books  
-Requirements:  
-Support keyword search (title, author,etc.)  
-Display real-time book availability status (available/out of stock)  
-Borrow
 
-User Story 3.1: Return Books and Overdue Reminders  
+User Story 3: Return Books and Overdue Reminders  
 Role: Regular User  
 Goal: Return books on time and receive reminders  
 Requirements:  
 User center displays books to be returned and due dates  
 Send daily email/in-app notifications after overdue  
 Automatically calculate fines (if overdue) upon return
-
-User Story 3.2: Book Location Assistance
-Role: Regular User
-Goal: Easily locate a book in the library
-Requirements:
-Display bookshelf number or map location
-Provide step-by-step navigation to find the book
-Indicate books currently on loan
 
 ---
 ## **Backend Achievements in Sprint 1**
