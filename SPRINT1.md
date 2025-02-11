@@ -12,7 +12,7 @@
 ---
 
 **Demos:**
-- Frontend Demo: (Abhinav：https://youtu.be/ltjNf8S4mcw)(Rong:)
+- Frontend Demo: (https://youtu.be/ltjNf8S4mcw)
 - Backend Demo: (https://youtu.be/RrBt6CoGP2k)
 
 ---
