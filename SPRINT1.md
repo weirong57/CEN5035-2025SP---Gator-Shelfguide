@@ -66,7 +66,26 @@ Establish the foundational system infrastructure, including environment setup an
 ---
 ---
 ## **Frontend  in Sprint 1**
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+The system UI currently used by librarians is not simple and convenient enough. Our project aims to design a convenient and practical UI which can expand more convenient functions
+| Feature                                    | Status  | Description |
+|--------------------------------------------|---------|-------------|
+| **Development environment setup**       | ✅ Done | Set up the development environment and develop using React and Ant Design.|
+| **Design Main page** | ✅ Done | Design main page. Use the header and sidebar as navigation menus to provide extensibility points for integrating future features. |
+| **Design Login page**  | ✅ Done | Design Login page. Design the user interface for account and password input fields, and include Login and Sign Up buttons.|
+| **Implement login page redirection to the main interface**        | ✅ Done | Enable navigation from the login page to the dashboard using React Router after validation.|
+
+
+**👥 Labor Division (Frontend Team)**
+
+| Task               | Developer(s) | 
+|--------------------|------------|
+| Development environment setup | Yichen Pan &  Anirudh Ramesh | 
+| Design Main page | Yichen Pan| 
+| Design Login page | Anirudh Ramesh|                           
+| Implement login page redirection to the main interface   | Yichen Pan &  Anirudh Ramesh|
+## **📌 Next Steps**
+- 🔜 Implement Signup page.
+- 🔜 Design functional subpages under the main page and integrate backend development features.
 ---
 
 
