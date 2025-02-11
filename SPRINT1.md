@@ -33,14 +33,6 @@ Edit or delete existing books
 Bulk import books
  
 
-User Story 3: Return Books and Overdue Reminders  
-Role: Regular User  
-Goal: Return books on time and receive reminders  
-Requirements:  
-User center displays books to be returned and due dates  
-Send daily email/in-app notifications after overdue  
-Automatically calculate fines (if overdue) upon return
-
 ---
 ## **📌 Sprint 1 Goals (Ends on February 10th)**  
 ### **Goal:**
