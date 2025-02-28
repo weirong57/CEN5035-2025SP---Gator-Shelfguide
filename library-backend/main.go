@@ -13,8 +13,17 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
+
+	_ "library-backend/docs" // ✅ 确保 Swagger 文档正确导入
+
+	httpSwagger "github.com/swaggo/http-swagger" // ✅ 引入 Swagger 组件
 )
 
+// @title			Library Management API 文档
+// @version		1.0
+// @description	This is the back-end API for an online library management system
+// @host			localhost:3000
+// @BasePath		/
 func main() {
 	// 读取 .env 文件
 	if err := godotenv.Load(); err != nil {
@@ -35,6 +44,12 @@ func main() {
 	// 设置路由
 	r := mux.NewRouter()
 
+	// ✅ 添加 Swagger 处理路由，确保 `doc.json` 可用
+	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:" + port + "/swagger/doc.json"),
+	))
+
+	// 添加 API 相关路由
 	routes.AuthRoutes(r)
 	routes.BookRoutes(r)
 	routes.BorrowRoutes(r)

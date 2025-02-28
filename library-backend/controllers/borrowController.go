@@ -16,6 +16,17 @@ type BorrowRequest struct {
 	BookID int `json:"bookId"`
 }
 
+//	@Summary		借书 / Borrow a Book
+//	@Description	用户借阅书籍 / Users borrow a book
+//	@Tags			借阅管理 / Borrow Management
+//	@Accept			json
+//	@Produce		json
+//	@Param			borrowRequest	body		BorrowRequest			true	"借书请求 / Borrow Request"
+//	@Success		200				{object}	map[string]interface{}	"成功响应 / Success Response"
+//	@Failure		400				{string}	string					"无效的请求数据 / Invalid request data"
+//	@Failure		404				{string}	string					"图书未找到 / Book not found"
+//	@Failure		500				{string}	string					"数据库错误 / Database error"
+//	@Router			/borrow [post]
 // BorrowBook handles the book borrowing request
 func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	var request BorrowRequest
@@ -84,6 +95,17 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+//	@Summary		还书 / Return a Book
+//	@Description	用户归还书籍 / Users return a book
+//	@Tags			借阅管理 / Borrow Management
+//	@Accept			json
+//	@Produce		json
+//	@Param			returnRequest	body		BorrowRequest			true	"还书请求 / Return Request"
+//	@Success		200				{object}	map[string]interface{}	"成功响应 / Success Response"
+//	@Failure		400				{string}	string					"无效的请求数据 / Invalid request data"
+//	@Failure		404				{string}	string					"没有找到借阅记录 / No active borrow record found"
+//	@Failure		500				{string}	string					"数据库错误 / Database error"
+//	@Router			/borrow/return [post]
 // ReturnBook handles the book return request
 func ReturnBook(w http.ResponseWriter, r *http.Request) {
 	var request BorrowRequest
