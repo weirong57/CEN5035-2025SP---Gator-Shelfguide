@@ -11,22 +11,22 @@ const { Sider } = Layout
 
 const items = [
   {
-    key: '/',
+    key: '/main/dashboard',
     icon: <DashboardOutlined />,
     label: 'Dashboard'
   },
   {
-    key: '/books',
+    key: '/main/books',
     icon: <BookOutlined />,
-    label: 'Book management'
+    label: 'Book Management'
   },
   {
-    key: '/users',
+    key: '/main/users',
     icon: <UserOutlined />,
-    label: 'User center'
+    label: 'User Center'
   },
   {
-    key: '/reports',
+    key: '/main/reports',
     icon: <BarChartOutlined />,
     label: 'Reports'
   }
@@ -35,6 +35,11 @@ const items = [
 export default function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
+
+  const getSelectedKey = () => {
+    const basePath = location.pathname.split('/').slice(0, 3).join('/')
+    return items.find(item => item.key === basePath)?.key || ''
+  }
 
   return (
     <Sider
@@ -55,7 +60,7 @@ export default function Sidebar() {
       </div>
       <Menu
         mode="inline"
-        selectedKeys={[location.pathname]}
+        selectedKeys={[getSelectedKey()]}
         items={items}
         onSelect={({ key }) => navigate(key)}
       />
