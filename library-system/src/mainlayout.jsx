@@ -1,54 +1,39 @@
+// MainLayout.js
+import { useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
-import { Routes, Route } from 'react-router-dom';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
-import { 
-  Dashboard,
-  BookManagement,
-  UserCenter,
-  Reports 
-} from './pages';
-import './App.css';  
+import './App.css';
 
 const { Content } = Layout;
 
-function App() {
+const MainLayout = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+    if (!isLoggedIn && !location.pathname.startsWith('/login')) {
+      navigate('/login', { 
+        replace: true,
+        state: { from: location } 
+      });
+    }
+  }, [navigate, location]); 
+
   return (
-    <Layout style={{ 
-      minHeight: '100vh',
-      minWidth:'100vw',
-      background: '#f0f2f5'  
-    }}>
-
+    <Layout style={{ minHeight: '100vh', minWidth: '100vw', background: '#f0f2f5' }}>
       <Sidebar />
-      
-
       <Layout>
-
         <Header />
-        
-
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: '#ffffff',  
-            borderRadius: 8,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'  
-          }}
-        >
-
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/books" element={<BookManagement />} />
-            <Route path="/users" element={<UserCenter />} />
-            <Route path="/reports" element={<Reports />} />
-          </Routes>
+        <Content style={{ margin: '24px 16px', padding: 24, minHeight: 280, background: '#fff', borderRadius: 8 }}>
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
   );
-}
+};
 
-export default App;
+export default MainLayout;

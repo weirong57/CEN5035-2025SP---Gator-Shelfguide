@@ -1,3 +1,4 @@
+// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -7,48 +8,57 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleSubmit = (type) => (e) => {
     e.preventDefault();
-    console.log('Logging in:', username, password);
-    navigate('/mainlayout'); 
-  };
+    
+    if (!username.trim() || !password.trim()) {
+      alert('Please login with your username and password.');
+      return;
+    }
 
-  const handleSignup = (e) => {
-    e.preventDefault();
-    console.log('Signing up:', username, password);
-    navigate('/mainlayout'); 
+    console.log(`${type}:`, username, password);
+    localStorage.setItem('isLoggedIn', 'true');
+    
+    navigate('/main/dashboard');
   };
 
   return (
     <div className="login-container">
       <div className="login-dialog">
         <h2>Gator Shelfguide</h2>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input 
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter username"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input 
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
-            required
-          />
-        </div>
-        <div className="button-group">
-          <button onClick={handleLogin}>Login</button>
-          <button onClick={handleSignup}>Sign Up</button>
-        </div>
+        <form onSubmit={handleSubmit('Login')}>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input 
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Login with username."
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input 
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Login with password."
+              required
+            />
+          </div>
+          <div className="button-group">
+            <button type="submit">Login</button>
+            <button 
+              type="button"
+              onClick={handleSubmit('Signup')}
+            >
+              Signup
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
