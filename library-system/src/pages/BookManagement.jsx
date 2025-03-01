@@ -16,28 +16,33 @@ export default function BookManagement() {
   const loadBooks = async () => {
     try {
       setLoading(true);
-      const { current, pageSize } = pagination;
-      /*
+      const encodedSearch = encodeURIComponent(searchKey);
+      
       const response = await bookService.getBooks({
-        search: searchKey,
-        page: current,
-        size: pageSize
-      });
-      */
-     // ========== 临时修改后的搜索参数部分 ==========
-      const response = await bookService.getBooks({
-        title: searchKey,   // 直接使用 title 作为查询参数
-        _page: pagination.current, // JSON Server 标准分页参数
+        title: encodedSearch,
+        _page: pagination.current,
         _limit: pagination.pageSize
       });
-// ========== 临时修改结束 ==========
-      setBooks(response.data);
+
+      const rawData = Array.isArray(response?.data) 
+        ? response.data 
+        : Array.isArray(response)
+          ? response
+          : [];
+
+      console.log('[DEBUG] Processed data:', rawData);
+
+      setBooks(rawData);
+      
       setPagination(prev => ({
         ...prev,
-        total: response.total
+        total: Number(response.headers?.['x-total-count']) || response.total || rawData.length
       }));
     } catch (err) {
+      console.error('Data loading failed:', err);
       message.error(err.message);
+      setBooks([]); 
+      setPagination(prev => ({ ...prev, total: 0 }));
     } finally {
       setLoading(false);
     }
@@ -47,25 +52,23 @@ export default function BookManagement() {
     loadBooks();
   }, [pagination.current]);
 
-
   const handleSearch = () => {
-    setPagination(prev => ({ ...prev, current: 1 })); 
+    setPagination(prev => ({ ...prev, current: 1 }));
     loadBooks();
   };
 
   const handleAction = (action, record) => {
     Modal.confirm({
-      title: `Are you sure to ${action === 'borrow' ? 'borrow' : 'return'} "${record.title}"?`, 
+      title: `Confirm to ${action === 'borrow' ? 'borrow' : 'return'} "${record.title}"?`,
       onOk: async () => {
         try {
           setLoading(true);
           if (action === 'borrow') {
             await bookService.borrowBook(record.id);
-            message.success('Success');
           } else {
             await bookService.returnBook(record.id);
-            message.success('Success');
           }
+          message.success('Operation successful');
           await loadBooks();
         } catch (err) {
           message.error(err.message);
@@ -78,13 +81,13 @@ export default function BookManagement() {
 
   const columns = [
     { 
-      title: 'title', 
+      title: 'Title', 
       dataIndex: 'title', 
       key: 'title',
       sorter: (a, b) => a.title.localeCompare(b.title)
     },
     { 
-      title: 'author', 
+      title: 'Author', 
       dataIndex: 'author', 
       key: 'author',
       sorter: (a, b) => a.author.localeCompare(b.author)
@@ -92,27 +95,32 @@ export default function BookManagement() {
     { 
       title: 'ISBN', 
       dataIndex: 'isbn',
-      key: 'isbn'
+      key: 'isbn',
+      render: text => text || <span style={{ color: '#bfbfbf' }}>N/A</span>
     },
     { 
-      title: 'available copies', 
+      title: 'Available Copies', 
       dataIndex: 'available_copies', 
       key: 'available_copies',
-      sorter: (a, b) => a.available_copies - b.available_copies
+      sorter: (a, b) => a.available_copies - b.available_copies,
+      render: text => <span style={{ 
+        fontWeight: 600,
+        color: text > 0 ? '#389e0d' : '#cf1322'
+      }}>{text}</span>
     },
     { 
-      title: 'status', 
+      title: 'Status', 
       render: (_, record) => (
         <span style={{ 
           color: record.available_copies > 0 ? '#52c41a' : '#ff4d4f',
           fontWeight: 500
         }}>
-          {record.available_copies > 0 ? 'Available' : 'Out of stock'} 
+          {record.available_copies > 0 ? 'Available' : 'Out of Stock'} 
         </span>
       )
     },
     {
-      title: 'action',
+      title: 'Action',
       render: (_, record) => (
         <div className="action-buttons">
           <Button
@@ -121,7 +129,7 @@ export default function BookManagement() {
             disabled={record.available_copies <= 0}
             style={{ minWidth: 80 }}
           >
-            {record.available_copies > 0 ? 'Borrow' : 'Empty'} 
+            {record.available_copies > 0 ? 'Borrow' : 'Unavailable'} 
           </Button>
           <Button
             type="default"
@@ -137,18 +145,18 @@ export default function BookManagement() {
   ];
 
   return (
-    <div className="book-management">
+    <div className="book-management" style={{ padding: 24 }}>
       <h2 style={{ marginBottom: 24 }}>📚 Book Management System</h2>
-      
+
       <div className="search-bar" style={{ marginBottom: 16 }}>
         <Input.Search
-          placeholder="Enter title/author/ISBN to search..."
+          placeholder="Search by title/author/ISBN..."
           allowClear
           enterButton="Search"
           size="large"
-          onSearch={handleSearch} 
-          onChange={(e) => setSearchKey(e.target.value)} 
-          onPressEnter={handleSearch} 
+          onSearch={handleSearch}
+          onChange={(e) => setSearchKey(e.target.value)}
+          onPressEnter={handleSearch}
           style={{ maxWidth: 600 }}
         />
       </div>
@@ -161,11 +169,23 @@ export default function BookManagement() {
         pagination={{
           ...pagination,
           showSizeChanger: false,
-          showTotal: total => `${total} books in total`,
+          showTotal: total => `Total ${total} books`,
           onChange: (page) => setPagination(prev => ({ ...prev, current: page }))
         }}
         bordered
         scroll={{ x: 1000 }}
+        locale={{
+          emptyText: (
+            <div style={{ padding: 40, textAlign: 'center' }}>
+              <img 
+                src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" 
+                alt="empty"
+                style={{ width: 80, marginBottom: 16 }}
+              />
+              <p style={{ color: 'rgba(0,0,0,0.25)' }}>No Data</p>
+            </div>
+          )
+        }}
       />
     </div>
   );
