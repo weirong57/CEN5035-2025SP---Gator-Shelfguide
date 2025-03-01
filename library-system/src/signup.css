@@ -1,0 +1,126 @@
+/* signup.css */
+
+/* Overall page styling: centers the container */
+.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f0f2f5;
+  }
+  
+  /* Main container: two-column layout */
+  .signup-container {
+    display: flex;
+    width: 900px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* LEFT SECTION: Signup form */
+  .signup-left {
+    flex: 1;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .signup-left h2 {
+    color: #4e789f;
+    margin-bottom: 10px;
+  }
+  
+  .signup-left p {
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Error Message */
+  .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  /* Form styling */
+  .signup-left form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .signup-left form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    /* Subtle gray background */
+    background-color: #f7f7f7;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .signup-left form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4e789f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .signup-left form button:hover {
+    background-color: #3a5c85;
+  }
+  
+  /* Link styling */
+  .link {
+    color: #4e789f;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+  /* RIGHT SECTION: Visual and Info Panel */
+  .signup-right {
+    width: 300px;
+    background: linear-gradient(to right, #5ad1c1, #4e789f);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .signup-right h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .signup-right p {
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  
+  .signup-right button {
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .signup-right button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
