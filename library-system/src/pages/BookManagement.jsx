@@ -17,12 +17,20 @@ export default function BookManagement() {
     try {
       setLoading(true);
       const { current, pageSize } = pagination;
+      /*
       const response = await bookService.getBooks({
         search: searchKey,
         page: current,
         size: pageSize
       });
-      
+      */
+     // ========== 临时修改后的搜索参数部分 ==========
+      const response = await bookService.getBooks({
+        title: searchKey,   // 直接使用 title 作为查询参数
+        _page: pagination.current, // JSON Server 标准分页参数
+        _limit: pagination.pageSize
+      });
+// ========== 临时修改结束 ==========
       setBooks(response.data);
       setPagination(prev => ({
         ...prev,
@@ -37,11 +45,17 @@ export default function BookManagement() {
 
   useEffect(() => {
     loadBooks();
-  }, [searchKey, pagination.current]);
+  }, [pagination.current]);
+
+
+  const handleSearch = () => {
+    setPagination(prev => ({ ...prev, current: 1 })); 
+    loadBooks();
+  };
 
   const handleAction = (action, record) => {
     Modal.confirm({
-      title: `Are you sure to ${action === 'borrow' ? 'borrow' : 'return'}<${record.title}>?`,
+      title: `Are you sure to ${action === 'borrow' ? 'borrow' : 'return'} "${record.title}"?`, 
       onOk: async () => {
         try {
           setLoading(true);
@@ -77,7 +91,7 @@ export default function BookManagement() {
     },
     { 
       title: 'ISBN', 
-      dataIndex: 'isbn', 
+      dataIndex: 'isbn',
       key: 'isbn'
     },
     { 
@@ -93,7 +107,7 @@ export default function BookManagement() {
           color: record.available_copies > 0 ? '#52c41a' : '#ff4d4f',
           fontWeight: 500
         }}>
-          {record.available_copies > 0 ? 'remain' : 'No available books'}
+          {record.available_copies > 0 ? 'Available' : 'Out of stock'} 
         </span>
       )
     },
@@ -107,7 +121,7 @@ export default function BookManagement() {
             disabled={record.available_copies <= 0}
             style={{ minWidth: 80 }}
           >
-            {record.available_copies > 0 ? 'remain' : 'empty'}
+            {record.available_copies > 0 ? 'Borrow' : 'Empty'} 
           </Button>
           <Button
             type="default"
@@ -124,16 +138,17 @@ export default function BookManagement() {
 
   return (
     <div className="book-management">
-      <h2 style={{ marginBottom: 24 }}>📚 book-management system</h2>
+      <h2 style={{ marginBottom: 24 }}>📚 Book Management System</h2>
       
       <div className="search-bar" style={{ marginBottom: 16 }}>
         <Input.Search
-          placeholder="enter title or author or ISBN to search..."
+          placeholder="Enter title/author/ISBN to search..."
           allowClear
-          enterButton="search"
+          enterButton="Search"
           size="large"
-          onSearch={loadBooks}
-          onChange={(e) => setSearchKey(e.target.value)}
+          onSearch={handleSearch} 
+          onChange={(e) => setSearchKey(e.target.value)} 
+          onPressEnter={handleSearch} 
           style={{ maxWidth: 600 }}
         />
       </div>
@@ -146,7 +161,7 @@ export default function BookManagement() {
         pagination={{
           ...pagination,
           showSizeChanger: false,
-          showTotal: total => ` ${total} books in total`,
+          showTotal: total => `${total} books in total`,
           onChange: (page) => setPagination(prev => ({ ...prev, current: page }))
         }}
         bordered
