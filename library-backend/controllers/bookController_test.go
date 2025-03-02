@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// **测试添加书籍**
+// **测试添加书籍 Test Add books **
 func TestAddBook(t *testing.T) {
 	book := Book{
 		Title:           "New Book",
@@ -29,6 +29,6 @@ func TestAddBook(t *testing.T) {
 	handler.ServeHTTP(rr, req)
 
 	if rr.Code != http.StatusCreated {
-		t.Errorf("❌ 期望状态码 %v，实际状态码 %v", http.StatusCreated, rr.Code)
+		t.Errorf("❌ Expected status code %v，Actual status code %v", http.StatusCreated, rr.Code)
 	}
 }

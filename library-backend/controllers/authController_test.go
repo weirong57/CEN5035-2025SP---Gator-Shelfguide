@@ -30,11 +30,11 @@ func TestRegisterUser(t *testing.T) {
 	handler.ServeHTTP(rr, req)
 
 	if rr.Code != http.StatusCreated {
-		t.Errorf("❌ 期望状态码 %v，实际状态码 %v", http.StatusCreated, rr.Code)
+		t.Errorf("❌ Expected status code %v，Actual status code %v", http.StatusCreated, rr.Code)
 	}
 }
 
-// **测试用户登录**
+// **测试用户登录/Test user login**
 func TestLoginUser(t *testing.T) {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.MinCost)
 	config.DB.Exec("INSERT INTO Users (username, password, role) VALUES (?, ?, ?)", "testuser", string(hashedPassword), "user")
@@ -55,13 +55,13 @@ func TestLoginUser(t *testing.T) {
 	handler.ServeHTTP(rr, req)
 
 	if rr.Code != http.StatusOK {
-		t.Errorf("❌ 期望状态码 %v，实际状态码 %v", http.StatusOK, rr.Code)
+		t.Errorf("❌ Expected status code %v，Actual status code %v", http.StatusOK, rr.Code)
 	}
 
-	// **解析返回的 JWT**
+	// **解析返回的 JWT Parses the returned JWT**
 	var response map[string]string
 	json.Unmarshal(rr.Body.Bytes(), &response)
 	if response["token"] == "" {
-		t.Errorf("❌ JWT 令牌未返回")
+		t.Errorf("❌ The JWT token was not returned")
 	}
 }
