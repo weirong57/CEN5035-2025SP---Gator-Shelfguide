@@ -34,6 +34,7 @@ type Book struct {
 //	@Success		200		{object}	[]Book	"成功响应 / Success Response"
 //	@Failure		500		{string}	string	"服务器错误 / Server error"
 //	@Router			/books [get]
+//
 // 获取所有图书（支持搜索功能）
 // Get all books (supports search)
 func GetAllBooks(w http.ResponseWriter, r *http.Request) {
@@ -80,6 +81,7 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 //	@Failure		404	{string}	string	"图书未找到 / Book not found"
 //	@Failure		500	{string}	string	"服务器错误 / Server error"
 //	@Router			/books/{id} [get]
+//
 // 获取单本图书（通过 ID）
 // Get a single book by ID
 func GetBookById(w http.ResponseWriter, r *http.Request) {
@@ -118,6 +120,7 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 //	@Failure		400		{string}	string					"无效的请求数据 / Invalid request body"
 //	@Failure		500		{string}	string					"数据库错误 / Database error"
 //	@Router			/books [post]
+//
 // 添加新书
 // Add a new book
 func AddBook(w http.ResponseWriter, r *http.Request) {
@@ -143,6 +146,7 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 		"bookId":  insertID,
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
@@ -158,6 +162,7 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 //	@Failure		404	{string}	string				"图书未找到 / Book not found"
 //	@Failure		500	{string}	string				"数据库错误 / Database error"
 //	@Router			/books/{id} [delete]
+//
 // 删除图书
 // Delete a book
 func DeleteBook(w http.ResponseWriter, r *http.Request) {
@@ -197,6 +202,7 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 //	@Failure		404		{string}	string				"图书未找到 / Book not found"
 //	@Failure		500		{string}	string				"数据库错误 / Database error"
 //	@Router			/books/{id} [put]
+//
 // 更新图书信息
 // Update a book's information
 func UpdateBook(w http.ResponseWriter, r *http.Request) {
