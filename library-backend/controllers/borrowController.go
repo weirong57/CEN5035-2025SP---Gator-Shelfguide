@@ -27,6 +27,7 @@ type BorrowRequest struct {
 //	@Failure		404				{string}	string					"图书未找到 / Book not found"
 //	@Failure		500				{string}	string					"数据库错误 / Database error"
 //	@Router			/borrow [post]
+//
 // BorrowBook handles the book borrowing request
 func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	var request BorrowRequest
@@ -35,35 +36,55 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Start a transaction
+	// 开启事务
 	tx, err := config.DB.Begin()
 	if err != nil {
+		log.Println("Failed to start transaction:", err)
 		http.Error(w, "Failed to start transaction", http.StatusInternalServerError)
 		return
 	}
 	defer tx.Rollback()
 
-	// Check if the book is available
+	// 先检查书籍是否存在，并获取当前库存量
 	var availableCopies int
-	err = tx.QueryRow("SELECT available_copies FROM Books WHERE id = ? FOR UPDATE", request.BookID).Scan(&availableCopies)
+	err = tx.QueryRow("SELECT available_copies FROM Books WHERE id = ?", request.BookID).Scan(&availableCopies)
 	if err == sql.ErrNoRows {
 		http.Error(w, "Book not found", http.StatusNotFound)
 		return
 	} else if err != nil {
-		log.Println("Database error:", err)
+		log.Println("Database error while checking book availability:", err)
 		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
 
+	// 检查是否有足够库存
 	if availableCopies < 1 {
 		http.Error(w, "No copies available", http.StatusBadRequest)
 		return
 	}
 
-	// Insert borrowing record
-	borrowedAt := time.Now()
-	dueDate := borrowedAt.AddDate(0, 0, 14) // Borrowing period: 14 days
+	// 执行更新库存（乐观锁方式）
+	result, err := tx.Exec("UPDATE Books SET available_copies = available_copies - 1 WHERE id = ? AND available_copies > 0", request.BookID)
+	if err != nil {
+		log.Println("Error updating book availability:", err)
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
 
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		log.Println("Error checking rows affected:", err)
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+	if rowsAffected == 0 {
+		http.Error(w, "No copies available", http.StatusBadRequest)
+		return
+	}
+
+	// 插入借阅记录
+	borrowedAt := time.Now()
+	dueDate := borrowedAt.AddDate(0, 0, 14) // 借阅期限：14 天
 	_, err = tx.Exec(
 		"INSERT INTO BorrowingRecords (user_id, book_id, borrowed_at, due_date) VALUES (?, ?, ?, ?)",
 		request.UserID, request.BookID, borrowedAt, dueDate,
@@ -74,24 +95,18 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Update book availability
-	_, err = tx.Exec("UPDATE Books SET available_copies = available_copies - 1 WHERE id = ?", request.BookID)
-	if err != nil {
-		log.Println("Error updating book availability:", err)
-		http.Error(w, "Database error", http.StatusInternalServerError)
-		return
-	}
-
-	// Commit the transaction
+	// 提交事务
 	if err := tx.Commit(); err != nil {
 		log.Println("Transaction commit failed:", err)
 		http.Error(w, "Transaction error", http.StatusInternalServerError)
 		return
 	}
 
+	// 返回成功响应
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Book borrowed successfully",
-		"dueDate": dueDate,
+		"dueDate": dueDate.Format("2006-01-02 15:04:05"),
 	})
 }
 
@@ -106,6 +121,7 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 //	@Failure		404				{string}	string					"没有找到借阅记录 / No active borrow record found"
 //	@Failure		500				{string}	string					"数据库错误 / Database error"
 //	@Router			/borrow/return [post]
+//
 // ReturnBook handles the book return request
 func ReturnBook(w http.ResponseWriter, r *http.Request) {
 	var request BorrowRequest
