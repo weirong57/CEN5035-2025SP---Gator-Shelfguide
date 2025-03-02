@@ -169,24 +169,3 @@
 🚀 **Ready for further development and optimizations!**
 
 ---
-
-### **📌 How to Upload This File to GitHub**
-#### **📌 1. Create the file on GitHub**
-1. Go to your GitHub repository.
-2. Click **"Add file"** → **"Create new file"**.
-3. Name the file `Sprint 2.md`.
-4. Copy the above content and paste it into the editor.
-5. Click **"Commit new file"**.
-
-#### **📌 2. Upload via Git**
-If you are using Git CLI, run:
-
-```sh
-cd /path/to/your/repo  # Navigate to your repository
-echo "# Sprint 2 API Documentation" > "Sprint 2.md"
-git add "Sprint 2.md"
-git commit -m "Add Sprint 2 documentation"
-git push origin main  # Change 'main' to your default branch if needed
-```
-
-Now, your `Sprint 2.md` file is successfully added to your GitHub repository! 🚀
