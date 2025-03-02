@@ -11,30 +11,30 @@ import (
 	_ "github.com/mattn/go-sqlite3" // 使用 SQLite 作为测试数据库
 )
 
-// **初始化测试数据库**
+// **初始化测试数据库 Initialize the test database**
 func TestMain(m *testing.M) {
 	var err error
 
-	// **使用 SQLite 内存数据库**
+	// **使用 SQLite 内存数据库 Use SQLite in-memory database**
 	config.DB, err = sql.Open("sqlite3", ":memory:")
 	if err != nil {
 		log.Fatalf("❌ 测试数据库连接失败: %v", err)
 	}
 
-	// **创建测试表**
+	// **创建测试表 Create a test table**
 	createTables()
 
-	// **运行测试**
+	// **运行测试 Run test**
 	code := m.Run()
 
-	// **关闭数据库**
+	// **关闭数据库 Close database**
 	config.DB.Close()
 
-	// **退出测试**
+	// **退出测试 quit test **
 	os.Exit(code)
 }
 
-// **创建表结构**
+// **创建表结构 Create table structure**
 func createTables() {
 	queries := []string{
 		`CREATE TABLE Users (
@@ -67,7 +67,7 @@ func createTables() {
 
 	for _, query := range queries {
 		if _, err := config.DB.Exec(query); err != nil {
-			log.Fatalf("❌ 失败创建表: %v", err)
+			log.Fatalf("❌ Failed table creation: %v", err)
 		}
 	}
 }

@@ -36,7 +36,7 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 开启事务
+	// 开启事务 starting
 	tx, err := config.DB.Begin()
 	if err != nil {
 		log.Println("Failed to start transaction:", err)
@@ -45,7 +45,7 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	}
 	defer tx.Rollback()
 
-	// 先检查书籍是否存在，并获取当前库存量
+	// 先检查书籍是否存在，并获取当前库存量 First check whether the book exists and get the current inventory
 	var availableCopies int
 	err = tx.QueryRow("SELECT available_copies FROM Books WHERE id = ?", request.BookID).Scan(&availableCopies)
 	if err == sql.ErrNoRows {
@@ -57,13 +57,13 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 检查是否有足够库存
+	// 检查是否有足够库存 Check if there is enough stock
 	if availableCopies < 1 {
 		http.Error(w, "No copies available", http.StatusBadRequest)
 		return
 	}
 
-	// 执行更新库存（乐观锁方式）
+	// 执行更新库存（乐观锁方式）Perform an update inventory (optimistic lock mode)
 	result, err := tx.Exec("UPDATE Books SET available_copies = available_copies - 1 WHERE id = ? AND available_copies > 0", request.BookID)
 	if err != nil {
 		log.Println("Error updating book availability:", err)
@@ -82,7 +82,7 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 插入借阅记录
+	// 插入借阅记录 Insert the borrowing record
 	borrowedAt := time.Now()
 	dueDate := borrowedAt.AddDate(0, 0, 14) // 借阅期限：14 天
 	_, err = tx.Exec(
@@ -95,14 +95,14 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 提交事务
+	// 提交事务 Commit transaction
 	if err := tx.Commit(); err != nil {
 		log.Println("Transaction commit failed:", err)
 		http.Error(w, "Transaction error", http.StatusInternalServerError)
 		return
 	}
 
-	// 返回成功响应
+	// 返回成功响应 Return successful response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Book borrowed successfully",
