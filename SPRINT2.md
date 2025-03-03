@@ -3,7 +3,7 @@
 ## **📌 Project Overview**
 - **Backend Technology**: Golang (`net/http`, `mux`) + SQLite3
 - **Frontend Technology**: React
-- **Frontend Testing Video**: https://youtu.be/G6Ul5ZS_MHQ(Two members in one video)
+- **Frontend Testing Video**: https://youtu.be/G6Ul5ZS_MHQ (Two members in one video)
 - **Authentication**: JWT (`github.com/golang-jwt/jwt/v5`)
 - **API Endpoints**:
   - 📌 **User Registration** (`POST /register`)
