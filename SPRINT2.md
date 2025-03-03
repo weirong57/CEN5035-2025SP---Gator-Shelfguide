@@ -2,6 +2,8 @@
 
 ## **📌 Project Overview**
 - **Backend Technology**: Golang (`net/http`, `mux`) + SQLite3
+- **Frontend Technology**: React
+- **Frontend Testing Video**: https://youtu.be/G6Ul5ZS_MHQ(Two members in one video)
 - **Authentication**: JWT (`github.com/golang-jwt/jwt/v5`)
 - **API Endpoints**:
   - 📌 **User Registration** (`POST /register`)
@@ -159,6 +161,31 @@
 | 📌 Borrow a Book      | `TestBorrowBook`          | ✅ Passed |
 | 📌 Return a Book      | `TestReturnBook`          | ✅ Passed |
 | 📌 Unauthorized Test  | `TestUnauthorizedAccess`  | ✅ Passed |
+
+---
+
+## **📌 5.Frontend Works**
+1. Repair routing files bug. Now all page can redirect properly.
+2. Design Bookmanagement page. Integrate backend API to achieve basic functions.
+3. Design Signup page. Send data to the database via a backend API to implement user registration.
+
+
+---
+
+
+## **📌 6. Frontend Tests**
+### **📌 Test Coverage**
+| API Function                         | Status |
+|--------------------------------------|--------|
+| 📌 User Login Page Input Fields      | ✅ Passed |
+| 📌 User Login Page Button Navigation| ✅ Passed |
+| 📌 User Registration Page Redirection| ✅ Passed |
+| 📌 User Registration Page Input Fields| ✅ Passed |
+| 📌 User Registration Data Storage to Database| ✅ Passed |
+| 📌 User Registration Page Button| ✅ Passed |
+| 📌 Book Management System Data Display| ✅ Passed |
+| 📌 Book Management System Search Input Field| ✅ Passed |
+| 📌 Book Management System Search Button| ✅ Passed |
 
 ---
 
