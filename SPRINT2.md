@@ -192,7 +192,9 @@
 ## **📌 Conclusion**
 ✅ **API documentation is complete**  
 ✅ **All APIs have unit tests**  
-✅ **100% code coverage achieved**  
+✅ **Bookmanagement page designed and function achieved**
+✅ **Signup page designed and function achieved**
+✅ **100% code coverage achieved**
 🚀 **Ready for further development and optimizations!**
 
 ---
