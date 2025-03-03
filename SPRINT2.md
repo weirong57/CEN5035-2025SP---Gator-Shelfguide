@@ -190,11 +190,11 @@
 ---
 
 ## **📌 Conclusion**
-✅ **API documentation is complete**  
-✅ **All APIs have unit tests**  
-✅ **Bookmanagement page designed and function achieved**
-✅ **Signup page designed and function achieved**
-✅ **100% code coverage achieved**
+✅ **API documentation is complete**    
+✅ **All APIs have unit tests**    
+✅ **Bookmanagement page designed and function achieved**  
+✅ **Signup page designed and function achieved**  
+✅ **100% code coverage achieved**  
 🚀 **Ready for further development and optimizations!**
 
 ---
