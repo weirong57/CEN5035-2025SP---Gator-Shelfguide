@@ -53,6 +53,8 @@ func main() {
 	routes.AuthRoutes(r)
 	routes.BookRoutes(r)
 	routes.BorrowRoutes(r)
+	routes.ReviewRoutes(r)
+	routes.ReservationRoutes(r)
 
 	// 添加受 JWT 保护的路由
 	r.Handle("/protected", middleware.VerifyToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
