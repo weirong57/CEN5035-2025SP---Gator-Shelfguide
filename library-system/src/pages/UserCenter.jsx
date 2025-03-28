@@ -1,12 +1,13 @@
+
 // src/pages/UserCenter.jsx
 import { useState } from 'react';
 import { Table, Button, Tag, Modal, message } from 'antd';
 
-// 模拟数据
+// Mock data
 const mockUser = {
   id: 1,
-  username: '张三',
-  role: '普通用户',
+  username: 'John Doe',
+  role: 'Regular User',
   avatar: 'https://randomuser.me/api/portraits/men/85.jpg'
 };
 
@@ -15,7 +16,7 @@ const mockBorrows = [
     id: 1,
     book: {
       id: 101,
-      title: 'JavaScript高级程序设计',
+      title: 'JavaScript Advanced Programming',
       author: 'Nicholas C. Zakas',
       isbn: '978-7-115-33091-5',
       cover: 'https://img1.doubanio.com/view/subject/l/public/s8958650.jpg'
@@ -28,27 +29,27 @@ const mockBorrows = [
     id: 2,
     book: {
       id: 102,
-      title: 'React设计原理',
-      author: '卡拉克（Craig）',
+      title: 'React Design Patterns',
+      author: 'Craig',
       isbn: '978-7-121-44321-6',
       cover: 'https://img9.doubanio.com/view/subject/l/public/s33834075.jpg'
     },
     borrowDate: '2023-07-20',
-    dueDate: '2023-08-05', // 已逾期的测试数据
+    dueDate: '2023-08-05', // Overdue test data
     returned: false
   },
   {
     id: 3,
     book: {
       id: 103,
-      title: 'Node.js实战',
+      title: 'Node.js in Action',
       author: 'Mike Cantelon',
       isbn: '978-7-115-45678-9',
       cover: 'https://img2.doubanio.com/view/subject/l/public/s29427993.jpg'
     },
     borrowDate: '2023-06-10',
     dueDate: '2023-07-10',
-    returned: true // 已归还的测试数据
+    returned: true // Returned test data
   }
 ];
 
@@ -56,13 +57,12 @@ export default function UserCenter() {
   const [borrows, setBorrows] = useState(mockBorrows);
   const [currentUser] = useState(mockUser);
 
-  // 模拟归还操作
+  // Simulate return operation
   const handleReturn = (record) => {
     Modal.confirm({
-      title: `确认归还《${record.book.title}》吗？`,
-      content: '此操作仅前端演示，不会真实提交数据',
+      title: `Confirm to return "${record.book.title}"?`,
+      content: 'This is a frontend demo and will not submit real data',
       onOk: () => {
-        // 前端模拟归还效果
         setBorrows(prev => 
           prev.map(item => 
             item.id === record.id 
@@ -70,21 +70,21 @@ export default function UserCenter() {
               : item
           )
         );
-        message.success('模拟归还成功！');
+        message.success('Return simulated successfully!');
       }
     });
   };
 
-  // 表格列配置
+  // Table columns configuration
   const columns = [
     {
-      title: '图书信息',
+      title: 'Book Information',
       dataIndex: 'book',
       render: (book) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           < img 
             src={book.cover} 
-            alt="封面" 
+            alt="Cover" 
             style={{ 
               width: 60, 
               height: 80, 
@@ -104,13 +104,13 @@ export default function UserCenter() {
       )
     },
     {
-      title: '借阅日期',
+      title: 'Borrow Date',
       dataIndex: 'borrowDate',
       width: 120,
       sorter: (a, b) => new Date(a.borrowDate) - new Date(b.borrowDate)
     },
     {
-      title: '应还日期',
+      title: 'Due Date',
       dataIndex: 'dueDate',
       width: 120,
       render: (text, record) => {
@@ -121,22 +121,22 @@ export default function UserCenter() {
             fontWeight: 500
           }}>
             {text}
-            {isOverdue && <Tag color="red" style={{ marginLeft: 8 }}>已逾期</Tag>}
+            {isOverdue && <Tag color="red" style={{ marginLeft: 8 }}>Overdue</Tag>}
           </span>
         );
       }
     },
     {
-      title: '状态',
+      title: 'Status',
       width: 100,
       render: (record) => (
         <Tag color={record.returned ? 'default' : 'success'}>
-          {record.returned ? '已归还' : '借阅中'}
+          {record.returned ? 'Returned' : 'Borrowing'}
         </Tag>
       )
     },
     {
-      title: '操作',
+      title: 'Action',
       width: 120,
       render: (record) => (
         !record.returned && (
@@ -145,7 +145,7 @@ export default function UserCenter() {
             ghost
             onClick={() => handleReturn(record)}
           >
-            立即归还
+            Return Now
           </Button>
         )
       )
@@ -154,7 +154,7 @@ export default function UserCenter() {
 
   return (
     <div style={{ padding: 24 }}>
-      {/* 用户信息卡片 */}
+      {/* User Profile Card */}
       <div style={{ 
         marginBottom: 24,
         padding: 24,
@@ -166,7 +166,7 @@ export default function UserCenter() {
       }}>
         < img 
           src={currentUser.avatar} 
-          alt="用户头像"
+          alt="Avatar"
           style={{ 
             width: 64,
             height: 64,
@@ -180,21 +180,21 @@ export default function UserCenter() {
         </div>
       </div>
 
-      {/* 借阅记录表格 */}
+      {/* Borrowing Records Table */}
       <div style={{ 
         background: '#fff',
         padding: 24,
         borderRadius: 8,
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
       }}>
-        <h3 style={{ marginBottom: 16 }}>📚 我的借阅记录</h3>
+        <h3 style={{ marginBottom: 16 }}>📚 My Borrowing Records</h3>
         <Table
           columns={columns}
           dataSource={borrows}
           rowKey="id"
           pagination={{ 
             pageSize: 5,
-            showTotal: total => `共 ${total} 条记录`
+            showTotal: total => `Total ${total} records`
           }}
           locale={{
             emptyText: (
@@ -204,7 +204,7 @@ export default function UserCenter() {
                   alt="empty"
                   style={{ width: 80, marginBottom: 16 }}
                 />
-                <p style={{ color: 'rgba(0,0,0,0.25)' }}>暂无借阅记录</p >
+                <p style={{ color: 'rgba(0,0,0,0.25)' }}>No borrowing records</p >
               </div>
             )
           }}
