@@ -34,16 +34,16 @@ type LoginCredentials struct {
 	Password string `json:"password"`
 }
 
-//	@Summary		用户注册 / User Registration
-//	@Description	允许用户注册新账号 / Allows users to register a new account
-//	@Tags			认证 / Authentication
-//	@Accept			json
-//	@Produce		json
-//	@Param			user	body		User				true	"用户信息 / User Information"
-//	@Success		201		{object}	map[string]string	"成功响应 / Success Response"
-//	@Failure		400		{string}	string				"请求数据无效 / Invalid request data"
-//	@Failure		500		{string}	string				"服务器错误 / Server error"
-//	@Router			/register [post]
+// @Summary      User Registration
+// @Description  Allows users to register a new account
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        user body User true "User Information"
+// @Success      201 {object} map[string]string "Success Response"
+// @Failure      400 {string} string "Invalid request data"
+// @Failure      500 {string} string "Server error"
+// @Router       /register [post]
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	var requestData User
 
@@ -87,17 +87,17 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "User registered successfully"})
 }
 
-//	@Summary		用户登录 / User Login
-//	@Description	允许用户登录并获取 JWT 令牌 / Allows users to log in and receive a JWT token
-//	@Tags			认证 / Authentication
-//	@Accept			json
-//	@Produce		json
-//	@Param			credentials	body		LoginCredentials	true	"用户登录信息 / User Login Credentials"
-//	@Success		200			{object}	map[string]string	"成功响应 / Success Response"
-//	@Failure		400			{string}	string				"请求数据无效 / Invalid request data"
-//	@Failure		401			{string}	string				"无效的用户名或密码 / Invalid username or password"
-//	@Failure		500			{string}	string				"服务器错误 / Server error"
-//	@Router			/login [post]
+// @Summary      User Login
+// @Description  Allows users to log in and receive a JWT token
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        credentials body LoginCredentials true "User Login Credentials"
+// @Success      200 {object} map[string]string "Success Response"
+// @Failure      400 {string} string "Invalid request data"
+// @Failure      401 {string} string "Invalid username or password"
+// @Failure      500 {string} string "Server error"
+// @Router       /login [post]
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	var requestData LoginCredentials
 

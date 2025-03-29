@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/books": {
             "get": {
-                "description": "获取图书馆中的所有书籍，支持搜索 / Retrieve all books in the library, supports search",
+                "description": "Retrieve all books in the library, supports search",
                 "consumes": [
                     "application/json"
                 ],
@@ -25,20 +25,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "图书管理 / Book Management"
+                    "Book Management"
                 ],
-                "summary": "获取所有图书 / Get All Books",
+                "summary": "Get All Books",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "搜索关键词 / Search keyword",
+                        "description": "Search keyword",
                         "name": "search",
                         "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "成功响应 / Success Response",
+                        "description": "Success Response",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -47,319 +47,7 @@ const docTemplate = `{
                         }
                     },
                     "500": {
-                        "description": "服务器错误 / Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "添加一本新书到图书馆 / Add a new book to the library",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "图书管理 / Book Management"
-                ],
-                "summary": "添加新书 / Add a New Book",
-                "parameters": [
-                    {
-                        "description": "书籍信息 / Book Information",
-                        "name": "book",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.Book"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "成功响应 / Success Response",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "无效的请求数据 / Invalid request body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "数据库错误 / Database error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/books/{id}": {
-            "get": {
-                "description": "通过 ID 获取一本书的信息 / Retrieve details of a book by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "图书管理 / Book Management"
-                ],
-                "summary": "获取单本图书 / Get a Book by ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "书籍 ID / Book ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功响应 / Success Response",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.Book"
-                        }
-                    },
-                    "400": {
-                        "description": "无效的图书 ID / Invalid book ID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "图书未找到 / Book not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "服务器错误 / Server error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "通过 ID 更新书籍信息 / Update book information by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "图书管理 / Book Management"
-                ],
-                "summary": "更新图书 / Update a Book",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "书籍 ID / Book ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "更新后的书籍信息 / Updated Book Information",
-                        "name": "book",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.Book"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功响应 / Success Response",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "无效的图书 ID / Invalid book ID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "图书未找到 / Book not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "数据库错误 / Database error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "通过 ID 删除书籍 / Delete a book by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "图书管理 / Book Management"
-                ],
-                "summary": "删除图书 / Delete a Book",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "书籍 ID / Book ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功响应 / Success Response",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "无效的图书 ID / Invalid book ID",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "图书未找到 / Book not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "数据库错误 / Database error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/borrow": {
-            "post": {
-                "description": "用户借阅书籍 / Users borrow a book",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "借阅管理 / Borrow Management"
-                ],
-                "summary": "借书 / Borrow a Book",
-                "parameters": [
-                    {
-                        "description": "借书请求 / Borrow Request",
-                        "name": "borrowRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.BorrowRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功响应 / Success Response",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "无效的请求数据 / Invalid request data",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "图书未找到 / Book not found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "数据库错误 / Database error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/borrow/return": {
-            "post": {
-                "description": "用户归还书籍 / Users return a book",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "借阅管理 / Borrow Management"
-                ],
-                "summary": "还书 / Return a Book",
-                "parameters": [
-                    {
-                        "description": "还书请求 / Return Request",
-                        "name": "returnRequest",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/controllers.BorrowRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功响应 / Success Response",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "无效的请求数据 / Invalid request data",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "404": {
-                        "description": "没有找到借阅记录 / No active borrow record found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "数据库错误 / Database error",
+                        "description": "Server error",
                         "schema": {
                             "type": "string"
                         }
@@ -369,7 +57,7 @@ const docTemplate = `{
         },
         "/login": {
             "post": {
-                "description": "允许用户登录并获取 JWT 令牌 / Allows users to log in and receive a JWT token",
+                "description": "Allows users to log in and receive a JWT token",
                 "consumes": [
                     "application/json"
                 ],
@@ -377,12 +65,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "认证 / Authentication"
+                    "Authentication"
                 ],
-                "summary": "用户登录 / User Login",
+                "summary": "User Login",
                 "parameters": [
                     {
-                        "description": "用户登录信息 / User Login Credentials",
+                        "description": "User Login Credentials",
                         "name": "credentials",
                         "in": "body",
                         "required": true,
@@ -393,7 +81,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "成功响应 / Success Response",
+                        "description": "Success Response",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -402,19 +90,19 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "请求数据无效 / Invalid request data",
+                        "description": "Invalid request data",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "401": {
-                        "description": "无效的用户名或密码 / Invalid username or password",
+                        "description": "Invalid username or password",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "服务器错误 / Server error",
+                        "description": "Server error",
                         "schema": {
                             "type": "string"
                         }
@@ -424,7 +112,7 @@ const docTemplate = `{
         },
         "/register": {
             "post": {
-                "description": "允许用户注册新账号 / Allows users to register a new account",
+                "description": "Allows users to register a new account",
                 "consumes": [
                     "application/json"
                 ],
@@ -432,12 +120,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "认证 / Authentication"
+                    "Authentication"
                 ],
-                "summary": "用户注册 / User Registration",
+                "summary": "User Registration",
                 "parameters": [
                     {
-                        "description": "用户信息 / User Information",
+                        "description": "User Information",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -448,7 +136,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "成功响应 / Success Response",
+                        "description": "Success Response",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -457,13 +145,13 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "请求数据无效 / Invalid request data",
+                        "description": "Invalid request data",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "服务器错误 / Server error",
+                        "description": "Server error",
                         "schema": {
                             "type": "string"
                         }
@@ -499,17 +187,6 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
-                }
-            }
-        },
-        "controllers.BorrowRequest": {
-            "type": "object",
-            "properties": {
-                "bookId": {
-                    "type": "integer"
-                },
-                "userId": {
-                    "type": "integer"
                 }
             }
         },

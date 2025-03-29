@@ -6,15 +6,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"library-backend/config"
 )
 
 func TestAddReview(t *testing.T) {
-	// Initialize test database connection
-	if err := config.InitDB(); err != nil {
-		t.Fatalf("Failed to initialize database: %v", err)
-	}
 
 	// Test cases
 	tests := []struct {
@@ -82,10 +76,6 @@ func TestAddReview(t *testing.T) {
 }
 
 func TestGetBookReviews(t *testing.T) {
-	// Initialize test database connection
-	if err := config.InitDB(); err != nil {
-		t.Fatalf("Failed to initialize database: %v", err)
-	}
 
 	// Test cases
 	tests := []struct {

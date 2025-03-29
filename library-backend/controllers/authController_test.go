@@ -16,8 +16,8 @@ import (
 // **测试用户注册** test uesr
 func TestRegisterUser(t *testing.T) {
 	user := User{
-		Username: "testuser",
-		Password: "password123",
+		Username: "newtestuser",
+		Password: "newtestpass",
 		Role:     "user",
 	}
 
@@ -36,12 +36,22 @@ func TestRegisterUser(t *testing.T) {
 
 // **测试用户登录/Test user login**
 func TestLoginUser(t *testing.T) {
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.MinCost)
-	config.DB.Exec("INSERT INTO Users (username, password, role) VALUES (?, ?, ?)", "testuser", string(hashedPassword), "user")
+
+	os.Setenv("JWT_SECRET", "testsecret")
+
+	username := "test_login_unique_123" // ✅ 使用唯一用户名
+	password := "password123"
+
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+
+	_, err := config.DB.Exec("INSERT INTO Users (username, password, role) VALUES (?, ?, ?)", username, string(hashedPassword), "user")
+	if err != nil {
+		t.Fatalf("❌ Failed to insert test user: %v", err)
+	}
 
 	credentials := LoginCredentials{
-		Username: "testuser",
-		Password: "password123",
+		Username: username,
+		Password: password,
 	}
 
 	credentialsJSON, _ := json.Marshal(credentials)
@@ -50,8 +60,6 @@ func TestLoginUser(t *testing.T) {
 
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(LoginUser)
-
-	os.Setenv("JWT_SECRET", "testsecret")
 	handler.ServeHTTP(rr, req)
 
 	if rr.Code != http.StatusOK {
