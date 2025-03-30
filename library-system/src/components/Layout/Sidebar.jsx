@@ -13,7 +13,7 @@ const items = [
   {
     key: '/main/dashboard',
     icon: <DashboardOutlined />,
-    label: 'Dashboard'
+    label: 'Main page'
   },
   {
     key: '/main/books',
