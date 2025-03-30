@@ -28,7 +28,7 @@ const items = [
   {
     key: '/main/reports',
     icon: <BarChartOutlined />,
-    label: 'Reports'
+    label: 'Search'
   }
 ]
 
