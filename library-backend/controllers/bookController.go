@@ -8,32 +8,21 @@ import (
 	"strconv"
 
 	"library-backend/config"
+	"library-backend/models"
 
 	"github.com/gorilla/mux"
 )
 
-// Book 结构体
-// Book struct for representing a book
-type Book struct {
-	ID              int    `json:"id"`
-	Title           string `json:"title"`
-	Author          string `json:"author"`
-	Genre           string `json:"genre"`
-	Language        string `json:"language"`
-	ShelfNumber     string `json:"shelf_number"`
-	AvailableCopies int    `json:"available_copies"`
-	ISBN            string `json:"isbn"`
-}
-
-// @Summary      Get All Books
-// @Description  Retrieve all books in the library, supports search
-// @Tags         Book Management
-// @Accept       json
-// @Produce      json
-// @Param        search query string false "Search keyword"
-// @Success      200 {object} []Book "Success Response"
-// @Failure      500 {string} string "Server error"
-// @Router       /books [get]
+// GetAllBooks 获取所有图书 (Get All Books)
+// @Summary 获取所有图书 (Retrieve all books)
+// @Description 获取图书列表，支持按关键词搜索 (Retrieve all books in the library, optionally filter by keyword)
+// @Tags 图书管理 (Book Management)
+// @Accept json
+// @Produce json
+// @Param search query string false "搜索关键词 (Search keyword)"
+// @Success 200 {object} []models.Book "成功响应 (Success Response)"
+// @Failure 500 {object} map[string]string "服务器错误 (Server error)"
+// @Router /books [get]
 func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	search := r.URL.Query().Get("search")
 	query := "SELECT * FROM Books"
@@ -53,9 +42,9 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	var books []Book
+	var books []models.Book
 	for rows.Next() {
-		var book Book
+		var book models.Book
 		if err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.Genre, &book.Language, &book.ShelfNumber, &book.AvailableCopies, &book.ISBN); err != nil {
 			log.Println("Error scanning row:", err)
 			continue
@@ -67,18 +56,18 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(books)
 }
 
-// @Summary      Get a Book by ID
-// @Description  Retrieve details of a book by ID
-// @Tags         Book Management
-// @Accept       json
-// @Produce      json
-// @Param        id path int true "Book ID"
-// @Success      200 {object} Book "Success Response"
-// @Failure      400 {string} string "Invalid book ID"
-// @Failure      404 {string} string "Book not found"
-// @Failure      500 {string} string "Server error"
-// @Router       /books/{id} [get]
-
+// GetBookById 根据 ID 获取图书信息 (Get Book by ID)
+// @Summary 获取单本图书信息 (Retrieve book details by ID)
+// @Description 根据图书 ID 获取详细信息 (Retrieve detailed information of a specific book by ID)
+// @Tags 图书管理 (Book Management)
+// @Accept json
+// @Produce json
+// @Param id path int true "图书 ID (Book ID)"
+// @Success 200 {object} models.Book "成功响应 (Success Response)"
+// @Failure 400 {object} map[string]string "无效 ID (Invalid book ID)"
+// @Failure 404 {object} map[string]string "图书未找到 (Book not found)"
+// @Failure 500 {object} map[string]string "服务器错误 (Server error)"
+// @Router /books/{id} [get]
 func GetBookById(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	bookId, err := strconv.Atoi(params["id"])
@@ -87,7 +76,7 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var book Book
+	var book models.Book
 	err = config.DB.QueryRow("SELECT * FROM Books WHERE id = ?", bookId).Scan(
 		&book.ID, &book.Title, &book.Author, &book.Genre, &book.Language, &book.ShelfNumber, &book.AvailableCopies, &book.ISBN,
 	)
@@ -105,19 +94,19 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(book)
 }
 
-// @Summary      Add a New Book
-// @Description  Add a new book to the library
-// @Tags         Book Management
-// @Accept       json
-// @Produce      json
-// @Param        book body Book true "Book Information"
-// @Success      201 {object} map[string]interface{} "Success Response"
-// @Failure      400 {string} string "Invalid request body"
-// @Failure      500 {string} string "Database error"
-// @Router       /books [post]
-
+// AddBook 添加新图书 (Add a New Book)
+// @Summary 添加图书 (Add a new book to library)
+// @Description 将新图书添加到数据库中 (Add a new book with full information)
+// @Tags 图书管理 (Book Management)
+// @Accept json
+// @Produce json
+// @Param book body models.Book true "图书信息 (Book Information)"
+// @Success 201 {object} map[string]interface{} "添加成功响应 (Success Response)"
+// @Failure 400 {object} map[string]string "请求数据错误 (Invalid request body)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /books [post]
 func AddBook(w http.ResponseWriter, r *http.Request) {
-	var book Book
+	var book models.Book
 	if err := json.NewDecoder(r.Body).Decode(&book); err != nil {
 		http.Error(w, "Invalid request body / 无效的请求数据", http.StatusBadRequest)
 		return
@@ -144,17 +133,18 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-// @Summary      Delete a Book
-// @Description  Delete a book by ID
-// @Tags         Book Management
-// @Accept       json
-// @Produce      json
-// @Param        id path int true "Book ID"
-// @Success      200 {object} map[string]string "Success Response"
-// @Failure      400 {string} string "Invalid book ID"
-// @Failure      404 {string} string "Book not found"
-// @Router       /books/{id} [delete]
-
+// DeleteBook 删除图书 (Delete a Book)
+// @Summary 删除指定图书 (Delete a book by ID)
+// @Description 根据图书 ID 删除图书信息 (Delete a book record by its ID)
+// @Tags 图书管理 (Book Management)
+// @Accept json
+// @Produce json
+// @Param id path int true "图书 ID (Book ID)"
+// @Success 200 {object} map[string]string "删除成功 (Success Response)"
+// @Failure 400 {object} map[string]string "无效 ID (Invalid book ID)"
+// @Failure 404 {object} map[string]string "图书未找到 (Book not found)"
+// @Failure 500 {object} map[string]string "服务器错误 (Server error)"
+// @Router /books/{id} [delete]
 func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	bookId, err := strconv.Atoi(params["id"])
@@ -180,19 +170,19 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "Book deleted successfully / 图书删除成功"})
 }
 
-// @Summary      Update a Book
-// @Description  Update book information by ID
-// @Tags         Book Management
-// @Accept       json
-// @Produce      json
-// @Param        id   path  int   true "Book ID"
-// @Param        book body  Book  true "Updated Book Information"
-// @Success      200  {object} map[string]string "Success Response"
-// @Failure      400  {string} string "Invalid book ID"
-// @Failure      404  {string} string "Book not found"
-// @Failure      500  {string} string "Database error"
-// @Router       /books/{id} [put]
-
+// UpdateBook 更新图书信息 (Update a Book)
+// @Summary 更新图书 (Update book by ID)
+// @Description 根据图书 ID 更新对应信息 (Update book details by ID)
+// @Tags 图书管理 (Book Management)
+// @Accept json
+// @Produce json
+// @Param id path int true "图书 ID (Book ID)"
+// @Param book body models.Book true "更新后的图书信息 (Updated Book Information)"
+// @Success 200 {object} map[string]string "更新成功 (Success Response)"
+// @Failure 400 {object} map[string]string "无效 ID 或数据错误 (Invalid book ID or body)"
+// @Failure 404 {object} map[string]string "图书未找到 (Book not found)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /books/{id} [put]
 func UpdateBook(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	bookId, err := strconv.Atoi(params["id"])
@@ -201,7 +191,7 @@ func UpdateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var book Book
+	var book models.Book
 	if err := json.NewDecoder(r.Body).Decode(&book); err != nil {
 		http.Error(w, "Invalid request body / 无效的请求数据", http.StatusBadRequest)
 		return

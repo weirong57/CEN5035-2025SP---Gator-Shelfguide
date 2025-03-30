@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"library-backend/config"
+	_ "library-backend/docs"
 	"library-backend/middleware"
 	"library-backend/routes"
 
@@ -14,7 +15,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 
-	_ "library-backend/docs" // ✅ 确保 Swagger 文档正确导入
+	// ✅ 确保 Swagger 文档正确导入
 
 	httpSwagger "github.com/swaggo/http-swagger" // ✅ 引入 Swagger 组件
 )
@@ -45,9 +46,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// ✅ 添加 Swagger 处理路由，确保 `doc.json` 可用
-	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:" + port + "/swagger/doc.json"),
-	))
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	// 添加 API 相关路由
 	routes.AuthRoutes(r)

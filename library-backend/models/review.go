@@ -1,15 +1,9 @@
-// models/review.go
 package models
 
-import (
-	"time"
-)
-
-type Review struct {
-	ID        uint      `json:"id" gorm:"primaryKey"`
-	BookID    uint      `json:"book_id"`
-	UserID    uint      `json:"user_id"`
-	Rating    int       `json:"rating" binding:"required,min=1,max=5"`
-	Comment   string    `json:"comment"`
-	CreatedAt time.Time `json:"created_at"`
+// ReviewRequest 书评请求结构体
+type ReviewRequest struct {
+	UserID  int    `json:"userId"  example:"1"`           // 用户 ID
+	BookID  int    `json:"bookId"  example:"101"`         // 图书 ID
+	Rating  int    `json:"rating"  example:"5"`           // 评分（1-5）
+	Comment string `json:"comment" example:"Great book!"` // 评论内容
 }

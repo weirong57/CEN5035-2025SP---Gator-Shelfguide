@@ -3,6 +3,7 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"library-backend/models"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,12 +14,12 @@ func TestAddReview(t *testing.T) {
 	// Test cases
 	tests := []struct {
 		name           string
-		reviewRequest  ReviewRequest
+		reviewRequest  models.ReviewRequest
 		expectedStatus int
 	}{
 		{
 			name: "Valid Review",
-			reviewRequest: ReviewRequest{
+			reviewRequest: models.ReviewRequest{
 				UserID:  1,
 				BookID:  1,
 				Rating:  5,
@@ -28,7 +29,7 @@ func TestAddReview(t *testing.T) {
 		},
 		{
 			name: "Invalid Rating",
-			reviewRequest: ReviewRequest{
+			reviewRequest: models.ReviewRequest{
 				UserID:  1,
 				BookID:  1,
 				Rating:  6, // Invalid rating > 5
@@ -38,7 +39,7 @@ func TestAddReview(t *testing.T) {
 		},
 		{
 			name: "Missing Required Fields",
-			reviewRequest: ReviewRequest{
+			reviewRequest: models.ReviewRequest{
 				UserID: 1,
 				// Missing BookID
 				Rating:  4,

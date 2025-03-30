@@ -10,6 +10,8 @@ import (
 
 	"library-backend/config"
 
+	"library-backend/models"
+
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -21,31 +23,19 @@ type UserClaims struct {
 	jwt.RegisteredClaims
 }
 
-// User 结构体（用于用户注册）
-type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
-}
-
-// LoginCredentials 结构体（用于用户登录）
-type LoginCredentials struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-// @Summary      User Registration
-// @Description  Allows users to register a new account
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        user body User true "User Information"
-// @Success      201 {object} map[string]string "Success Response"
-// @Failure      400 {string} string "Invalid request data"
-// @Failure      500 {string} string "Server error"
-// @Router       /register [post]
+// RegisterUser handles user registration
+// @Summary Register a new user
+// @Description Allows a new user to register with username, password, and role
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User information"
+// @Success 201 {object} map[string]string "Registration successful"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 500 {object} map[string]string "Server error"
+// @Router /register [post]
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
-	var requestData User
+	var requestData models.User
 
 	// 解析 JSON
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
@@ -87,19 +77,20 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"message": "User registered successfully"})
 }
 
-// @Summary      User Login
-// @Description  Allows users to log in and receive a JWT token
-// @Tags         Authentication
-// @Accept       json
-// @Produce      json
-// @Param        credentials body LoginCredentials true "User Login Credentials"
-// @Success      200 {object} map[string]string "Success Response"
-// @Failure      400 {string} string "Invalid request data"
-// @Failure      401 {string} string "Invalid username or password"
-// @Failure      500 {string} string "Server error"
-// @Router       /login [post]
+// LoginUser handles user login
+// @Summary User login and get JWT
+// @Description User logs in and receives a JWT token
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param credentials body models.LoginCredentials true "Login credentials"
+// @Success 200 {object} map[string]string "Login successful"
+// @Failure 400 {object} map[string]string "Invalid request"
+// @Failure 401 {object} map[string]string "Invalid username or password"
+// @Failure 500 {object} map[string]string "Server error"
+// @Router /login [post]
 func LoginUser(w http.ResponseWriter, r *http.Request) {
-	var requestData LoginCredentials
+	var requestData models.LoginCredentials
 
 	// 解析 JSON
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {

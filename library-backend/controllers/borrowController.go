@@ -8,28 +8,23 @@ import (
 	"time"
 
 	"library-backend/config"
+	"library-backend/models"
 )
 
-// BorrowRequest struct for borrowing a book
-type BorrowRequest struct {
-	UserID int `json:"userId"`
-	BookID int `json:"bookId"`
-}
-
-// @Summary      Borrow a Book
-// @Description  Users borrow a book
-// @Tags         Borrow Management
-// @Accept       json
-// @Produce      json
-// @Param        borrowRequest  body  BorrowRequest           true "Borrow Request"
-// @Success      200            {object} map[string]interface{} "Success Response"
-// @Failure      400            {string} string "Invalid request data"
-// @Failure      404            {string} string "Book not found"
-// @Failure      500            {string} string "Database error"
-// @Router       /borrow [post]
-
+// BorrowBook 借阅图书 (Borrow a Book)
+// @Summary 借阅图书 (User borrows a book)
+// @Description 用户借阅图书，库存 -1，并创建借阅记录 (User borrows a book, reduces available copies, and creates borrowing record)
+// @Tags 借阅管理 (Borrow Management)
+// @Accept json
+// @Produce json
+// @Param borrowRequest body models.BorrowRequest true "借阅请求参数 (Borrow Request)"
+// @Success 200 {object} map[string]interface{} "借阅成功 (Success Response)"
+// @Failure 400 {object} map[string]string "请求数据错误 (Invalid request data)"
+// @Failure 404 {object} map[string]string "图书未找到或无库存 (Book not found or unavailable)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /borrow [post]
 func BorrowBook(w http.ResponseWriter, r *http.Request) {
-	var request BorrowRequest
+	var request models.BorrowRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
@@ -109,20 +104,20 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// @Summary      Return a Book
-// @Description  Users return a book
-// @Tags         Borrow Management
-// @Accept       json
-// @Produce      json
-// @Param        returnRequest  body  BorrowRequest            true "Return Request"
-// @Success      200            {object} map[string]interface{} "Success Response"
-// @Failure      400            {string} string "Invalid request data"
-// @Failure      404            {string} string "No active borrow record found"
-// @Failure      500            {string} string "Database error"
-// @Router       /borrow/return [post]
-
+// ReturnBook 归还图书 (Return a Book)
+// @Summary 归还图书 (User returns a book)
+// @Description 用户归还图书，更新记录与库存，计算逾期罚款 (User returns a borrowed book, updates record and stock, calculates fine)
+// @Tags 借阅管理 (Borrow Management)
+// @Accept json
+// @Produce json
+// @Param returnRequest body models.BorrowRequest true "归还请求参数 (Return Request)"
+// @Success 200 {object} map[string]interface{} "归还成功 (Success Response)"
+// @Failure 400 {object} map[string]string "请求数据错误 (Invalid request data)"
+// @Failure 404 {object} map[string]string "无有效借阅记录 (No active borrow record found)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /borrow/return [post]
 func ReturnBook(w http.ResponseWriter, r *http.Request) {
-	var request BorrowRequest
+	var request models.BorrowRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return

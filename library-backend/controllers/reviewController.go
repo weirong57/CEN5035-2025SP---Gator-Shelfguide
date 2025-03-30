@@ -7,34 +7,25 @@ import (
 	"time"
 
 	"library-backend/config"
+	"library-backend/models"
 )
 
-// ReviewRequest represents the payload for adding a review // ReviewRequest 表示添加书评的请求载荷
-type ReviewRequest struct {
-	UserID  int    `json:"userId"`  // 用户ID
-	BookID  int    `json:"bookId"`  // 书籍ID
-	Rating  int    `json:"rating"`  // 评分（1到5）
-	Comment string `json:"comment"` // 评论内容
-}
-
-// AddReview handles the creation of a new review
-
-// @Summary      Add a review
-// @Description  Create a new review for a book if the user has borrowed it
-// @Tags         Review
-// @Accept       json
-// @Produce      json
-// @Param        review  body  controllers.ReviewRequest  true  "Review Request"
-// @Success      200  {object}  map[string]string  "Review added successfully"
-// @Failure      400  {string}  string  "Invalid request data"
-// @Failure      403  {string}  string  "You can only review books you have borrowed"
-// @Failure      409  {string}  string  "You have already reviewed this book"
-// @Failure      500  {string}  string  "Database error or transaction error"
-// @Router       /reviews [post]
-
+// AddReview 添加书评 (Add a Review)
+// @Summary 添加图书书评 (Create a new review)
+// @Description 用户对已借阅的图书添加书评，支持评分和评论内容 (User adds a review to a book they have borrowed; includes rating and comment)
+// @Tags 书评 (Review)
+// @Accept json
+// @Produce json
+// @Param review body models.ReviewRequest true "书评请求参数 (Review Request)"
+// @Success 200 {object} map[string]string "添加成功 (Review added successfully)"
+// @Failure 400 {object} map[string]string "请求数据无效 (Invalid request data)"
+// @Failure 403 {object} map[string]string "仅可评论借阅过的书籍 (Only borrowed books can be reviewed)"
+// @Failure 409 {object} map[string]string "重复评论 (Already reviewed this book)"
+// @Failure 500 {object} map[string]string "数据库或事务错误 (Database or transaction error)"
+// @Router /reviews [post]
 func AddReview(w http.ResponseWriter, r *http.Request) {
 	// Decode the request body into the ReviewRequest struct / 将请求体解码到 ReviewRequest 结构体中
-	var request ReviewRequest
+	var request models.ReviewRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
@@ -116,19 +107,17 @@ func AddReview(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetBookReviews retrieves all reviews for a specific book
-
-// @Summary      Get book reviews
-// @Description  Retrieve all reviews for a specific book
-// @Tags         Review
-// @Accept       json
-// @Produce      json
-// @Param        bookId  query  string  true  "Book ID"
-// @Success      200  {array}  map[string]interface{}  "List of reviews"
-// @Failure      400  {string}  string  "Book ID is required"
-// @Failure      500  {string}  string  "Database error"
-// @Router       /reviews [get]
-
+// GetBookReviews 获取图书书评 (Get Book Reviews)
+// @Summary 获取图书书评列表 (Retrieve reviews for a book)
+// @Description 获取指定图书的所有用户书评，包括评分、内容和评论者 (Get all reviews for a specific book, including rating, comment, and reviewer)
+// @Tags 书评 (Review)
+// @Accept json
+// @Produce json
+// @Param bookId query string true "图书 ID (Book ID)"
+// @Success 200 {array} map[string]interface{} "书评列表 (List of reviews)"
+// @Failure 400 {object} map[string]string "缺少图书 ID (Book ID is required)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /reviews [get]
 func GetBookReviews(w http.ResponseWriter, r *http.Request) {
 	// Extract the bookId from the URL query parameters / 从 URL 查询参数中提取 bookId
 	bookID := r.URL.Query().Get("bookId")
