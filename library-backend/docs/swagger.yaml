@@ -1,38 +1,98 @@
 basePath: /
 definitions:
-  controllers.Book:
+  models.Book:
     properties:
       author:
+        description: 作者
+        example: John Doe
         type: string
       available_copies:
+        description: 可借数量
+        example: 3
         type: integer
       genre:
+        description: 类型
+        example: Programming
         type: string
       id:
+        description: 图书 ID
+        example: 101
         type: integer
       isbn:
+        description: ISBN
+        example: "9781234567890"
         type: string
       language:
+        description: 语言
+        example: English
         type: string
       shelf_number:
+        description: 书架号
+        example: A-12
         type: string
       title:
+        description: 标题
+        example: Golang Basics
         type: string
     type: object
-  controllers.LoginCredentials:
+  models.BorrowRequest:
+    properties:
+      bookId:
+        description: 图书 ID
+        example: 101
+        type: integer
+      userId:
+        description: 用户 ID
+        example: 1
+        type: integer
+    type: object
+  models.LoginCredentials:
     properties:
       password:
+        example: securePass123
         type: string
       username:
+        example: alice123
         type: string
     type: object
-  controllers.User:
+  models.ReservationRequest:
+    properties:
+      bookId:
+        example: 101
+        type: integer
+      userId:
+        example: 1
+        type: integer
+    type: object
+  models.ReviewRequest:
+    properties:
+      bookId:
+        description: 图书 ID
+        example: 101
+        type: integer
+      comment:
+        description: 评论内容
+        example: Great book!
+        type: string
+      rating:
+        description: 评分（1-5）
+        example: 5
+        type: integer
+      userId:
+        description: 用户 ID
+        example: 1
+        type: integer
+    type: object
+  models.User:
     properties:
       password:
+        example: securePass123
         type: string
       role:
+        example: user
         type: string
       username:
+        example: alice123
         type: string
     type: object
 host: localhost:3000
@@ -46,9 +106,10 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retrieve all books in the library, supports search
+      description: 获取图书列表，支持按关键词搜索 (Retrieve all books in the library, optionally
+        filter by keyword)
       parameters:
-      - description: Search keyword
+      - description: 搜索关键词 (Search keyword)
         in: query
         name: search
         type: string
@@ -56,84 +117,553 @@ paths:
       - application/json
       responses:
         "200":
-          description: Success Response
+          description: 成功响应 (Success Response)
           schema:
             items:
-              $ref: '#/definitions/controllers.Book'
+              $ref: '#/definitions/models.Book'
             type: array
         "500":
-          description: Server error
+          description: 服务器错误 (Server error)
           schema:
-            type: string
-      summary: Get All Books
+            additionalProperties:
+              type: string
+            type: object
+      summary: 获取所有图书 (Retrieve all books)
       tags:
-      - Book Management
-  /login:
+      - 图书管理 (Book Management)
     post:
       consumes:
       - application/json
-      description: Allows users to log in and receive a JWT token
+      description: 将新图书添加到数据库中 (Add a new book with full information)
       parameters:
-      - description: User Login Credentials
+      - description: 图书信息 (Book Information)
         in: body
-        name: credentials
+        name: book
         required: true
         schema:
-          $ref: '#/definitions/controllers.LoginCredentials'
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 添加成功响应 (Success Response)
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 请求数据错误 (Invalid request body)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 添加图书 (Add a new book to library)
+      tags:
+      - 图书管理 (Book Management)
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 根据图书 ID 删除图书信息 (Delete a book record by its ID)
+      parameters:
+      - description: 图书 ID (Book ID)
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: Success Response
+          description: 删除成功 (Success Response)
           schema:
             additionalProperties:
               type: string
             type: object
         "400":
-          description: Invalid request data
+          description: 无效 ID (Invalid book ID)
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 图书未找到 (Book not found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 服务器错误 (Server error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 删除指定图书 (Delete a book by ID)
+      tags:
+      - 图书管理 (Book Management)
+    get:
+      consumes:
+      - application/json
+      description: 根据图书 ID 获取详细信息 (Retrieve detailed information of a specific book
+        by ID)
+      parameters:
+      - description: 图书 ID (Book ID)
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应 (Success Response)
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: 无效 ID (Invalid book ID)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 图书未找到 (Book not found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 服务器错误 (Server error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 获取单本图书信息 (Retrieve book details by ID)
+      tags:
+      - 图书管理 (Book Management)
+    put:
+      consumes:
+      - application/json
+      description: 根据图书 ID 更新对应信息 (Update book details by ID)
+      parameters:
+      - description: 图书 ID (Book ID)
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 更新后的图书信息 (Updated Book Information)
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 更新成功 (Success Response)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 无效 ID 或数据错误 (Invalid book ID or body)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 图书未找到 (Book not found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 更新图书 (Update book by ID)
+      tags:
+      - 图书管理 (Book Management)
+  /borrow:
+    post:
+      consumes:
+      - application/json
+      description: 用户借阅图书，库存 -1，并创建借阅记录 (User borrows a book, reduces available copies,
+        and creates borrowing record)
+      parameters:
+      - description: 借阅请求参数 (Borrow Request)
+        in: body
+        name: borrowRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.BorrowRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 借阅成功 (Success Response)
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 请求数据错误 (Invalid request data)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 图书未找到或无库存 (Book not found or unavailable)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 借阅图书 (User borrows a book)
+      tags:
+      - 借阅管理 (Borrow Management)
+  /borrow/return:
+    post:
+      consumes:
+      - application/json
+      description: 用户归还图书，更新记录与库存，计算逾期罚款 (User returns a borrowed book, updates record
+        and stock, calculates fine)
+      parameters:
+      - description: 归还请求参数 (Return Request)
+        in: body
+        name: returnRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.BorrowRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 归还成功 (Success Response)
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 请求数据错误 (Invalid request data)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 无有效借阅记录 (No active borrow record found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 归还图书 (User returns a book)
+      tags:
+      - 借阅管理 (Borrow Management)
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: User logs in and receives a JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginCredentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
         "401":
           description: Invalid username or password
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
           description: Server error
           schema:
-            type: string
-      summary: User Login
+            additionalProperties:
+              type: string
+            type: object
+      summary: User login and get JWT
       tags:
       - Authentication
   /register:
     post:
       consumes:
       - application/json
-      description: Allows users to register a new account
+      description: Allows a new user to register with username, password, and role
       parameters:
-      - description: User Information
+      - description: User information
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/controllers.User'
+          $ref: '#/definitions/models.User'
       produces:
       - application/json
       responses:
         "201":
-          description: Success Response
+          description: Registration successful
           schema:
             additionalProperties:
               type: string
             type: object
         "400":
-          description: Invalid request data
+          description: Invalid request
           schema:
-            type: string
+            additionalProperties:
+              type: string
+            type: object
         "500":
           description: Server error
           schema:
-            type: string
-      summary: User Registration
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
       tags:
       - Authentication
+  /reservations:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定用户的所有图书预约信息，包括状态与时间 (Retrieve all reservation records for a
+        specific user, including status and timestamps)
+      parameters:
+      - description: 用户 ID (User ID)
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 预约记录列表 (List of reservations)
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: 用户 ID 缺失 (User ID is required)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 查询用户预约记录 (Retrieve reservation records of a user)
+      tags:
+      - 图书预约 (Reservation)
+    post:
+      consumes:
+      - application/json
+      description: 用户预约图书，系统将创建状态为 PENDING 的记录 (User reserves a book; reservation
+        is marked as PENDING)
+      parameters:
+      - description: 预约请求参数 (Reservation Request)
+        in: body
+        name: reservation
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReservationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 预约成功 (Reservation created successfully)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 无效请求数据 (Invalid request data)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 图书未找到 (Book not found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: 已有未处理预约 (Active reservation already exists)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库或事务错误 (Database or transaction error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 创建图书预约 (Create a new book reservation)
+      tags:
+      - 图书预约 (Reservation)
+  /reservations/cancel:
+    post:
+      consumes:
+      - application/json
+      description: 用户取消状态为 PENDING 的预约记录，更新状态为 CANCELLED (Cancel a PENDING reservation
+        for a book)
+      parameters:
+      - description: 取消预约参数 (Reservation Request)
+        in: body
+        name: reservation
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReservationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 取消成功 (Reservation cancelled successfully)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 无效请求数据 (Invalid request data)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 未找到有效预约 (No active reservation found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 取消图书预约 (Cancel an existing reservation)
+      tags:
+      - 图书预约 (Reservation)
+  /reviews:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定图书的所有用户书评，包括评分、内容和评论者 (Get all reviews for a specific book,
+        including rating, comment, and reviewer)
+      parameters:
+      - description: 图书 ID (Book ID)
+        in: query
+        name: bookId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 书评列表 (List of reviews)
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+        "400":
+          description: 缺少图书 ID (Book ID is required)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 获取图书书评列表 (Retrieve reviews for a book)
+      tags:
+      - 书评 (Review)
+    post:
+      consumes:
+      - application/json
+      description: 用户对已借阅的图书添加书评，支持评分和评论内容 (User adds a review to a book they have
+        borrowed; includes rating and comment)
+      parameters:
+      - description: 书评请求参数 (Review Request)
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 添加成功 (Review added successfully)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 请求数据无效 (Invalid request data)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: 仅可评论借阅过的书籍 (Only borrowed books can be reviewed)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: 重复评论 (Already reviewed this book)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库或事务错误 (Database or transaction error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 添加图书书评 (Create a new review)
+      tags:
+      - 书评 (Review)
 swagger: "2.0"

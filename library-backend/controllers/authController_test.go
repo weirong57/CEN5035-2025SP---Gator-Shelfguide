@@ -9,13 +9,14 @@ import (
 	"testing"
 
 	"library-backend/config"
+	"library-backend/models"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 // **测试用户注册** test uesr
 func TestRegisterUser(t *testing.T) {
-	user := User{
+	user := models.User{
 		Username: "newtestuser",
 		Password: "newtestpass",
 		Role:     "user",
@@ -49,7 +50,7 @@ func TestLoginUser(t *testing.T) {
 		t.Fatalf("❌ Failed to insert test user: %v", err)
 	}
 
-	credentials := LoginCredentials{
+	credentials := models.LoginCredentials{
 		Username: username,
 		Password: password,
 	}

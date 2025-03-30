@@ -8,32 +8,25 @@ import (
 	"time"
 
 	"library-backend/config"
+	"library-backend/models"
 )
 
-// ReservationRequest represents a reservation request structure / ReservationRequest 表示预约请求结构体
-type ReservationRequest struct {
-	UserID int `json:"userId"` // User ID / 用户ID
-	BookID int `json:"bookId"` // Book ID / 书籍ID
-}
-
-// CreateReservation handles book reservation requests
-
-// @Summary      Create a reservation
-// @Description  Create a new book reservation for a user
-// @Tags         Reservation
-// @Accept       json
-// @Produce      json
-// @Param        reservation  body  controllers.ReservationRequest  true  "Reservation Request"
-// @Success      200  {object}  map[string]string  "Reservation created successfully"
-// @Failure      400  {string}  string  "Invalid request data"
-// @Failure      404  {string}  string  "Book not found"
-// @Failure      409  {string}  string  "You already have an active reservation for this book"
-// @Failure      500  {string}  string  "Database error or transaction error"
-// @Router       /reservations [post]
-
+// CreateReservation 创建预约 (Create a Reservation)
+// @Summary 创建图书预约 (Create a new book reservation)
+// @Description 用户预约图书，系统将创建状态为 PENDING 的记录 (User reserves a book; reservation is marked as PENDING)
+// @Tags 图书预约 (Reservation)
+// @Accept json
+// @Produce json
+// @Param reservation body models.ReservationRequest true "预约请求参数 (Reservation Request)"
+// @Success 200 {object} map[string]string "预约成功 (Reservation created successfully)"
+// @Failure 400 {object} map[string]string "无效请求数据 (Invalid request data)"
+// @Failure 404 {object} map[string]string "图书未找到 (Book not found)"
+// @Failure 409 {object} map[string]string "已有未处理预约 (Active reservation already exists)"
+// @Failure 500 {object} map[string]string "数据库或事务错误 (Database or transaction error)"
+// @Router /reservations [post]
 func CreateReservation(w http.ResponseWriter, r *http.Request) {
 	// Decode the request body into the ReservationRequest struct / 将请求体解码到 ReservationRequest 结构体中
-	var request ReservationRequest
+	var request models.ReservationRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
@@ -102,23 +95,21 @@ func CreateReservation(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// CancelReservation handles reservation cancellation requests
-
-// @Summary      Cancel a reservation
-// @Description  Cancel an existing reservation for a book
-// @Tags         Reservation
-// @Accept       json
-// @Produce      json
-// @Param        reservation  body  controllers.ReservationRequest  true  "Reservation Request"
-// @Success      200  {object}  map[string]string  "Reservation cancelled successfully"
-// @Failure      400  {string}  string  "Invalid request data"
-// @Failure      404  {string}  string  "No active reservation found"
-// @Failure      500  {string}  string  "Database error"
-// @Router       /reservations/cancel [post]
-
+// CancelReservation 取消预约 (Cancel a Reservation)
+// @Summary 取消图书预约 (Cancel an existing reservation)
+// @Description 用户取消状态为 PENDING 的预约记录，更新状态为 CANCELLED (Cancel a PENDING reservation for a book)
+// @Tags 图书预约 (Reservation)
+// @Accept json
+// @Produce json
+// @Param reservation body models.ReservationRequest true "取消预约参数 (Reservation Request)"
+// @Success 200 {object} map[string]string "取消成功 (Reservation cancelled successfully)"
+// @Failure 400 {object} map[string]string "无效请求数据 (Invalid request data)"
+// @Failure 404 {object} map[string]string "未找到有效预约 (No active reservation found)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /reservations/cancel [post]
 func CancelReservation(w http.ResponseWriter, r *http.Request) {
 	// Decode the request body into the ReservationRequest struct / 将请求体解码到 ReservationRequest 结构体中
-	var request ReservationRequest
+	var request models.ReservationRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
@@ -150,19 +141,17 @@ func CancelReservation(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// GetUserReservations retrieves all reservations for a given user // 获取指定用户的所有预约记录
-
-// @Summary      Get user reservations
-// @Description  Retrieve all reservation records for a specific user
-// @Tags         Reservation
-// @Accept       json
-// @Produce      json
-// @Param        userId  query  string  true  "User ID"
-// @Success      200  {array}  map[string]interface{}  "List of reservations"
-// @Failure      400  {string}  string  "User ID is required"
-// @Failure      500  {string}  string  "Database error"
-// @Router       /reservations [get]
-
+// GetUserReservations 获取用户预约记录 (Get User Reservations)
+// @Summary 查询用户预约记录 (Retrieve reservation records of a user)
+// @Description 获取指定用户的所有图书预约信息，包括状态与时间 (Retrieve all reservation records for a specific user, including status and timestamps)
+// @Tags 图书预约 (Reservation)
+// @Accept json
+// @Produce json
+// @Param userId query string true "用户 ID (User ID)"
+// @Success 200 {array} map[string]interface{} "预约记录列表 (List of reservations)"
+// @Failure 400 {object} map[string]string "用户 ID 缺失 (User ID is required)"
+// @Failure 500 {object} map[string]string "数据库错误 (Database error)"
+// @Router /reservations [get]
 func GetUserReservations(w http.ResponseWriter, r *http.Request) {
 	// Extract the userId from the URL query parameters / 从 URL 查询参数中提取 userId
 	userID := r.URL.Query().Get("userId")

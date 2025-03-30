@@ -6,18 +6,19 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"library-backend/models"
 )
 
 func TestCreateReservation(t *testing.T) {
-
 	tests := []struct {
 		name           string
-		request        ReservationRequest
+		request        models.ReservationRequest
 		expectedStatus int
 	}{
 		{
 			name: "Valid Reservation",
-			request: ReservationRequest{
+			request: models.ReservationRequest{
 				UserID: 1,
 				BookID: 1,
 			},
@@ -25,9 +26,9 @@ func TestCreateReservation(t *testing.T) {
 		},
 		{
 			name: "Invalid Book ID",
-			request: ReservationRequest{
+			request: models.ReservationRequest{
 				UserID: 1,
-				BookID: 999999,
+				BookID: 999999, // 不存在的图书 ID
 			},
 			expectedStatus: http.StatusNotFound,
 		},
@@ -43,8 +44,7 @@ func TestCreateReservation(t *testing.T) {
 			CreateReservation(rr, req)
 
 			if rr.Code != tt.expectedStatus {
-				t.Errorf("handler returned wrong status code: got %v want %v",
-					rr.Code, tt.expectedStatus)
+				t.Errorf("[%s] ❌ Expected status %d, got %d", tt.name, tt.expectedStatus, rr.Code)
 			}
 		})
 	}

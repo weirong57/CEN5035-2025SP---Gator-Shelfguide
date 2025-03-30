@@ -3,6 +3,7 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"library-backend/models"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,7 +11,7 @@ import (
 
 // **测试添加书籍 Test Add books **
 func TestAddBook(t *testing.T) {
-	book := Book{
+	book := models.Book{
 		Title:           "New Book",
 		Author:          "New Author",
 		Genre:           "Fantasy",
