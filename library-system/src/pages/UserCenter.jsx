@@ -1,4 +1,4 @@
-
+/*
 // src/pages/UserCenter.jsx
 import { useState } from 'react';
 import { Table, Button, Tag, Modal, message } from 'antd';
@@ -154,7 +154,6 @@ export default function UserCenter() {
 
   return (
     <div style={{ padding: 24 }}>
-      {/* User Profile Card */}
       <div style={{ 
         marginBottom: 24,
         padding: 24,
@@ -180,7 +179,6 @@ export default function UserCenter() {
         </div>
       </div>
 
-      {/* Borrowing Records Table */}
       <div style={{ 
         background: '#fff',
         padding: 24,
@@ -210,6 +208,224 @@ export default function UserCenter() {
           }}
         />
       </div>
+    </div>
+  );
+}*/
+// src/pages/UserCenter.jsx
+import { useEffect, useState } from 'react';
+import { 
+  Table, 
+  Button, 
+  Card, 
+  Tag, 
+  Modal, 
+  message, 
+  Spin,
+  Alert 
+} from 'antd';
+import { 
+  UserOutlined,
+  LoadingOutlined,
+  BookOutlined
+} from '@ant-design/icons';
+import apiClient from '../api/client';
+
+const LoadingIndicator = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+export default function UserCenter() {
+  const [borrows, setBorrows] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch user data and borrowing records
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Get current user
+        const user = await apiClient.get('/users/me');
+        setCurrentUser({
+          ...user,
+          createdAt: new Date(user.createdAt)
+        });
+
+        // Get borrowing records
+        const borrowsData = await apiClient.get('/borrow', {
+          params: { userId: user.id }
+        });
+        
+        setBorrows(processBorrowData(borrowsData));
+      } catch (err) {
+        setError(err.message);
+        message.error('Failed to load data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // Transform API response to frontend format
+  const processBorrowData = (data) => {
+    return data.map(item => ({
+      key: item.id,
+      id: item.id,
+      book: {
+        id: item.book.id,
+        title: item.book.title,
+        author: item.book.author,
+        isbn: item.book.isbn
+      },
+      borrowDate: new Date(item.borrowDate).toLocaleDateString(),
+      dueDate: new Date(item.dueDate).toLocaleDateString(),
+      returned: item.status === 'RETURNED'
+    }));
+  };
+
+  // Handle book return
+  const handleReturn = async (record) => {
+    Modal.confirm({
+      title: `Confirm return "${record.book.title}"?`,
+      content: 'Please ensure the book is in good condition',
+      async onOk() {
+        try {
+          await apiClient.post('/borrow/return', {
+            bookId: record.book.id,
+            userId: currentUser.id
+          });
+          
+          // Update local state
+          setBorrows(prev => 
+            prev.map(item => 
+              item.id === record.id 
+                ? { ...item, returned: true } 
+                : item
+            )
+          );
+          
+          message.success('Book returned successfully');
+        } catch (err) {
+          message.error(err || 'Return failed');
+        }
+      }
+    });
+  };
+
+  // Table columns configuration
+  const columns = [
+    {
+      title: 'Book Information',
+      dataIndex: 'book',
+      render: (book) => (
+        <div className="book-info">
+          <h4>{book.title}</h4>
+          <div className="meta">
+            <Tag icon={<UserOutlined />} color="blue">{book.author}</Tag>
+            <Tag icon={<BookOutlined />}>ISBN: {book.isbn}</Tag>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Borrow Date',
+      dataIndex: 'borrowDate',
+      sorter: (a, b) => new Date(a.borrowDate) - new Date(b.borrowDate)
+    },
+    {
+      title: 'Due Date',
+      dataIndex: 'dueDate',
+      render: (text, record) => (
+        <span style={{ 
+          color: new Date(record.dueDate) < new Date() ? '#ff4d4f' : '#389e0d',
+          fontWeight: 500
+        }}>
+          {text}
+        </span>
+      )
+    },
+    {
+      title: 'Status',
+      render: (record) => (
+        <Tag color={record.returned ? 'default' : 'success'}>
+          {record.returned ? 'Returned' : 'Borrowing'}
+        </Tag>
+      )
+    },
+    {
+      title: 'Action',
+      render: (record) => (
+        !record.returned && (
+          <Button 
+            type="primary" 
+            ghost
+            onClick={() => handleReturn(record)}
+            disabled={loading}
+          >
+            Return
+          </Button>
+        )
+      )
+    }
+  ];
+
+  if (error) {
+    return (
+      <Alert
+        type="error"
+        message="Loading Error"
+        description={error}
+        showIcon
+        style={{ margin: 24 }}
+      />
+    );
+  }
+
+  return (
+    <div style={{ padding: 24 }}>
+      <Spin spinning={loading} indicator={LoadingIndicator}>
+        {/* User Profile Section */}
+        <Card
+          title={<><UserOutlined /> User Profile</>}
+          style={{ marginBottom: 24 }}
+        >
+          {currentUser && (
+            <div className="user-info">
+              <h3>{currentUser.username}</h3>
+              <Tag color={currentUser.role === 'ADMIN' ? 'gold' : 'blue'}>
+                {currentUser.role.toLowerCase()}
+              </Tag>
+              <div style={{ marginTop: 8 }}>
+                <Tag color="geekblue">
+                  Registered: {currentUser.createdAt.toLocaleDateString()}
+                </Tag>
+              </div>
+            </div>
+          )}
+        </Card>
+
+        {/* Borrowing History Section */}
+        <Card title={<><BookOutlined /> Borrowing History</>}>
+          <Table
+            columns={columns}
+            dataSource={borrows}
+            rowKey="id"
+            pagination={{ 
+              pageSize: 5,
+              showTotal: total => `Total ${total} records`
+            }}
+            locale={{
+              emptyText: (
+                <div style={{ padding: 40, textAlign: 'center' }}>
+                  <p style={{ color: 'rgba(0,0,0,0.25)' }}>
+                    No borrowing records found
+                  </p >
+                </div>
+              )
+            }}
+          />
+        </Card>
+      </Spin>
     </div>
   );
 }
