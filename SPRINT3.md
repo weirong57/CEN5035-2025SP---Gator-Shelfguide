@@ -31,7 +31,13 @@ library-backend/
 │   └── *_test.go                 # Unit tests
 ├── routes/             
 ├── config/             
-├── middleware/       
+├── middleware/
+├── models/
+│   ├── ✅ book.go        
+│   ├── ✅ borrow.go           
+│   ├── ✅ user.go        
+│   ├── ✅ reservation.go    
+│   └── ✅ reviewCr.go         
 ├── docs/                # Auto-generated Swagger documentation
 └── main.go             
 ```
@@ -51,7 +57,34 @@ library-backend/
 | View Book Reviews    | GET `/reviews?bookId=1`  | `reviewController_test.go`    | ✅ PASS     |
 
 ---
+### ✅ Test Result Summary
 
+All controller unit tests have passed successfully:
+
+```bash
+$ go test -v ./controllers
+
+--- PASS: TestRegisterUser
+--- PASS: TestLoginUser
+--- PASS: TestAddBook
+--- PASS: TestBorrowBook
+--- PASS: TestCreateReservation
+    --- PASS: Valid Reservation
+    --- PASS: Invalid Book ID
+--- PASS: TestAddReview
+    --- PASS: Valid Review
+    --- PASS: Invalid Rating
+    --- PASS: Missing Required Fields
+--- PASS: TestGetBookReviews
+    --- PASS: Valid Book ID
+    --- PASS: Missing Book ID
+    --- PASS: Invalid Book ID
+
+PASS
+ok   library-backend/controllers   0.22s
+```
+
+✅ **All unit tests passed without error. The backend is stable and well-tested.**
 ## 🧪 Unit Testing
 
 - Each controller includes corresponding unit test files.
