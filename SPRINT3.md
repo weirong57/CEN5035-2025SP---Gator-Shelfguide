@@ -3,7 +3,9 @@
 
 ---
 ## 📌 Sprint 3 Completed Tasks--frontend
-
+Video:Yichen Pan(page implementation)https://youtu.be/Uxxut91ZpgQ
+Implementation:
+User center page, search page, welcome page.(All pages for main function are now finished.) Admin page design and complete some of the functions like book management.
 
 ## 📌 Sprint 3 Completed Tasks--Backend
 
