@@ -7,7 +7,7 @@
 
 - Implementation:
 - User center page, search page, welcome page.(All pages for main function are now finished.) Admin page design and complete some of the functions like book management.
-
+- Allow returning book from User center, searching details of books and rating with review.
 ## 📌 Sprint 3 Completed Tasks--Backend
 
 ### ✅ Controller Implementation
