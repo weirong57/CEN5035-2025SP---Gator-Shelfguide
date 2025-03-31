@@ -23,7 +23,6 @@
 
       at log (src/pages/BookManagement.jsx:33:15)
 
-    console.log
       [DEBUG] Processed data: [
         {
           id: 1,
@@ -36,7 +35,6 @@
 
       at log (src/pages/BookManagement.jsx:33:15)
 
-    console.log
       [DEBUG] Processed data: [
         {
           id: 1,
