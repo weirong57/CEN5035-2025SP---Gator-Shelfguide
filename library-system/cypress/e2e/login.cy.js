@@ -1,7 +1,7 @@
 describe('Login Page', () => {
   it('logs in with valid username and password', () => {
     // Visit the login page (adjust if your dev server is on a different port)
-    cy.visit('http://localhost:5174/login');
+    cy.visit('http://localhost:5173/login');
 
     // Fill in username & password
     cy.get('#username').type('testuser');
