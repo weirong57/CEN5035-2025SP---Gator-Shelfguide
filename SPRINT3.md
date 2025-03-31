@@ -10,7 +10,7 @@
 - Allow returning book from User center, searching details of books and rating with review.
 
 - Testing result:
-- Bookmanagement:
+- Bookmanagement(previous sprint):
 -       [DEBUG] Processed data: [
         {
           id: 1,
@@ -52,6 +52,40 @@ Test Suites: 2 passed, 2 total
 Tests:       3 passed, 3 total
 Snapshots:   0 total
 Time:        4.894 s
+
+- User Center Component Tests
+Purpose:
+● Verify that the User Center component renders the user profile and borrowing records.
+● Simulate the book return process and ensure that the appropriate success message is
+shown.
+Key Test Cases:
+● Render Test: Confirms that the user's name and borrowing records are rendered
+correctly.
+● Book Return Test: Uses a mocked API call to simulate a book return and verifies that
+clicking the "Return" button triggers the success message.
+Sample Test Output:
+PASS src/pages/tests/UserCenter.test.js (11.468 s)
+UserCenter Component
+✓ renders user profile and borrowing records (4 ms)
+✓ simulates book return (6 ms)
+
+- Search and Book details Component Tests
+Purpose:
+● Verify that when the search query is empty, a warning message is shown.
+● Simulate a successful book search with a mock review and ensure the component
+displays the book details and the review.
+Key Test Cases:
+● Empty Search Warning: When the search input is empty, the component should display
+a warning message: "Please enter a book title."
+● Successful Search Test: Mocks a successful search where the book details ("Test
+Book") and a review ("Great book") are returned. The test waits for these elements to
+appear in the DOM.
+Sample Test Output:
+PASS src/pages/tests/Reports.test.js (11.652 s)
+BookReport Component
+✓ shows warning if search query is empty (5 ms)
+✓ displays book details and reviews on successful search (7 ms)
+
 ## 📌 Sprint 3 Completed Tasks--Backend
 
 ### ✅ Controller Implementation
