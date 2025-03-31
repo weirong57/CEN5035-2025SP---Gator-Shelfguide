@@ -8,6 +8,52 @@
 - Implementation:
 - User center page, search page, welcome page.(All pages for main function are now finished.) Admin page design and complete some of the functions like book management.
 - Allow returning book from User center, searching details of books and rating with review.
+
+- Testing result:
+- Bookmanagement:
+-       [DEBUG] Processed data: [
+        {
+          id: 1,
+          title: 'Test Book 1',
+          author: 'Author 1',
+          isbn: '123-456',
+          available_copies: 3
+        }
+      ]
+
+      at log (src/pages/BookManagement.jsx:33:15)
+
+    console.log
+      [DEBUG] Processed data: [
+        {
+          id: 1,
+          title: 'Test Book 1',
+          author: 'Author 1',
+          isbn: '123-456',
+          available_copies: 3
+        }
+      ]
+
+      at log (src/pages/BookManagement.jsx:33:15)
+
+    console.log
+      [DEBUG] Processed data: [
+        {
+          id: 1,
+          title: 'Test Book 1',
+          author: 'Author 1',
+          isbn: '123-456',
+          available_copies: 3
+        }
+      ]
+
+      at log (src/pages/BookManagement.jsx:33:15)
+
+
+Test Suites: 2 passed, 2 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        4.894 s
 ## 📌 Sprint 3 Completed Tasks--Backend
 
 ### ✅ Controller Implementation
