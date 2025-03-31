@@ -212,6 +212,7 @@ export default function UserCenter() {
   );
 }*/
 // src/pages/UserCenter.jsx
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { 
   Table, 
