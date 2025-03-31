@@ -55,19 +55,19 @@ Time:        4.894 s
 
 - User Center Component Tests
 - Purpose:
-- Verify that the User Center component renders the user profile and borrowing records.
-- Simulate the book return process and ensure that the appropriate success message is
+  - Verify that the User Center component renders the user profile and borrowing records.
+  - Simulate the book return process and ensure that the appropriate success message is
 shown.
 - Key Test Cases:
-- Render Test: Confirms that the user's name and borrowing records are rendered
+  - Render Test: Confirms that the user's name and borrowing records are rendered
 correctly.
-- Book Return Test: Uses a mocked API call to simulate a book return and verifies that
+  - Book Return Test: Uses a mocked API call to simulate a book return and verifies that
 clicking the "Return" button triggers the success message.
 - Sample Test Output:
-- PASS src/pages/tests/UserCenter.test.js (11.468 s)
+  - PASS src/pages/tests/UserCenter.test.js (11.468 s)
 - UserCenter Component
-- ✓ renders user profile and borrowing records (4 ms)
-- ✓ simulates book return (6 ms)
+  - ✓ renders user profile and borrowing records (4 ms)
+  - ✓ simulates book return (6 ms)
 
 - Search and Book details Component Tests
 - Purpose:
