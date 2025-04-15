@@ -275,9 +275,9 @@ import {
   BarChartOutlined,
   PlusOutlined 
 } from '@ant-design/icons';
-import axios from 'axios'; // 需要先安装 axios
+import axios from 'axios'; // Axios needs to be installed
 
-const API_BASE = 'http://localhost:3000'; // 后端API基础地址
+const API_BASE = 'http://localhost:3000'; // Backend API base URL
 const { TabPane } = Tabs;
 
 export default function AdminDashboard() {
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   
-  // 动态数据状态
+  // Dynamic data states
   const [books, setBooks] = useState([]);
   const [users, setUsers] = useState([]);
   const [borrows, setBorrows] = useState([]);
@@ -296,7 +296,7 @@ export default function AdminDashboard() {
     activeBorrows: 0
   });
 
-  // 获取统计信息
+  // Fetch statistics
   const fetchStats = async () => {
     try {
       const [booksRes, usersRes, borrowsRes] = await Promise.all([
@@ -311,50 +311,50 @@ export default function AdminDashboard() {
         activeBorrows: borrowsRes.data.length
       });
     } catch (error) {
-      message.error('获取统计信息失败');
+      message.error('Failed to fetch statistics');
     }
   };
 
-  // 获取图书数据
+  // Fetch book data
   const fetchBooks = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${API_BASE}/books`);
       setBooks(res.data);
     } catch (error) {
-      message.error('获取图书数据失败');
+      message.error('Failed to fetch book data');
     } finally {
       setLoading(false);
     }
   };
 
-  // 获取用户数据
+  // Fetch user data
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${API_BASE}/users`);
       setUsers(res.data);
     } catch (error) {
-      message.error('获取用户数据失败');
+      message.error('Failed to fetch user data');
     } finally {
       setLoading(false);
     }
   };
 
-  // 获取借阅记录
+  // Fetch borrow records
   const fetchBorrows = async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${API_BASE}/borrow`);
       setBorrows(res.data);
     } catch (error) {
-      message.error('获取借阅记录失败');
+      message.error('Failed to fetch borrow records');
     } finally {
       setLoading(false);
     }
   };
 
-  // 初始化数据获取
+  // Initialize data on mount
   useEffect(() => {
     fetchStats();
     fetchBooks();
@@ -362,7 +362,7 @@ export default function AdminDashboard() {
     fetchBorrows();
   }, []);
 
-  // 表格列配置
+  // Table columns configuration
   const bookColumns = [
     { title: 'Title', dataIndex: 'title', sorter: (a, b) => a.title.localeCompare(b.title) },
     { title: 'Author', dataIndex: 'author' },
@@ -383,56 +383,56 @@ export default function AdminDashboard() {
     }
   ];
 
-  // 添加新书
+  // Add new book
   const handleAddBook = async values => {
     try {
       await axios.post(`${API_BASE}/books`, values);
-      message.success('添加图书成功');
+      message.success('Book added successfully');
       fetchBooks();
       setShowModal(false);
       form.resetFields();
     } catch (error) {
-      message.error('添加图书失败');
+      message.error('Failed to add book');
     }
   };
 
-  // 删除图书
+  // Delete book
   const handleDeleteBook = async id => {
     try {
       await axios.delete(`${API_BASE}/books/${id}`);
-      message.success('删除成功');
+      message.success('Deleted successfully');
       fetchBooks();
     } catch (error) {
-      message.error('删除失败');
+      message.error('Failed to delete');
     }
   };
 
-  // 编辑图书
+  // Edit book
   const handleEditBook = async (values, id) => {
     try {
       await axios.put(`${API_BASE}/books/${id}`, values);
-      message.success('更新成功');
+      message.success('Updated successfully');
       fetchBooks();
       setShowModal(false);
     } catch (error) {
-      message.error('更新失败');
+      message.error('Failed to update');
     }
   };
 
-  // 用户角色修改
+  // Update user role
   const handleRoleUpdate = async (userId, newRole) => {
     try {
       await axios.put(`${API_BASE}/users/${userId}`, { role: newRole });
-      message.success('角色更新成功');
+      message.success('Role updated successfully');
       fetchUsers();
     } catch (error) {
-      message.error('角色更新失败');
+      message.error('Failed to update role');
     }
   };
 
   return (
     <div style={{ padding: 24 }}>
-      {/* 统计卡片部分保持不变 */}
+      {/* Statistics card section remains unchanged */}
       
       <Tabs defaultActiveKey="1" onChange={setActiveTab}>
         <TabPane tab={<span><BookOutlined />Book Management</span>} key="1">
@@ -454,7 +454,7 @@ export default function AdminDashboard() {
           </Card>
         </TabPane>
 
-        {/* 用户管理 TabPane */}
+        {/* User Management TabPane */}
         <TabPane tab={<span><UserOutlined />User Management</span>} key="2">
           <Card title="User List">
             <Table
@@ -468,8 +468,8 @@ export default function AdminDashboard() {
                       color={text === 'admin' ? 'gold' : 'blue'}
                       onClick={() => {
                         Modal.confirm({
-                          title: '修改用户角色',
-                          content: `确定要修改 ${record.username} 的角色吗？`,
+                          title: 'Change User Role',
+                          content: `Are you sure you want to change ${record.username}'s role?`,
                           onOk: () => handleRoleUpdate(record.id, text === 'admin' ? 'user' : 'admin')
                         });
                       }}
@@ -488,7 +488,7 @@ export default function AdminDashboard() {
           </Card>
         </TabPane>
 
-        {/* 借阅记录 TabPane */}
+        {/* Borrow Records TabPane */}
         <TabPane tab={<span><BarChartOutlined />Borrow Records</span>} key="3">
           <Card title="All Borrow Records">
             <Table
@@ -524,7 +524,7 @@ export default function AdminDashboard() {
         </TabPane>
       </Tabs>
 
-      {/* 添加/编辑图书模态框 */}
+      {/* Add/Edit Book Modal */}
       <Modal 
         title="Add New Book" 
         visible={showModal} 
