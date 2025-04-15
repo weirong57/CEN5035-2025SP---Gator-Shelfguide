@@ -4,6 +4,7 @@ import Login from './login';       // Two-column Login page
 import Signup from './signup';     // New Signup page for Gator Shelfguide
 import MainLayout from './mainLayout';
 import { Dashboard, BookManagement, UserCenter, Reports } from './pages';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       {/* Authentication Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-
+      <Route path="/admin" element={<AdminDashboard />} />
       {/* Main layout after login */}
       <Route path="/main" element={<MainLayout />}>
         <Route index element={<Navigate to="dashboard" replace />} />
