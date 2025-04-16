@@ -1,4 +1,4 @@
-// src/pages/Dashboard.jsx
+/*// src/pages/Dashboard.jsx
 import { useState } from 'react';
 import { Card, Row, Col, Statistic, Progress, Divider, Tag } from 'antd';
 import { 
@@ -27,7 +27,6 @@ export default function Dashboard() {
     <div style={{ padding: 24 }}>
       <h2 style={{ marginBottom: 24 }}>📊 System Overview</h2>
       
-      {/* Statistics Cards */}
       <Row gutter={[24, 24]}>
         <Col xs={24} sm={12} lg={8}>
           <Card>
@@ -83,7 +82,6 @@ export default function Dashboard() {
 
       <Divider />
 
-      {/* Data Visualization Section */}
       <Row gutter={[24, 24]} style={{ marginTop: 24 }}>
         <Col xs={24}>
           <Card 
@@ -124,13 +122,38 @@ export default function Dashboard() {
 
       <Divider />
 
-      {/* Welcome Message */}
       <Card style={{ marginTop: 24 }}>
         <h3>🏛️ Welcome to Library Management System</h3>
         <p style={{ color: '#666', marginTop: 8 }}>
           System is running normally. Last updated: 2023-07-25 14:30:45
         </p >
       </Card>
+    </div>
+  );
+}*/
+import { Typography } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
+
+const { Title, Paragraph } = Typography;
+
+export default function Dashboard() {
+  return (
+    <div style={{ 
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center'
+    }}>
+      <div>
+        <SmileOutlined style={{ fontSize: 64, color: '#1890ff' }} />
+        <Title level={2} style={{ margin: '24px 0' }}>
+          Welcome to Library Management System
+        </Title>
+        <Paragraph type="secondary">
+          Please use the navigation menu to get started
+        </Paragraph>
+      </div>
     </div>
   );
 }
