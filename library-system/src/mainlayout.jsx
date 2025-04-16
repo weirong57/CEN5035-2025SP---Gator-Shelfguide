@@ -22,6 +22,27 @@ const MainLayout = () => {
       });
     }
   }, [navigate, location]); 
+  /*useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login', { state: { from: location } });
+        return;
+      }
+
+      try {
+        const res = await axios.get('/api/auth/verify');
+        if (res.data.role !== 'user') {
+          throw new Error('Invalid role');
+        }
+      } catch (err) {
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+    };
+
+    checkAuth();
+  }, []);*/
 
   return (
     <Layout style={{ minHeight: '100vh', minWidth: '100vw', background: '#f0f2f5' }}>

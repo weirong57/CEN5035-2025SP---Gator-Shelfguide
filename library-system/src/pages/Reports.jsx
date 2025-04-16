@@ -14,8 +14,7 @@
       </div>
     )
   }*/
-/*
-import { useState, useEffect } from 'react';
+/*import { useState, useEffect } from 'react';
 import { Comment } from '@ant-design/compatible';  
 import { 
   Card, 
@@ -232,6 +231,7 @@ export default function BookReport() {
     </div>
   );
 }*/
+import React from 'react';
 import { useState } from 'react';
 import { 
   Card, 
@@ -331,7 +331,7 @@ export default function BookReport() {
 
   return (
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
-
+      {/* 搜索区域 */}
       <Card 
         title={
           <div style={{ display: 'flex', gap: 16 }}>
@@ -355,7 +355,7 @@ export default function BookReport() {
         bordered={false}
       />
 
-
+      {/* 书籍信息区域 */}
       {book ? (
         <>
           <Card>
@@ -405,6 +405,7 @@ export default function BookReport() {
 
           <Divider />
 
+          {/* 评论功能 */}
           <Card title="Write a Review">
             <Form form={form} onFinish={handleSubmitReview}>
               <Form.Item 
@@ -436,6 +437,7 @@ export default function BookReport() {
             </Form>
           </Card>
 
+          {/* 评论列表 */}
           <Card title={`Reviews (${reviews.length})`}>
             {reviews.length > 0 ? (
               <List

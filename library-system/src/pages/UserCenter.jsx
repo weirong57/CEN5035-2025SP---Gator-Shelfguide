@@ -1,5 +1,5 @@
-
-/*// src/pages/UserCenter.jsx
+/*
+// src/pages/UserCenter.jsx
 import { useState } from 'react';
 import { Table, Button, Tag, Modal, message } from 'antd';
 
@@ -212,6 +212,7 @@ export default function UserCenter() {
   );
 }*/
 // src/pages/UserCenter.jsx
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { 
   Table, 
@@ -384,6 +385,7 @@ export default function UserCenter() {
   return (
     <div style={{ padding: 24 }}>
       <Spin spinning={loading} indicator={LoadingIndicator}>
+        {/* User Profile Section */}
         <Card
           title={<><UserOutlined /> User Profile</>}
           style={{ marginBottom: 24 }}
@@ -403,6 +405,7 @@ export default function UserCenter() {
           )}
         </Card>
 
+        {/* Borrowing History Section */}
         <Card title={<><BookOutlined /> Borrowing History</>}>
           <Table
             columns={columns}
