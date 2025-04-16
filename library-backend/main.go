@@ -49,16 +49,20 @@ func main() {
 	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	// 添加 API 相关路由
-	routes.AuthRoutes(r)
-	routes.BookRoutes(r)
-	routes.BorrowRoutes(r)
-	routes.ReviewRoutes(r)
-	routes.ReservationRoutes(r)
+	apiRouter := r.PathPrefix("/api").Subrouter() // <-- ✅ 使用子路由自动添加 /api 前缀
+	routes.AuthRoutes(apiRouter)
+	routes.BookRoutes(apiRouter)
+	routes.BorrowRoutes(apiRouter)
+	routes.ReviewRoutes(apiRouter)
+	routes.ReservationRoutes(apiRouter)
 
 	// 添加受 JWT 保护的路由
 	r.Handle("/protected", middleware.VerifyToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintln(w, "You accessed a protected route!")
 	}))).Methods("GET")
+
+	fs := http.FileServer(http.Dir("../library-system/dist"))
+	r.PathPrefix("/").Handler(fs)
 
 	// 处理 CORS
 	corsHandler := cors.New(cors.Options{
