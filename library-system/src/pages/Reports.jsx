@@ -14,8 +14,12 @@
       </div>
     )
   }*/
+<<<<<<< HEAD
+/*import { useState, useEffect } from 'react';
+=======
 /*
 import { useState, useEffect } from 'react';
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { Comment } from '@ant-design/compatible';  
 import { 
   Card, 
@@ -232,6 +236,10 @@ export default function BookReport() {
     </div>
   );
 }*/
+<<<<<<< HEAD
+import React from 'react';
+=======
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { useState } from 'react';
 import { 
   Card, 
@@ -331,7 +339,11 @@ export default function BookReport() {
 
   return (
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
+<<<<<<< HEAD
+      {/* 搜索区域 */}
+=======
 
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
       <Card 
         title={
           <div style={{ display: 'flex', gap: 16 }}>
@@ -355,7 +367,11 @@ export default function BookReport() {
         bordered={false}
       />
 
+<<<<<<< HEAD
+      {/* 书籍信息区域 */}
+=======
 
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
       {book ? (
         <>
           <Card>
@@ -405,6 +421,10 @@ export default function BookReport() {
 
           <Divider />
 
+<<<<<<< HEAD
+          {/* 评论功能 */}
+=======
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
           <Card title="Write a Review">
             <Form form={form} onFinish={handleSubmitReview}>
               <Form.Item 
@@ -436,6 +456,10 @@ export default function BookReport() {
             </Form>
           </Card>
 
+<<<<<<< HEAD
+          {/* 评论列表 */}
+=======
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
           <Card title={`Reviews (${reviews.length})`}>
             {reviews.length > 0 ? (
               <List
@@ -485,4 +509,8 @@ export default function BookReport() {
       )}
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
+/*
+// src/pages/UserCenter.jsx
+=======
 
 /*// src/pages/UserCenter.jsx
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { useState } from 'react';
 import { Table, Button, Tag, Modal, message } from 'antd';
 
@@ -212,6 +217,10 @@ export default function UserCenter() {
   );
 }*/
 // src/pages/UserCenter.jsx
+<<<<<<< HEAD
+import React from 'react';
+=======
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { useEffect, useState } from 'react';
 import { 
   Table, 
@@ -384,6 +393,10 @@ export default function UserCenter() {
   return (
     <div style={{ padding: 24 }}>
       <Spin spinning={loading} indicator={LoadingIndicator}>
+<<<<<<< HEAD
+        {/* User Profile Section */}
+=======
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
         <Card
           title={<><UserOutlined /> User Profile</>}
           style={{ marginBottom: 24 }}
@@ -403,6 +416,10 @@ export default function UserCenter() {
           )}
         </Card>
 
+<<<<<<< HEAD
+        {/* Borrowing History Section */}
+=======
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
         <Card title={<><BookOutlined /> Borrowing History</>}>
           <Table
             columns={columns}
@@ -426,4 +443,8 @@ export default function UserCenter() {
       </Spin>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
