@@ -19,12 +19,27 @@ import (
 // @Tags 图书管理 (Book Management)
 // @Accept json
 // @Produce json
-// @Param search query string false "搜索关键词 (Search keyword)"
+// @Param title query string false "搜索关键词 (Search keyword)"
 // @Success 200 {object} []models.Book "成功响应 (Success Response)"
 // @Failure 500 {object} map[string]string "服务器错误 (Server error)"
 // @Router /books [get]
 func GetAllBooks(w http.ResponseWriter, r *http.Request) {
-	search := r.URL.Query().Get("search")
+	search := r.URL.Query().Get("title")
+	pageStr := r.URL.Query().Get("page")
+	limitStr := r.URL.Query().Get("limit")
+
+	// 默认页码和条数
+	page, _ := strconv.Atoi(pageStr)
+	limit, _ := strconv.Atoi(limitStr)
+	if page <= 0 {
+		page = 1
+	}
+	if limit <= 0 {
+		limit = 10
+	}
+	offset := (page - 1) * limit
+
+	// 构建 SQL 查询语句
 	query := "SELECT * FROM Books"
 	params := []interface{}{}
 
@@ -34,6 +49,12 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 		params = append(params, like, like, like)
 	}
 
+	query += " LIMIT ? OFFSET ?"
+	params = append(params, limit, offset)
+
+	log.Printf("Query: %s\nParams: %v\n", query, params)
+
+	// 执行查询
 	rows, err := config.DB.Query(query, params...)
 	if err != nil {
 		log.Println("getAllBooks Error:", err)
@@ -53,6 +74,7 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("X-Total-Count", strconv.Itoa(len(books)))
 	json.NewEncoder(w).Encode(books)
 }
 

@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // backend API
+  baseURL: 'http://localhost:3000/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -18,13 +18,13 @@ apiClient.interceptors.request.use(config => {
 });
 
 apiClient.interceptors.response.use(
-  response => response.data, 
+  response => response.data,
   error => {
     if (error.response?.status === 401) {
       localStorage.removeItem('authToken');
       window.location.href = '/login';
     }
-    return Promise.reject(error.response?.data?.message || 'requset failure');
+    return Promise.reject(error.response?.data?.message || 'request failure');
   }
 );
 
