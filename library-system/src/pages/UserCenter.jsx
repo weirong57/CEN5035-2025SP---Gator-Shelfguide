@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 /*
 // src/pages/UserCenter.jsx
-=======
-
-/*// src/pages/UserCenter.jsx
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { useState } from 'react';
 import { Table, Button, Tag, Modal, message } from 'antd';
 
@@ -217,10 +212,7 @@ export default function UserCenter() {
   );
 }*/
 // src/pages/UserCenter.jsx
-<<<<<<< HEAD
-import React from 'react';
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
+/*import React from 'react';
 import { useEffect, useState } from 'react';
 import { 
   Table, 
@@ -393,10 +385,6 @@ export default function UserCenter() {
   return (
     <div style={{ padding: 24 }}>
       <Spin spinning={loading} indicator={LoadingIndicator}>
-<<<<<<< HEAD
-        {/* User Profile Section */}
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
         <Card
           title={<><UserOutlined /> User Profile</>}
           style={{ marginBottom: 24 }}
@@ -416,10 +404,6 @@ export default function UserCenter() {
           )}
         </Card>
 
-<<<<<<< HEAD
-        {/* Borrowing History Section */}
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
         <Card title={<><BookOutlined /> Borrowing History</>}>
           <Table
             columns={columns}
@@ -443,8 +427,393 @@ export default function UserCenter() {
       </Spin>
     </div>
   );
-<<<<<<< HEAD
+}*/
+// src/pages/UserCenter.jsx
+import { useEffect, useState } from 'react';
+import { 
+  Table, 
+  Button, 
+  Card, 
+  Tag, 
+  Modal, 
+  message, 
+  Spin,
+  Alert,
+  Tabs,
+  Empty,
+  Row,
+  Col,
+  Statistic
+} from 'antd';
+import { 
+  UserOutlined,
+  BookOutlined,
+  HistoryOutlined,
+  ClockCircleOutlined
+} from '@ant-design/icons';
+import axios from 'axios';
+
+const { TabPane } = Tabs;
+
+export default function UserCenter() {
+  const [borrows, setBorrows] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(1); // In a real app, this would come from auth
+  const [activeTab, setActiveTab] = useState('1');
+
+  // Load user data and records
+  useEffect(() => {
+    loadUserData();
+  }, []);
+
+  // Load tab-specific data when tab changes
+  useEffect(() => {
+    if (currentUser) {
+      if (activeTab === '1') {
+        loadBorrowingRecords();
+      }
+    }
+  }, [activeTab, currentUser]);
+
+  // In a real app, this would fetch the current authenticated user
+  // For now, we'll create a mock user
+  const loadUserData = async () => {
+    try {
+      setLoading(true);
+      
+      // Mock user data - in a real app, this would come from an API
+      const userData = {
+        id: userId,
+        username: 'testuser',
+        role: 'user',
+        createdAt: new Date().toISOString()
+      };
+      
+      setCurrentUser(userData);
+      
+      // Load initial tab data
+      if (activeTab === '1') {
+        await loadBorrowingRecords();
+      }
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+      setError('Failed to load user data. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load borrowing records for the user
+  const loadBorrowingRecords = async () => {
+    try {
+      setLoading(true);
+      
+      // In a real app, we would fetch from your API
+      // For now, let's create mock data that matches your API
+      
+      // Mock data - this would be replaced with API calls in a real app
+      const borrowsData = [
+        {
+          id: 1,
+          bookId: 101,
+          userId: userId,
+          borrowDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 days ago
+          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+          returnDate: null,
+          status: 'BORROWED',
+          book: {
+            id: 101,
+            title: 'JavaScript: The Good Parts',
+            author: 'Douglas Crockford',
+            isbn: '9780596517748'
+          }
+        },
+        {
+          id: 2,
+          bookId: 102,
+          userId: userId,
+          borrowDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
+          dueDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago (overdue)
+          returnDate: null,
+          status: 'BORROWED',
+          book: {
+            id: 102,
+            title: 'Clean Code',
+            author: 'Robert C. Martin',
+            isbn: '9780132350884'
+          }
+        },
+        {
+          id: 3,
+          bookId: 103,
+          userId: userId,
+          borrowDate: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(), // 45 days ago
+          dueDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
+          returnDate: new Date(Date.now() - 29 * 24 * 60 * 60 * 1000).toISOString(), // 29 days ago
+          status: 'RETURNED',
+          book: {
+            id: 103,
+            title: 'The Pragmatic Programmer',
+            author: 'Andrew Hunt & David Thomas',
+            isbn: '9780201616224'
+          }
+        }
+      ];
+      
+      // Process the borrowed books
+      const processedBorrows = borrowsData.map(item => ({
+        id: item.id,
+        book: item.book,
+        borrowDate: item.borrowDate,
+        dueDate: item.dueDate,
+        returned: item.status === 'RETURNED'
+      }));
+      
+      setBorrows(processedBorrows);
+    } catch (error) {
+      console.error('Failed to load borrowing records:', error);
+      message.error('Failed to load your borrowing history');
+      setBorrows([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle book return
+  const handleReturn = (record) => {
+    Modal.confirm({
+      title: `Return Book`,
+      content: `Are you sure you want to return "${record.book.title}"?`,
+      onOk: async () => {
+        try {
+          setLoading(true);
+          
+          // Create return request object according to your API
+          const returnRequest = {
+            bookId: record.book.id,
+            userId: userId
+          };
+          
+          // Call the return endpoint
+          await axios.post('http://localhost:3000/borrow/return', returnRequest);
+          
+          message.success('Book returned successfully');
+          
+          // Refresh borrow records
+          loadBorrowingRecords();
+        } catch (error) {
+          console.error('Failed to return book:', error);
+          
+          // Handle different error codes based on API docs
+          if (error.response?.status === 400) {
+            message.error('Invalid request data');
+          } else if (error.response?.status === 404) {
+            message.error('No active borrow record found');
+          } else {
+            message.error('Failed to return the book');
+          }
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+  };
+
+  // Formats date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch (error) {
+      return dateString;
+    }
+  };
+
+  // Determines if a due date is in the past (overdue)
+  const isOverdue = (dueDate) => {
+    if (!dueDate) return false;
+    return new Date(dueDate) < new Date();
+  };
+
+  // Table columns for borrowing records
+  const borrowColumns = [
+    {
+      title: 'Book Information',
+      dataIndex: 'book',
+      key: 'book',
+      render: (book) => (
+        <div>
+          <div style={{ fontWeight: 'bold' }}>{book.title}</div>
+          <div>
+            <Tag color="blue">{book.author}</Tag>
+            <Tag>ISBN: {book.isbn}</Tag>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Borrow Date',
+      dataIndex: 'borrowDate',
+      key: 'borrowDate',
+      render: (date) => formatDate(date)
+    },
+    {
+      title: 'Due Date',
+      dataIndex: 'dueDate',
+      key: 'dueDate',
+      render: (date, record) => (
+        <span style={{ 
+          color: isOverdue(date) && !record.returned ? '#ff4d4f' : 'inherit',
+          fontWeight: isOverdue(date) && !record.returned ? 'bold' : 'normal'
+        }}>
+          {formatDate(date)}
+          {isOverdue(date) && !record.returned && (
+            <Tag color="red" style={{ marginLeft: 8 }}>Overdue</Tag>
+          )}
+        </span>
+      )
+    },
+    {
+      title: 'Status',
+      key: 'status',
+      render: (_, record) => (
+        <Tag color={record.returned ? 'default' : 'success'}>
+          {record.returned ? 'Returned' : 'Borrowing'}
+        </Tag>
+      )
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        !record.returned && (
+          <Button 
+            type="primary" 
+            onClick={() => handleReturn(record)}
+          >
+            Return
+          </Button>
+        )
+      )
+    }
+  ];
+
+  if (error) {
+    return (
+      <Alert
+        type="error"
+        message="Error"
+        description={error}
+        showIcon
+        style={{ margin: 24 }}
+      />
+    );
+  }
+
+  return (
+    <div style={{ padding: 24 }}>
+      <Spin spinning={loading && !currentUser}>
+        {/* User Profile Card */}
+        {currentUser && (
+          <Card
+            title={<><UserOutlined /> User Profile</>}
+            style={{ marginBottom: 24 }}
+          >
+            <Row gutter={24}>
+              <Col span={24} md={8}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+                  <Avatar icon={<UserOutlined />} size={64} style={{ marginRight: 16 }} />
+                  <div>
+                    <h3>{currentUser.username}</h3>
+                    <Tag color={currentUser.role === 'admin' ? 'gold' : 'blue'}>
+                      {currentUser.role}
+                    </Tag>
+                  </div>
+                </div>
+              </Col>
+              <Col span={24} md={16}>
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <Statistic
+                      title="Member Since"
+                      value={formatDate(currentUser.createdAt)}
+                      prefix={<ClockCircleOutlined />}
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="Books Borrowed"
+                      value={borrows.length}
+                      prefix={<BookOutlined />}
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="Currently Borrowing"
+                      value={borrows.filter(b => !b.returned).length}
+                      prefix={<BookOutlined />}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Card>
+        )}
+
+        {/* Activity Tabs */}
+        <Tabs activeKey={activeTab} onChange={setActiveTab}>
+          <TabPane 
+            tab={<span><HistoryOutlined /> Borrowing History</span>}
+            key="1"
+          >
+            <Spin spinning={loading && currentUser}>
+              <Table
+                columns={borrowColumns}
+                dataSource={borrows}
+                rowKey="id"
+                pagination={{ 
+                  pageSize: 5,
+                  showTotal: total => `Total ${total} records`
+                }}
+                locale={{
+                  emptyText: (
+                    <Empty 
+                      description="No borrowing records found"
+                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    />
+                  )
+                }}
+              />
+            </Spin>
+          </TabPane>
+        </Tabs>
+      </Spin>
+    </div>
+  );
 }
-=======
-}
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
+
+// Missing Avatar component declaration
+const Avatar = ({ icon, size = 32, style = {} }) => {
+  return (
+    <div 
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        background: '#1890ff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fff',
+        fontSize: size / 2,
+        ...style
+      }}
+    >
+      {icon}
+    </div>
+  );
+};

@@ -14,12 +14,7 @@
       </div>
     )
   }*/
-<<<<<<< HEAD
 /*import { useState, useEffect } from 'react';
-=======
-/*
-import { useState, useEffect } from 'react';
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { Comment } from '@ant-design/compatible';  
 import { 
   Card, 
@@ -236,10 +231,8 @@ export default function BookReport() {
     </div>
   );
 }*/
-<<<<<<< HEAD
+/*
 import React from 'react';
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { useState } from 'react';
 import { 
   Card, 
@@ -339,11 +332,6 @@ export default function BookReport() {
 
   return (
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
-<<<<<<< HEAD
-      {/* 搜索区域 */}
-=======
-
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
       <Card 
         title={
           <div style={{ display: 'flex', gap: 16 }}>
@@ -366,12 +354,6 @@ export default function BookReport() {
         }
         bordered={false}
       />
-
-<<<<<<< HEAD
-      {/* 书籍信息区域 */}
-=======
-
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
       {book ? (
         <>
           <Card>
@@ -420,11 +402,6 @@ export default function BookReport() {
           </Card>
 
           <Divider />
-
-<<<<<<< HEAD
-          {/* 评论功能 */}
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
           <Card title="Write a Review">
             <Form form={form} onFinish={handleSubmitReview}>
               <Form.Item 
@@ -455,11 +432,6 @@ export default function BookReport() {
               </Form.Item>
             </Form>
           </Card>
-
-<<<<<<< HEAD
-          {/* 评论列表 */}
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
           <Card title={`Reviews (${reviews.length})`}>
             {reviews.length > 0 ? (
               <List
@@ -509,8 +481,319 @@ export default function BookReport() {
       )}
     </div>
   );
-<<<<<<< HEAD
+}*/
+import { useState, useEffect } from 'react';
+import { 
+  Card, 
+  Rate, 
+  List, 
+  Form, 
+  Input, 
+  Button, 
+  Avatar, 
+  Tag,
+  Divider,
+  Statistic,
+  Row,
+  Col,
+  Spin,
+  message,
+  Empty
+} from 'antd';
+import { UserOutlined, BookOutlined, StarFilled, SearchOutlined } from '@ant-design/icons';
+import { bookService, reviewService } from '../api/services';
+
+export default function BookReviews() {
+  const [form] = Form.useForm();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [book, setBook] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [userId, setUserId] = useState(1); // Should come from authentication in a real app
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      message.warning('Please enter a book title');
+      return;
+    }
+
+    try {
+      setSearchLoading(true);
+      
+      // Search for books with the given query
+      const booksResponse = await bookService.getBooks({ search: searchQuery });
+      
+      // Process response based on your API structure
+      let foundBooks = [];
+      if (Array.isArray(booksResponse)) {
+        foundBooks = booksResponse;
+      } else if (booksResponse && Array.isArray(booksResponse.data)) {
+        foundBooks = booksResponse.data;
+      }
+      
+      if (foundBooks.length === 0) {
+        message.info('No books found with that title');
+        setBook(null);
+        setReviews([]);
+        return;
+      }
+
+      // Get the first matching book
+      const targetBook = foundBooks[0];
+      
+      // Get book details and reviews
+      const [bookDetails, bookReviews] = await Promise.all([
+        bookService.getBookById(targetBook.id),
+        reviewService.getReviews(targetBook.id)
+      ]);
+      
+      setBook(bookDetails);
+      
+      // Process reviews based on your API structure
+      if (Array.isArray(bookReviews)) {
+        setReviews(bookReviews);
+      } else if (bookReviews && Array.isArray(bookReviews.data)) {
+        setReviews(bookReviews.data);
+      } else {
+        setReviews([]);
+      }
+      
+    } catch (error) {
+      console.error('Search error:', error);
+      message.error(error.message || 'Failed to search for books');
+      setBook(null);
+      setReviews([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleSubmitReview = async (values) => {
+    if (!book) return;
+
+    try {
+      setLoading(true);
+      
+      // Create review request body
+      const reviewData = {
+        bookId: book.id,
+        userId: userId, // Should come from authentication
+        rating: values.rating,
+        comment: values.content
+      };
+      
+      // Submit the review
+      await reviewService.addReview(reviewData);
+      
+      // Refresh reviews
+      const updatedReviews = await reviewService.getReviews(book.id);
+      if (Array.isArray(updatedReviews)) {
+        setReviews(updatedReviews);
+      } else if (updatedReviews && Array.isArray(updatedReviews.data)) {
+        setReviews(updatedReviews.data);
+      }
+      
+      // Reset form and show success message
+      form.resetFields();
+      message.success('Review submitted successfully!');
+    } catch (error) {
+      console.error('Review submission error:', error);
+      message.error(error.message || 'Failed to submit review');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown date';
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString();
+    } catch (error) {
+      return dateString;
+    }
+  };
+
+  return (
+    <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
+      {/* Search area */}
+      <Card 
+        title={
+          <div style={{ display: 'flex', gap: 16 }}>
+            <Input
+              placeholder="Search book by title..."
+              prefix={<SearchOutlined />}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ width: 400 }}
+              onPressEnter={handleSearch}
+            />
+            <Button 
+              type="primary" 
+              loading={searchLoading}
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </div>
+        }
+        bordered={false}
+      />
+
+      {/* Book information area */}
+      {book ? (
+        <>
+          <Card>
+            <Row gutter={24}>
+              <Col xs={24} md={8}>
+                {book.cover ? (
+                  <img 
+                    src={book.cover} 
+                    alt="Book Cover" 
+                    style={{ 
+                      width: '100%', 
+                      borderRadius: 8,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                ) : (
+                  <div 
+                    style={{ 
+                      width: '100%', 
+                      height: 300,
+                      background: '#f0f2f5',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 8,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <BookOutlined style={{ fontSize: 64, color: '#d9d9d9' }} />
+                  </div>
+                )}
+              </Col>
+              <Col xs={24} md={16}>
+                <h1 style={{ fontSize: 28, marginBottom: 8 }}>{book.title}</h1>
+                <div style={{ marginBottom: 16 }}>
+                  <Tag icon={<UserOutlined />} color="blue">
+                    Author: {book.author}
+                  </Tag>
+                  <Tag icon={<BookOutlined />} color="geekblue">
+                    ISBN: {book.isbn || 'N/A'}
+                  </Tag>
+                  <Tag color={book.available_copies > 0 ? 'green' : 'red'}>
+                    Available: {book.available_copies}
+                  </Tag>
+                </div>
+                <Row gutter={16}>
+                  <Col>
+                    <Statistic 
+                      title="Average Rating" 
+                      value={book.averageRating || 0} 
+                      precision={1}
+                      prefix={<StarFilled style={{ color: '#fadb14' }} />}
+                    />
+                  </Col>
+                </Row>
+                <Divider />
+                <h3>Book Description</h3>
+                <p style={{ color: 'rgba(0,0,0,0.7)', lineHeight: 1.8 }}>
+                  {book.description || 'No description available.'}
+                </p>
+              </Col>
+            </Row>
+          </Card>
+
+          <Divider />
+
+          {/* Review submission form */}
+          <Card title="Write a Review">
+            <Form form={form} onFinish={handleSubmitReview} layout="vertical">
+              <Form.Item 
+                name="rating" 
+                label="Rating" 
+                rules={[{ required: true, message: 'Please give a rating' }]}
+              >
+                <Rate allowHalf />
+              </Form.Item>
+              
+              <Form.Item
+                name="content"
+                label="Review Content"
+                rules={[
+                  { required: true, message: 'Please write your review' }, 
+                  { max: 500, message: 'Review cannot exceed 500 characters' }
+                ]}
+              >
+                <Input.TextArea 
+                  rows={4} 
+                  placeholder="Share your thoughts about this book..."
+                  showCount 
+                  maxLength={500}
+                />
+              </Form.Item>
+              
+              <Form.Item>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                  Submit Review
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+
+          {/* Reviews list */}
+          <Card title={`Reviews (${reviews.length})`}>
+            {reviews.length > 0 ? (
+              <List
+                itemLayout="vertical"
+                dataSource={reviews}
+                renderItem={review => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar icon={<UserOutlined />} />}
+                      title={
+                        <>
+                          <span style={{ fontWeight: 500 }}>
+                            {review.user?.username || 'Anonymous'}
+                          </span>
+                          <Rate 
+                            disabled 
+                            value={review.rating} 
+                            style={{ fontSize: 14, marginLeft: 16 }}
+                          />
+                        </>
+                      }
+                      description={
+                        <>
+                          <p>{review.comment}</p>
+                          <span style={{ color: 'rgba(0,0,0,0.45)' }}>
+                            {formatDate(review.createdAt)}
+                          </span>
+                        </>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            ) : (
+              <Empty description="No reviews yet. Be the first to share your thoughts!" />
+            )}
+          </Card>
+        </>
+      ) : (
+        <Card style={{ marginTop: 24, textAlign: 'center' }}>
+          <div style={{ color: 'rgba(0,0,0,0.45)', padding: 40 }}>
+            {searchLoading ? (
+              <Spin size="large" />
+            ) : (
+              'Search for a book to view details and reviews'
+            )}
+          </div>
+        </Card>
+      )}
+    </div>
+  );
 }
-=======
-}
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
