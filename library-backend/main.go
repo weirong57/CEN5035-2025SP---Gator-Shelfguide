@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"library-backend/config"
 	_ "library-backend/docs"
@@ -61,8 +62,24 @@ func main() {
 		fmt.Fprintln(w, "You accessed a protected route!")
 	}))).Methods("GET")
 
-	fs := http.FileServer(http.Dir("../library-system/dist"))
-	r.PathPrefix("/").Handler(fs)
+	staticDir := "../library-system/dist"
+	fs := http.FileServer(http.Dir(staticDir))                                                // ✅ ADDED
+	r.PathPrefix("/").Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { // ✅ ADDED
+		requestPath := r.URL.Path
+
+		if strings.HasPrefix(requestPath, "/api/") {
+			http.NotFound(w, r)
+			return
+		}
+
+		fullPath := staticDir + requestPath
+		if _, err := os.Stat(fullPath); err == nil {
+			fs.ServeHTTP(w, r)
+			return
+		}
+
+		http.ServeFile(w, r, staticDir+"/index.html")
+	})) // ✅ ADDED
 
 	// 处理 CORS
 	corsHandler := cors.New(cors.Options{

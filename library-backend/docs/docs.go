@@ -32,7 +32,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "搜索关键词 (Search keyword)",
-                        "name": "search",
+                        "name": "title",
                         "in": "query"
                     }
                 ],

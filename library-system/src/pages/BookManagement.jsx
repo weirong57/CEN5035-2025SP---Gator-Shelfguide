@@ -16,50 +16,49 @@ export default function BookManagement() {
   const loadBooks = async () => {
     try {
       setLoading(true);
-      const encodedSearch = encodeURIComponent(searchKey);
-      
+  
       const response = await bookService.getBooks({
-        title: encodedSearch,
-        _page: pagination.current,
-        _limit: pagination.pageSize
+        title: searchKey,
+        page: pagination.current,
+        limit: pagination.pageSize
       });
 
-      const rawData = Array.isArray(response?.data) 
-        ? response.data 
-        : Array.isArray(response)
-          ? response
-          : [];
+      console.log('[DEBUG] Full response:', response);
+      const rawData = Array.isArray(response) ? response : [];
+      console.log('[DEBUG] Raw books:', rawData);
 
-      console.log('[DEBUG] Processed data:', rawData);
-
+  
       setBooks(rawData);
-      
-      setPagination(prev => ({
+      setPagination((prev) => ({
         ...prev,
-        total: Number(response.headers?.['x-total-count']) || response.total || rawData.length
+        total: Number(response.headers?.['x-total-count']) || rawData.length,
       }));
     } catch (err) {
       console.error('Data loading failed:', err);
-      message.error(err.message);
-      setBooks([]); 
-      setPagination(prev => ({ ...prev, total: 0 }));
+      message.error(err.message || 'Loading failed');
+      setBooks([]);
+      setPagination((prev) => ({ ...prev, total: 0 }));
     } finally {
       setLoading(false);
     }
   };
+  
+  
 
   useEffect(() => {
     loadBooks();
-  }, [pagination.current]);
+  }, [searchKey, pagination.current]);
 
-  const handleSearch = () => {
-    setPagination(prev => ({ ...prev, current: 1 }));
-    loadBooks();
+  const handleSearch = (value) => {
+    setSearchKey(value);
+    setPagination((prev) => ({ ...prev, current: 1 }));
   };
 
   const handleAction = (action, record) => {
     Modal.confirm({
-      title: `Confirm to ${action === 'borrow' ? 'borrow' : 'return'} "${record.title}"?`,
+      title: `Confirm to ${
+        action === 'borrow' ? 'borrow' : 'return'
+      } "${record.title}"?`,
       onOk: async () => {
         try {
           setLoading(true);
@@ -71,53 +70,62 @@ export default function BookManagement() {
           message.success('Operation successful');
           await loadBooks();
         } catch (err) {
-          message.error(err.message);
+          message.error(err.message || 'Action failed');
         } finally {
           setLoading(false);
         }
-      }
+      },
     });
   };
 
   const columns = [
-    { 
-      title: 'Title', 
-      dataIndex: 'title', 
+    {
+      title: 'Title',
+      dataIndex: 'title',
       key: 'title',
-      sorter: (a, b) => a.title.localeCompare(b.title)
+      sorter: (a, b) => a.title.localeCompare(b.title),
     },
-    { 
-      title: 'Author', 
-      dataIndex: 'author', 
+    {
+      title: 'Author',
+      dataIndex: 'author',
       key: 'author',
-      sorter: (a, b) => a.author.localeCompare(b.author)
+      sorter: (a, b) => a.author.localeCompare(b.author),
     },
-    { 
-      title: 'ISBN', 
+    {
+      title: 'ISBN',
       dataIndex: 'isbn',
       key: 'isbn',
-      render: text => text || <span style={{ color: '#bfbfbf' }}>N/A</span>
+      render: (text) =>
+        text || <span style={{ color: '#bfbfbf' }}>N/A</span>,
     },
-    { 
-      title: 'Available Copies', 
-      dataIndex: 'available_copies', 
+    {
+      title: 'Available Copies',
+      dataIndex: 'available_copies',
       key: 'available_copies',
       sorter: (a, b) => a.available_copies - b.available_copies,
-      render: text => <span style={{ 
-        fontWeight: 600,
-        color: text > 0 ? '#389e0d' : '#cf1322'
-      }}>{text}</span>
-    },
-    { 
-      title: 'Status', 
-      render: (_, record) => (
-        <span style={{ 
-          color: record.available_copies > 0 ? '#52c41a' : '#ff4d4f',
-          fontWeight: 500
-        }}>
-          {record.available_copies > 0 ? 'Available' : 'Out of Stock'} 
+      render: (text) => (
+        <span
+          style={{
+            fontWeight: 600,
+            color: text > 0 ? '#389e0d' : '#cf1322',
+          }}
+        >
+          {text}
         </span>
-      )
+      ),
+    },
+    {
+      title: 'Status',
+      render: (_, record) => (
+        <span
+          style={{
+            color: record.available_copies > 0 ? '#52c41a' : '#ff4d4f',
+            fontWeight: 500,
+          }}
+        >
+          {record.available_copies > 0 ? 'Available' : 'Out of Stock'}
+        </span>
+      ),
     },
     {
       title: 'Action',
@@ -129,7 +137,7 @@ export default function BookManagement() {
             disabled={record.available_copies <= 0}
             style={{ minWidth: 80 }}
           >
-            {record.available_copies > 0 ? 'Borrow' : 'Unavailable'} 
+            {record.available_copies > 0 ? 'Borrow' : 'Unavailable'}
           </Button>
           <Button
             type="default"
@@ -140,8 +148,8 @@ export default function BookManagement() {
             Return
           </Button>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -154,9 +162,10 @@ export default function BookManagement() {
           allowClear
           enterButton="Search"
           size="large"
-          onSearch={handleSearch}
+          value={searchKey}
           onChange={(e) => setSearchKey(e.target.value)}
-          onPressEnter={handleSearch}
+          onSearch={handleSearch}
+          onPressEnter={(e) => handleSearch(e.target.value)}
           style={{ maxWidth: 600 }}
         />
       </div>
@@ -169,22 +178,23 @@ export default function BookManagement() {
         pagination={{
           ...pagination,
           showSizeChanger: false,
-          showTotal: total => `Total ${total} books`,
-          onChange: (page) => setPagination(prev => ({ ...prev, current: page }))
+          showTotal: (total) => `Total ${total} books`,
+          onChange: (page) =>
+            setPagination((prev) => ({ ...prev, current: page })),
         }}
         bordered
         scroll={{ x: 1000 }}
         locale={{
           emptyText: (
             <div style={{ padding: 40, textAlign: 'center' }}>
-              <img 
-                src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" 
+              <img
+                src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
                 alt="empty"
                 style={{ width: 80, marginBottom: 16 }}
               />
               <p style={{ color: 'rgba(0,0,0,0.25)' }}>No Data</p>
             </div>
-          )
+          ),
         }}
       />
     </div>

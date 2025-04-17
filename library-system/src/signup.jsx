@@ -25,7 +25,7 @@ const Signup = () => {
 
     try {
       // Send a POST request to your backend endpoint
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch("http://localhost:3000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
