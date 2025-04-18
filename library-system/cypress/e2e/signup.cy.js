@@ -1,6 +1,6 @@
 describe('Signup Page', () => {
   it('signs up with valid data and redirects to login', () => {
-    cy.visit('http://localhost:5174/signup');
+    cy.visit('http://localhost:5173/signup');
 
     // Generate a unique username to avoid duplicates
     const uniqueUsername = `newuser_${Date.now()}`;

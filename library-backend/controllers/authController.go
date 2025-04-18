@@ -35,6 +35,9 @@ type UserClaims struct {
 // @Failure 500 {object} map[string]string "Server error"
 // @Router /register [post]
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
+
+	log.Println("📩 RegisterUser called")
+
 	var requestData models.User
 
 	// 解析 JSON
