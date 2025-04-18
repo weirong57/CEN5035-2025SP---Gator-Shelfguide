@@ -312,6 +312,10 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ### ✍️ POST `/api/reviews` – Add Review
 - **Description**: A user can add a review and rating to a book.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
+- **Permission**: Authenticated User
 - **Request Body**:
 ```json
 {
@@ -321,13 +325,33 @@ This document provides a detailed explanation of all backend API endpoints for t
   "comment": "Excellent!"
 }
 ```
-- **Permission**: Authenticated User
+- **Sample Response**:
+```json
+{
+  "message": "Review added successfully"
+}
+```
 
 ---
 
 ### 🗂️ GET `/api/reviews` – Get Reviews
 - **Description**: Retrieve all reviews or reviews for a specific book.
+- **Query Parameters (optional)**:
+  - `book_id` (integer): Fliter reviews by a specific book.
 - **Permission**: Public
+- **Sample Request**:
+  - `GET /api/reviews?book_id=2
+- **Sample Response**:
+```json
+{
+  "review_id": 201,
+  "user_id": 1,
+  "book_id": 2,
+  "rating": 5,
+  "comment": "Excellent!",
+  "reviewed_on": "2025-04-16T14:32:00Z"
+}
+```
 
 ---
 
