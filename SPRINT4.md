@@ -39,6 +39,7 @@ This document provides a detailed explanation of all backend API endpoints for t
 ### 🔐 POST `/api/register` – User Registration
 - **Description**: Allows users to register a new account, with an option to register as a normal user or admin.
 - **Headers**: `Content-Type: application/json`
+- **Permission**: Public
 - **Request Body**:
 ```json
 {
@@ -51,13 +52,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 ```json
 { "message": "User registered successfully" }
 ```
-- **Permission**: Public
 
 ---
 
 ### 🔐 POST `/api/login` – User Login
 - **Description**: Login using username and password to receive a JWT authorization token.
 - **Headers**: `Content-Type: application/json`
+- **Permission**: Public
 - **Request Body**:
 ```json
 {
@@ -72,7 +73,6 @@ This document provides a detailed explanation of all backend API endpoints for t
   "token": "jwt_token_string"
 }
 ```
-- **Permission**: Public
 
 ---
 
@@ -83,7 +83,6 @@ This document provides a detailed explanation of all backend API endpoints for t
 - **Permission**: Public
 - **Sample Response**:
 ```json
-[
   {
     "id": 1,
     "title": "Clean Code",
@@ -94,7 +93,6 @@ This document provides a detailed explanation of all backend API endpoints for t
     "shelf_number": "A01",
     "isbn": "9780132350884"
   }
-]
 ```
 
 ---
@@ -108,7 +106,6 @@ This document provides a detailed explanation of all backend API endpoints for t
   - `GET /api/books/1`
 - **Sample Response**:
 ```json
-[
   {
     "id": 1,
     "title": "Clean Code",
@@ -119,14 +116,16 @@ This document provides a detailed explanation of all backend API endpoints for t
     "shelf_number": "A01",
     "isbn": "9780132350884"
   }
-]
 ```
 
 ---
 
-### 📖 POST `/api/books` – Add New Book
+### ➕ POST `/api/books` – Add New Book
 - **Description**: Admin can add a new book to the system.
-- **Headers**: `Authorization: Bearer <token>`
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
+- **Permission**: Admin
 - **Request Body**:
 ```json
 {
@@ -139,19 +138,55 @@ This document provides a detailed explanation of all backend API endpoints for t
   "isbn": "9780201616224"
 }
 ```
-- **Permission**: Admin
+- **Sample Response**:
+```json
+{ "message": "Book added successfully" }
+```
 
 ---
 
-### 📖 PUT `/api/books/{id}` – Update Book Info
+### ✏️ PUT `/api/books/{id}` – Update Book Info
 - **Description**: Admin can update existing book information.
+- **Path Parameters**:
+  - `id` (integer): ID of the book to update.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
 - **Permission**: Admin
+- **Sample Request**:
+  - `GET /api/books/1`
+- **Request Body**:
+```json
+{
+  "title": "The Pragmatic Programmer",
+  "author": "Andrew Hunt",
+  "genre": "Software",
+  "language": "English",
+  "available_copies": 3,
+  "shelf_number": "B01",
+  "isbn": "9780201616224"
+}
+```
+- **Sample Response**:
+```json
+{ "message": "Book updated successfully" }
+```
 
 ---
 
-### 📖 DELETE `/api/books/{id}` – Delete Book
+### ❌ DELETE `/api/books/{id}` – Delete Book
 - **Description**: Admin can delete a book from the system.
+- **Path Parameters**:
+  - `id` (integer): ID of the book to delete.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
 - **Permission**: Admin
+- **Sample Request**:
+  - `DELETE /api/books/1`
+- **Sample Response**:
+```json
+{ "message": "Book deleted successfully" }
+```
 
 ---
 
