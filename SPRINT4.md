@@ -1,0 +1,200 @@
+# 📘 Library Management System API Documentation (Detailed Version)
+
+This document provides a detailed explanation of all backend API endpoints for the Library Management System, including HTTP methods, paths, parameter structures, response formats, and permission requirements.
+
+---
+
+## 🧑‍💻 User Authentication Endpoints
+
+### 🔐 POST `/api/register` – User Registration
+- **Description**: Allows users to register a new account, with an option to register as a normal user or admin.
+- **Headers**: `Content-Type: application/json`
+- **Request Body**:
+```json
+{
+  "username": "alice123",
+  "password": "securePass123",
+  "role": "user"  // or "admin"
+}
+```
+- **Sample Response**:
+```json
+{ "message": "User registered successfully" }
+```
+- **Permission**: Public
+
+---
+
+### 🔐 POST `/api/login` – User Login
+- **Description**: Login using username and password to receive a JWT authorization token.
+- **Headers**: `Content-Type: application/json`
+- **Request Body**:
+```json
+{
+  "username": "alice123",
+  "password": "securePass123"
+}
+```
+- **Sample Response**:
+```json
+{
+  "message": "Login successful",
+  "token": "jwt_token_string"
+}
+```
+- **Permission**: Public
+
+---
+
+## 📚 Book Management Endpoints
+
+### 📖 GET `/api/books` – Get Book List
+- **Description**: Retrieve information for all books in the system.
+- **Permission**: Public
+- **Sample Response**:
+```json
+[
+  {
+    "id": 1,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": "Programming",
+    "language": "English",
+    "available_copies": 5,
+    "shelf_number": "A01",
+    "isbn": "9780132350884"
+  }
+]
+```
+
+---
+
+### 📖 GET `/api/books/{id}` – Get Book by ID
+- **Description**: Retrieve detailed information of a specific book by its ID.
+- **Permission**: Public
+
+---
+
+### 📖 POST `/api/books` – Add New Book
+- **Description**: Admin can add a new book to the system.
+- **Headers**: `Authorization: Bearer <token>`
+- **Request Body**:
+```json
+{
+  "title": "The Pragmatic Programmer",
+  "author": "Andrew Hunt",
+  "genre": "Software",
+  "language": "English",
+  "available_copies": 3,
+  "shelf_number": "B01",
+  "isbn": "9780201616224"
+}
+```
+- **Permission**: Admin
+
+---
+
+### 📖 PUT `/api/books/{id}` – Update Book Info
+- **Description**: Admin can update existing book information.
+- **Permission**: Admin
+
+---
+
+### 📖 DELETE `/api/books/{id}` – Delete Book
+- **Description**: Admin can delete a book from the system.
+- **Permission**: Admin
+
+---
+
+## 📦 Borrow and Return Endpoints
+
+### 📥 POST `/api/borrow` – Borrow a Book
+- **Description**: A logged-in user can borrow a book.
+- **Request Body**:
+```json
+{
+  "user_id": 1,
+  "book_id": 2
+}
+```
+- **Permission**: Authenticated User
+
+---
+
+### 📤 POST `/api/borrow/return` – Return a Book
+- **Description**: A logged-in user can return a borrowed book.
+- **Request Body**:
+```json
+{
+  "user_id": 1,
+  "book_id": 2
+}
+```
+- **Permission**: Authenticated User
+
+---
+
+## 📌 Book Reservation Endpoints
+
+### 🕐 POST `/api/reservations` – Create Reservation
+- **Description**: Create a reservation for a book.
+- **Request Body**:
+```json
+{
+  "user_id": 1,
+  "book_id": 2
+}
+```
+- **Permission**: Authenticated User
+
+---
+
+### ❌ POST `/api/reservations/cancel` – Cancel Reservation
+- **Description**: Cancel a previously made reservation.
+- **Permission**: Authenticated User
+
+---
+
+### 🔍 GET `/api/reservations` – Get User Reservations
+- **Description**: Retrieve all reservation records of the current user.
+- **Permission**: Authenticated User
+
+---
+
+## 📝 Book Review Endpoints
+
+### ✍️ POST `/api/reviews` – Add Review
+- **Description**: A user can add a review and rating to a book.
+- **Request Body**:
+```json
+{
+  "user_id": 1,
+  "book_id": 2,
+  "rating": 5,
+  "comment": "Excellent!"
+}
+```
+- **Permission**: Authenticated User
+
+---
+
+### 🗂️ GET `/api/reviews` – Get Reviews
+- **Description**: Retrieve all reviews or reviews for a specific book.
+- **Permission**: Public
+
+---
+
+📌 All endpoints requiring authentication must include the following header:
+```http
+Authorization: Bearer <token>
+```
+
+📌 All requests use JSON format and must include:
+```http
+Content-Type: application/json
+```
+
+---
+
+For PDF export or integration into documentation platforms, contact the system maintainer or development team.
+
