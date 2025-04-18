@@ -50,7 +50,9 @@ This document provides a detailed explanation of all backend API endpoints for t
 ```
 - **Sample Response**:
 ```json
-{ "message": "User registered successfully" }
+{
+  "message": "User registered successfully"
+}
 ```
 
 ---
@@ -140,7 +142,9 @@ This document provides a detailed explanation of all backend API endpoints for t
 ```
 - **Sample Response**:
 ```json
-{ "message": "Book added successfully" }
+{
+  "message": "Book added successfully"
+}
 ```
 
 ---
@@ -169,7 +173,9 @@ This document provides a detailed explanation of all backend API endpoints for t
 ```
 - **Sample Response**:
 ```json
-{ "message": "Book updated successfully" }
+{
+  "message": "Book updated successfully"
+}
 ```
 
 ---
@@ -185,7 +191,9 @@ This document provides a detailed explanation of all backend API endpoints for t
   - `DELETE /api/books/1`
 - **Sample Response**:
 ```json
-{ "message": "Book deleted successfully" }
+{
+  "message": "Book deleted successfully"
+}
 ```
 
 ---
@@ -194,6 +202,10 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ### 📥 POST `/api/borrow` – Borrow a Book
 - **Description**: A logged-in user can borrow a book.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
+- **Permission**: Authenticated User
 - **Request Body**:
 ```json
 {
@@ -201,12 +213,21 @@ This document provides a detailed explanation of all backend API endpoints for t
   "book_id": 2
 }
 ```
-- **Permission**: Authenticated User
+- **Sample Response**:
+```json
+{
+  "message": "Book borrowed successfully"
+}
+```
 
 ---
 
 ### 📤 POST `/api/borrow/return` – Return a Book
 - **Description**: A logged-in user can return a borrowed book.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
+- **Permission**: Authenticated User
 - **Request Body**:
 ```json
 {
@@ -214,7 +235,12 @@ This document provides a detailed explanation of all backend API endpoints for t
   "book_id": 2
 }
 ```
-- **Permission**: Authenticated User
+- **Sample Response**:
+```json
+{
+  "message": "Book returned successfully"
+}
+```
 
 ---
 
