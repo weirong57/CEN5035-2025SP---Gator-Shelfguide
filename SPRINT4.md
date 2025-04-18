@@ -248,6 +248,10 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ### 🕐 POST `/api/reservations` – Create Reservation
 - **Description**: Create a reservation for a book.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
+- **Permission**: Authenticated User
 - **Request Body**:
 ```json
 {
@@ -255,19 +259,52 @@ This document provides a detailed explanation of all backend API endpoints for t
   "book_id": 2
 }
 ```
-- **Permission**: Authenticated User
+- **Sample Response**:
+```json
+{
+  "message": "Reservation created successfully"
+}
+```
 
 ---
 
 ### ❌ POST `/api/reservations/cancel` – Cancel Reservation
 - **Description**: Cancel a previously made reservation.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
+  -  `Content-Type: application/json`
 - **Permission**: Authenticated User
+- **Request Body**:
+```json
+{
+  "user_id": 1,
+  "book_id": 2
+}
+```
+- **Sample Response**:
+```json
+{
+  "message": "Reservation cancelled successfully"
+}
+```
 
 ---
 
 ### 🔍 GET `/api/reservations` – Get User Reservations
 - **Description**: Retrieve all reservation records of the current user.
+- **Headers**:
+  -  `Authorization: Bearer <token>`
 - **Permission**: Authenticated User
+- **Sample Response**:
+```json
+{
+  "reservation_id": 101,
+  "user_id": 1,
+  "book_id": 2,
+  "book_title": "The Pragmatic Programmer",
+  "reserved_on": "2025-04-15T10:00:00Z"
+}
+```
 
 ---
 
