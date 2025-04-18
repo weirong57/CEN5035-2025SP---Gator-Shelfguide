@@ -53,6 +53,7 @@ func main() {
 	apiRouter := r.PathPrefix("/api").Subrouter() // <-- ✅ 使用子路由自动添加 /api 前缀
 	routes.AuthRoutes(apiRouter)
 	routes.BookRoutes(apiRouter)
+	routes.UserRoutes(apiRouter)
 	routes.BorrowRoutes(apiRouter)
 	routes.ReviewRoutes(apiRouter)
 	routes.ReservationRoutes(apiRouter)
