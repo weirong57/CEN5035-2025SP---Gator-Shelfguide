@@ -1,4 +1,34 @@
-# 📘 Library Management System API Documentation (Detailed Version)
+# 🚀 Sprint 4 - Final Sprint Report (Backend Team)
+
+## 📌 Overview
+
+Sprint 4 marks the completion and final integration of all core backend functionalities for the Gator ShelfGuide Library Management System. As backend developers, our focus was on ensuring a robust, secure, and scalable API to support all user and admin operations within the application.
+
+This sprint primarily involved:
+- Finalizing CRUD operations for books, reviews, and reservations.
+- Ensuring proper authentication and role-based access control (RBAC) across endpoints.
+- Testing and documenting all API endpoints with sample payloads.
+- Ensuring JWT-based security and token verification middleware.
+- Addressing bug fixes and optimizing endpoints for deployment.
+
+---
+
+## 🔧 Key Backend Tasks Completed
+
+| Task | Description |
+|------|-------------|
+| 🔐 JWT Authentication | Implemented secure login and registration with JWT-based authentication. |
+| 📚 Book Management | Built CRUD APIs to manage book listings with full admin control. |
+| 🧾 Review System | Developed endpoints for users to add and fetch reviews with ratings. |
+| 📦 Borrow/Return System | Enabled borrowing and returning of books with validations. |
+| 🕐 Reservation System | Added support for reserving and cancelling book reservations. |
+| 📄 Middleware | Added token verification middleware to protect private routes. |
+| 🧪 Testing & Debugging | Used Postman and unit tests to validate API behavior. |
+| 📜 API Documentation | Created detailed and structured API documentation (see below). |
+
+---
+
+# 📘 Library Management System API Documentation
 
 This document provides a detailed explanation of all backend API endpoints for the Library Management System, including HTTP methods, paths, parameter structures, response formats, and permission requirements.
 
