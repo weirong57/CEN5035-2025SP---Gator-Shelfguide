@@ -101,6 +101,14 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ### 📖 GET `/api/books/{id}` – Get Book by ID
 - **Description**: Retrieve detailed information of a specific book by its ID.
+- **Path Parameters**:
+  ''' bash
+  [
+    {
+      id (integer): ID of the book to fetch.
+    }
+  ]
+  '''
 - **Permission**: Public
 
 ---
