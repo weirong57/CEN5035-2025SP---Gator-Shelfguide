@@ -16,6 +16,8 @@ var DB *sql.DB
 // InitDB 负责初始化数据库连接，并返回 error
 func InitDB() error {
 	// 读取 .env 文件
+
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Warning: No .env file found, using system environment variables")
@@ -37,7 +39,7 @@ func InitDB() error {
 	// 连接数据库
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		return fmt.Errorf("❌ error connecting to database: %w", err)
+		return fmt.Errorf("❌ error connecting to database with DSN '%s': %w", dsn, err)
 	}
 
 	// 设置连接池参数
