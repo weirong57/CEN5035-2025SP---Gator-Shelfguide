@@ -203,7 +203,7 @@ export default function BookManagement() {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 8,
+    pageSize: 10,
     total: 0,
   });
   const [userId, setUserId] = useState(1); // Default userId - in real app should come from auth
@@ -257,7 +257,7 @@ export default function BookManagement() {
     loadBooks();
   };
 
-  const handleAction = (action, record) => {
+  /*const handleAction = (action, record) => {
     Modal.confirm({
       title: `Confirm to ${action === 'borrow' ? 'borrow' : 'return'} "${record.title}"?`,
       content: action === 'borrow' 
@@ -275,11 +275,11 @@ export default function BookManagement() {
           
           if (action === 'borrow') {
             // Call the borrow endpoint
-            await axios.post('http://localhost:3000/borrow', requestBody);
+            await axios.post('/api/borrow', requestBody);
             message.success(`Successfully borrowed "${record.title}"`);
           } else {
             // Call the return endpoint
-            await axios.post('http://localhost:3000/borrow/return', requestBody);
+            await axios.post('/api/borrow/return', requestBody);
             message.success(`Successfully returned "${record.title}"`);
           }
           
@@ -303,6 +303,45 @@ export default function BookManagement() {
         }
       }
     });
+  };*/
+  const handleAction = (action, record) => {
+    if (window.confirm(`Confirm to ${action === 'borrow' ? 'borrow' : 'return'} "${record.title}"?`)) {
+      (async () => {
+        try {
+          setLoading(true);
+          
+          // 创建请求对象，确保键名与后端匹配
+          const requestBody = {
+            bookID: record.id,  // 注意：这里的键名要与后端匹配
+            userID: userId      // 注意：这里的键名要与后端匹配
+          };
+          
+          if (action === 'borrow') {
+            await axios.post('/api/borrow', requestBody);
+            message.success(`Successfully borrowed "${record.title}"`);
+          } else {
+            await axios.post('/api/borrow/return', requestBody);
+            message.success(`Successfully returned "${record.title}"`);
+          }
+          
+          await loadBooks();
+        } catch (error) {
+          console.error(`Failed to ${action} book:`, error);
+          
+          if (error.response?.status === 404) {
+            action === 'borrow'
+              ? message.error('Book not found or unavailable')
+              : message.error('No active borrow record found');
+          } else if (error.response?.status === 400) {
+            message.error('Invalid request data');
+          } else {
+            message.error(`Failed to ${action} the book. Please try again.`);
+          }
+        } finally {
+          setLoading(false);
+        }
+      })();
+    }
   };
 
   const columns = [
@@ -386,7 +425,7 @@ export default function BookManagement() {
 
       <div className="search-bar" style={{ marginBottom: 16 }}>
         <Input.Search
-          placeholder="Search by title/author/ISBN..."
+          placeholder="Search by title/author"
           allowClear
           enterButton="Search"
           size="large"
@@ -396,7 +435,7 @@ export default function BookManagement() {
           style={{ maxWidth: 600 }}
         />
       </div>
-
+    
       <Table
         columns={columns}
         dataSource={books}

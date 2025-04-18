@@ -66,12 +66,12 @@ export const bookService = {
       throw new Error(error.message || 'Failed to fetch books');
     }
   },
-
-  /**
+/*
+  *
    * Borrow a book by ID
    * @param {string|number} bookId - The ID of the book to borrow
    * @returns {Promise} Response with borrow operation result
-   */
+   
   borrowBook: async (bookId) => {
     try {
       const response = await apiClient.post('/borrow', { bookId });
@@ -85,7 +85,7 @@ export const bookService = {
    * Return a book by ID
    * @param {string|number} bookId - The ID of the book to return
    * @returns {Promise} Response with return operation result
-   */
+   
   returnBook: async (bookId) => {
     try {
       const response = await apiClient.post('/borrow/return', { bookId });
@@ -94,7 +94,36 @@ export const bookService = {
       throw new Error(error.message || 'Failed to return book');
     }
   },
+*/
+    /**
+   * Borrow a book by ID
+   * @param {string|number} bookId - The ID of the book to borrow
+   * @param {string|number} userId - The ID of the user borrowing the book
+   * @returns {Promise} Response with borrow operation result
+   */
+  borrowBook: async (bookId, userId) => {
+    try {
+      const response = await apiClient.post('/borrow', { bookId, userId });
+      return response;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to borrow book');
+    }
+  },
 
+  /**
+   * Return a book by ID
+   * @param {string|number} bookId - The ID of the book to return
+   * @param {string|number} userId - The ID of the user returning the book
+   * @returns {Promise} Response with return operation result
+   */
+  returnBook: async (bookId, userId) => {
+    try {
+      const response = await apiClient.post('/borrow/return', { bookId, userId });
+      return response;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to return book');
+    }
+  },
   /**
    * Add a new book
    * @param {Object} bookData - Book data to add
