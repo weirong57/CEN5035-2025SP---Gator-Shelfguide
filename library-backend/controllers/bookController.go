@@ -66,7 +66,7 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	var books []models.Book
 	for rows.Next() {
 		var book models.Book
-		if err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.Genre, &book.Language, &book.ShelfNumber, &book.AvailableCopies, &book.ISBN); err != nil {
+		if err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.ISBN, &book.Genre, &book.Language, &book.ShelfNumber, &book.AvailableCopies); err != nil {
 			log.Println("Error scanning row:", err)
 			continue
 		}
