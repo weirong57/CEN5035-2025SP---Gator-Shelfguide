@@ -104,6 +104,23 @@ This document provides a detailed explanation of all backend API endpoints for t
 - **Path Parameters**:
   - `id` (integer): ID of the book to fetch.
 - **Permission**: Public
+- **Sample Request**:
+  - `GET /api/books/1`
+- **Sample Response**:
+```json
+[
+  {
+    "id": 1,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "genre": "Programming",
+    "language": "English",
+    "available_copies": 5,
+    "shelf_number": "A01",
+    "isbn": "9780132350884"
+  }
+]
+```
 
 ---
 
