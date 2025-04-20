@@ -119,8 +119,15 @@ This will typically start the frontend application, and the output will provide 
   4. Open your web browser and navigate to the frontend URL provided by the 
    `npm run dev` output (e.g., `http://localhost:5173`).
 
-## Final Presentation Demo
-[Link to Demo Video - TBD]
+## 🎬 Final Presentation Demo 
+
+[![Watch the video ](https://img.youtube.com/vi/Wr-74u61lyk/maxresdefault.jpg)](https://youtu.be/Wr-74u61lyk?si=N-xYrtfw9LU0-F3A)
+
+🔗 [Click here to watch the demo video on YouTube ](https://youtu.be/Wr-74u61lyk?si=N-xYrtfw9LU0-F3A)
+
+> This video showcases the core features and usage of our library management system.  
+
+
 
 ## Running Unit Tests
 
