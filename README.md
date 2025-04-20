@@ -113,8 +113,7 @@ This will typically start the frontend application, and the output will provide 
 ## Running the Application
   1. Ensure your MySQL database server is running and the library_db database 
    has been initialized using the `library_db_init.sql` script.
-  2. Start the backend server from the library-backend directory (`go run 
-   main.go`).
+  2. Start the backend server from the library-backend directory (`go run main.go`).
   3. Start the frontend development server from the library-system directory 
    (`npm run dev`).
   4. Open your web browser and navigate to the frontend URL provided by the 
