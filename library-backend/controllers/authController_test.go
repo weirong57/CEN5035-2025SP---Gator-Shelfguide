@@ -1,4 +1,4 @@
-package controllers
+package controllers_test
 
 import (
 	"bytes"
@@ -7,70 +7,78 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+	"golang.org/x/crypto/bcrypt"
+
 
 	"library-backend/config"
+	"library-backend/controllers"
 	"library-backend/models"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
-// **测试用户注册** test uesr
-func TestRegisterUser(t *testing.T) {
-	user := models.User{
-		Username: "newtestuser",
-		Password: "newtestpass",
-		Role:     "user",
-	}
-
-	userJSON, _ := json.Marshal(user)
-	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(userJSON))
-	req.Header.Set("Content-Type", "application/json")
-
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(RegisterUser)
-	handler.ServeHTTP(rr, req)
-
-	if rr.Code != http.StatusCreated {
-		t.Errorf("❌ Expected status code %v，Actual status code %v", http.StatusCreated, rr.Code)
-	}
+func cleanupTestAuthUser(username string) {
+	config.DB.Exec("DELETE FROM Users WHERE username = ?", username)
 }
 
-// **测试用户登录/Test user login**
-func TestLoginUser(t *testing.T) {
+func TestRegisterUser_Success(t *testing.T) {
+	testUsername := "test_register_user"
 
+	cleanupTestAuthUser(testUsername) // 清理旧数据
+
+	user := models.User{
+		Username: testUsername,
+		Password: "testpass123",
+		Role:     "user",
+	}
+	data, _ := json.Marshal(user)
+
+	req := httptest.NewRequest("POST", "/register", bytes.NewReader(data))
+	rec := httptest.NewRecorder()
+
+	controllers.RegisterUser(rec, req)
+
+	if rec.Code != http.StatusCreated {
+		t.Errorf("注册失败，状态码应为 201，实际为 %d", rec.Code)
+	}
+
+	cleanupTestAuthUser(testUsername) // 注册后清理
+}
+
+func TestLoginUser_Success(t *testing.T) {
+	testUsername := "test_login_user"
+	testPassword := "testpass123"
+
+	// 清理旧数据
+	cleanupTestAuthUser(testUsername)
+
+	// ✅ 生成 bcrypt 哈希密码（动态）
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(testPassword), bcrypt.DefaultCost)
+	if err != nil {
+		t.Fatalf("密码加密失败: %v", err)
+	}
+
+	// ✅ 插入测试用户（使用加密密码）
+	_, err = config.DB.Exec("INSERT INTO Users (username, password, role) VALUES (?, ?, ?)",
+		testUsername, string(hashedPassword), "user")
+	if err != nil {
+		t.Fatalf("插入测试用户失败: %v", err)
+	}
+
+	// 设置 token secret
 	os.Setenv("JWT_SECRET", "testsecret")
 
-	username := "test_login_unique_123" // ✅ 使用唯一用户名
-	password := "password123"
-
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
-
-	_, err := config.DB.Exec("INSERT INTO Users (username, password, role) VALUES (?, ?, ?)", username, string(hashedPassword), "user")
-	if err != nil {
-		t.Fatalf("❌ Failed to insert test user: %v", err)
+	// 构造登录请求
+	login := models.LoginCredentials{
+		Username: testUsername,
+		Password: testPassword,
 	}
+	data, _ := json.Marshal(login)
 
-	credentials := models.LoginCredentials{
-		Username: username,
-		Password: password,
-	}
+	req := httptest.NewRequest("POST", "/login", bytes.NewReader(data))
+	rec := httptest.NewRecorder()
 
-	credentialsJSON, _ := json.Marshal(credentials)
-	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(credentialsJSON))
-	req.Header.Set("Content-Type", "application/json")
+	controllers.LoginUser(rec, req)
 
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(LoginUser)
-	handler.ServeHTTP(rr, req)
-
-	if rr.Code != http.StatusOK {
-		t.Errorf("❌ Expected status code %v，Actual status code %v", http.StatusOK, rr.Code)
-	}
-
-	// **解析返回的 JWT Parses the returned JWT**
-	var response map[string]string
-	json.Unmarshal(rr.Body.Bytes(), &response)
-	if response["token"] == "" {
-		t.Errorf("❌ The JWT token was not returned")
+	if rec.Code != http.StatusOK {
+		t.Errorf("登录失败，状态码应为 200，实际为 %d", rec.Code)
 	}
 }

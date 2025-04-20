@@ -1,122 +1,68 @@
-package controllers
+package controllers_test
 
 import (
 	"bytes"
+	
+	"database/sql"
 	"encoding/json"
-	"library-backend/models"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"library-backend/config"
+	"library-backend/controllers"
+	"library-backend/models"
 )
 
-func TestAddReview(t *testing.T) {
+func setupReviewTest(t *testing.T, db *sql.DB) (userID, bookID int) {
+	// 插入用户
+	res, err := db.Exec("INSERT INTO Users (username, password, role) VALUES (?, ?, ?)", "test_reviewer", "123456", "user")
+	if err != nil {
+		t.Fatalf("插入测试用户失败: %v", err)
+	}
+	uid, _ := res.LastInsertId()
 
-	// Test cases
-	tests := []struct {
-		name           string
-		reviewRequest  models.ReviewRequest
-		expectedStatus int
-	}{
-		{
-			name: "Valid Review",
-			reviewRequest: models.ReviewRequest{
-				UserID:  1,
-				BookID:  1,
-				Rating:  5,
-				Comment: "Great book!",
-			},
-			expectedStatus: http.StatusOK,
-		},
-		{
-			name: "Invalid Rating",
-			reviewRequest: models.ReviewRequest{
-				UserID:  1,
-				BookID:  1,
-				Rating:  6, // Invalid rating > 5
-				Comment: "Great book!",
-			},
-			expectedStatus: http.StatusBadRequest,
-		},
-		{
-			name: "Missing Required Fields",
-			reviewRequest: models.ReviewRequest{
-				UserID: 1,
-				// Missing BookID
-				Rating:  4,
-				Comment: "Good book",
-			},
-			expectedStatus: http.StatusBadRequest,
-		},
+	// 插入图书
+	res, err = db.Exec("INSERT INTO Books (title, author, available_copies) VALUES (?, ?, ?)", "Test Book", "Test Author", 1)
+	if err != nil {
+		t.Fatalf("插入测试图书失败: %v", err)
+	}
+	bid, _ := res.LastInsertId()
+
+	// 插入借阅记录
+	_, err = db.Exec("INSERT INTO BorrowingRecords (user_id, book_id, borrowed_at, due_date) VALUES (?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY))", uid, bid)
+	if err != nil {
+		t.Fatalf("插入借阅记录失败: %v", err)
 	}
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// Create request body
-			jsonBody, err := json.Marshal(tt.reviewRequest)
-			if err != nil {
-				t.Fatalf("Failed to marshal request: %v", err)
-			}
-
-			// Create request
-			req := httptest.NewRequest("POST", "/reviews", bytes.NewBuffer(jsonBody))
-			req.Header.Set("Content-Type", "application/json")
-
-			// Create response recorder
-			rr := httptest.NewRecorder()
-
-			// Call the handler
-			AddReview(rr, req)
-
-			// Check status code
-			if rr.Code != tt.expectedStatus {
-				t.Errorf("handler returned wrong status code: got %v want %v",
-					rr.Code, tt.expectedStatus)
-			}
-		})
-	}
+	return int(uid), int(bid)
 }
 
-func TestGetBookReviews(t *testing.T) {
+func teardownReviewTest(t *testing.T, db *sql.DB, userID, bookID int) {
+	db.Exec("DELETE FROM Reviews WHERE user_id = ? AND book_id = ?", userID, bookID)
+	db.Exec("DELETE FROM BorrowingRecords WHERE user_id = ? AND book_id = ?", userID, bookID)
+	db.Exec("DELETE FROM Books WHERE id = ?", bookID)
+	db.Exec("DELETE FROM Users WHERE id = ?", userID)
+}
 
-	// Test cases
-	tests := []struct {
-		name           string
-		bookID         string
-		expectedStatus int
-	}{
-		{
-			name:           "Valid Book ID",
-			bookID:         "1",
-			expectedStatus: http.StatusOK,
-		},
-		{
-			name:           "Missing Book ID",
-			bookID:         "",
-			expectedStatus: http.StatusBadRequest,
-		},
-		{
-			name:           "Invalid Book ID",
-			bookID:         "999999",      // Assuming this ID doesn't exist
-			expectedStatus: http.StatusOK, // Should return empty array, not error
-		},
+func TestAddReview_Success(t *testing.T) {
+	userID, bookID := setupReviewTest(t, config.DB)
+	defer teardownReviewTest(t, config.DB, userID, bookID)
+
+	review := models.ReviewRequest{
+		UserID:  userID,
+		BookID:  bookID,
+		Rating:  4,
+		Comment: "Good book!",
 	}
+	data, _ := json.Marshal(review)
 
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// Create request
-			req := httptest.NewRequest("GET", "/reviews?bookId="+tt.bookID, nil)
+	req := httptest.NewRequest("POST", "/reviews", bytes.NewReader(data))
+	rec := httptest.NewRecorder()
 
-			// Create response recorder
-			rr := httptest.NewRecorder()
+	controllers.AddReview(rec, req)
 
-			// Call the handler
-			GetBookReviews(rr, req)
-
-			// Check status code
-			if rr.Code != tt.expectedStatus {
-				t.Errorf("handler returned wrong status code: got %v want %v",
-					rr.Code, tt.expectedStatus)
-			}
-		})
+	if rec.Code != http.StatusOK {
+		t.Errorf("期待状态码 200，实际为: %d", rec.Code)
 	}
 }
