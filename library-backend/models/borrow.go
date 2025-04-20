@@ -21,6 +21,6 @@ type BorrowingRecord struct {
 	ISBN       string         `json:"isbn"`     // 图书ISBN
 	BorrowedAt time.Time      `json:"borrowed_at"`
 	DueDate    time.Time      `json:"due_date"`
-	ReturnedAt sql.NullTime   `json:"returned_at,omitempty"` // 修改为 sql.NullTime
+	ReturnedAt sql.NullTime `json:"returned_at,omitempty" swaggertype:"primitive,string"`
 	Status     string         `json:"status"` // Borrowing, Returned, Overdue
 }

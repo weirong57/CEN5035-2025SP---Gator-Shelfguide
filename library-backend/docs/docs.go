@@ -15,6 +15,131 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/books": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "管理员添加图书到数据库中 (Add a new book with full information)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员功能 (Admin)"
+                ],
+                "summary": "添加图书 (Admin only)",
+                "parameters": [
+                    {
+                        "description": "图书信息 (Book Information)",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Book"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "添加成功",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "请求数据错误",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "数据库错误",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/books/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "管理员根据图书 ID 删除图书 (Delete a book by ID)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "管理员功能 (Admin)"
+                ],
+                "summary": "删除图书 (Admin only)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "图书 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除成功",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "无效 ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "图书未找到",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "数据库错误",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/books": {
             "get": {
                 "description": "获取图书列表，支持按关键词搜索 (Retrieve all books in the library, optionally filter by keyword)",
@@ -48,57 +173,6 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "服务器错误 (Server error)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "将新图书添加到数据库中 (Add a new book with full information)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "图书管理 (Book Management)"
-                ],
-                "summary": "添加图书 (Add a new book to library)",
-                "parameters": [
-                    {
-                        "description": "图书信息 (Book Information)",
-                        "name": "book",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Book"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "添加成功响应 (Success Response)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": "请求数据错误 (Invalid request body)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "数据库错误 (Database error)",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -227,66 +301,6 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "数据库错误 (Database error)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "根据图书 ID 删除图书信息 (Delete a book record by its ID)",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "图书管理 (Book Management)"
-                ],
-                "summary": "删除指定图书 (Delete a book by ID)",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "图书 ID (Book ID)",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "删除成功 (Success Response)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "无效 ID (Invalid book ID)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "图书未找到 (Book not found)",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "服务器错误 (Server error)",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -853,6 +867,118 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/{id}": {
+            "get": {
+                "description": "根据用户 ID 获取用户名和注册时间 (Get username and registration time by user ID)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理 (User Management)"
+                ],
+                "summary": "获取用户信息 (Retrieve user profile)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户 ID (User ID)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功响应 (Success Response)",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "无效用户 ID (Invalid user ID)",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "用户未找到 (User not found)",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "数据库错误 (Database error)",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}/records": {
+            "get": {
+                "description": "获取用户的借阅历史记录，包括书名、作者、ISBN、借阅时间等 (Get user's borrowing history with book details)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理 (User Management)"
+                ],
+                "summary": "获取用户借阅记录 (Retrieve user borrowing history)",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户 ID (User ID)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "借阅记录列表 (Borrowing records list)",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.BorrowingRecord"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "无效用户 ID (Invalid user ID)",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "数据库错误 (Database error)",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -860,44 +986,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "author": {
-                    "description": "作者",
-                    "type": "string",
-                    "example": "John Doe"
+                    "type": "string"
                 },
                 "available_copies": {
-                    "description": "可借数量",
-                    "type": "integer",
-                    "example": 3
+                    "type": "integer"
                 },
                 "genre": {
-                    "description": "类型",
-                    "type": "string",
-                    "example": "Programming"
+                    "type": "string"
                 },
                 "id": {
-                    "description": "图书 ID",
-                    "type": "integer",
-                    "example": 101
+                    "type": "integer"
                 },
                 "isbn": {
-                    "description": "ISBN",
-                    "type": "string",
-                    "example": "9781234567890"
+                    "type": "string"
                 },
                 "language": {
-                    "description": "语言",
-                    "type": "string",
-                    "example": "English"
+                    "type": "string"
                 },
                 "shelf_number": {
-                    "description": "书架号",
-                    "type": "string",
-                    "example": "A-12"
+                    "type": "string"
                 },
                 "title": {
-                    "description": "标题",
-                    "type": "string",
-                    "example": "Golang Basics"
+                    "type": "string"
                 }
             }
         },
@@ -913,6 +1023,45 @@ const docTemplate = `{
                     "description": "用户 ID",
                     "type": "integer",
                     "example": 1
+                }
+            }
+        },
+        "models.BorrowingRecord": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "description": "图书作者",
+                    "type": "string"
+                },
+                "book_id": {
+                    "type": "integer"
+                },
+                "borrowed_at": {
+                    "type": "string"
+                },
+                "due_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isbn": {
+                    "description": "图书ISBN",
+                    "type": "string"
+                },
+                "returned_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Borrowing, Returned, Overdue",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "图书标题",
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -970,6 +1119,15 @@ const docTemplate = `{
         "models.User": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "description": "用户创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "用户ID",
+                    "type": "integer",
+                    "example": 1
+                },
                 "password": {
                     "type": "string",
                     "example": "securePass123"
@@ -989,12 +1147,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:3000",
-	BasePath:         "/",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Library Management API 文档",
-	Description:      "This is the back-end API for an online library management system",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

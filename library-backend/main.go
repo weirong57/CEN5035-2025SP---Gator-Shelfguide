@@ -53,6 +53,7 @@ func main() {
 	routes.BorrowRoutes(apiRouter)
 	routes.ReviewRoutes(apiRouter)
 	routes.ReservationRoutes(apiRouter)
+	routes.RegisterAdminRoutes(apiRouter)
 
 	// 添加受 JWT 保护的路由
 	r.Handle("/borrow", middleware.VerifyToken(http.HandlerFunc(controllers.BorrowBook))).Methods("POST")

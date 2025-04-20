@@ -252,6 +252,8 @@ export default function AdminDashboard() {
   );
 }*/
 // src/pages/AdminDashboard.jsx
+// src/pages/AdminDashboard.jsx
+// src/pages/AdminDashboard.jsx
 import { useState, useEffect } from 'react';
 import { 
   Tabs, 
@@ -266,18 +268,18 @@ import {
   Col, 
   Tag, 
   Modal,
-  message 
+  message,
+  Alert 
 } from 'antd';
 import { 
   BookOutlined, 
-  UserOutlined, 
-  ShoppingOutlined,
-  BarChartOutlined,
-  PlusOutlined 
+  PlusOutlined,
+  DeleteOutlined 
 } from '@ant-design/icons';
-import axios from 'axios'; // Axios needs to be installed
+import axios from 'axios';
+import { useAuth } from '../AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
-const API_BASE = 'http://localhost:3000'; // Backend API base URL
 const { TabPane } = Tabs;
 
 export default function AdminDashboard() {
@@ -285,161 +287,210 @@ export default function AdminDashboard() {
   const [form] = Form.useForm();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  // Dynamic data states
   const [books, setBooks] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [borrows, setBorrows] = useState([]);
   const [stats, setStats] = useState({
-    totalBooks: 0,
-    activeUsers: 0,
-    activeBorrows: 0
+    totalBooks: 0
   });
+
+  const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // Check admin privileges
+  useEffect(() => {
+    if (isAuthenticated()) {
+      if (user.role !== 'admin') {
+        message.error('You do not have admin privileges');
+        navigate('/main/dashboard');
+      } else {
+        fetchBooks();
+        fetchStats();
+      }
+    } else {
+      navigate('/login');
+    }
+  }, [isAuthenticated, user, navigate]);
 
   // Fetch statistics
   const fetchStats = async () => {
     try {
-      const [booksRes, usersRes, borrowsRes] = await Promise.all([
-        axios.get(`${API_BASE}/books`),
-        axios.get(`${API_BASE}/users`),
-        axios.get(`${API_BASE}/borrow`)
-      ]);
+      const response = await axios.get('/api/books', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
       
       setStats({
-        totalBooks: booksRes.data.length,
-        activeUsers: usersRes.data.length,
-        activeBorrows: borrowsRes.data.length
+        totalBooks: Array.isArray(response.data) ? response.data.length : 0
       });
     } catch (error) {
+      console.error('Failed to fetch statistics:', error);
       message.error('Failed to fetch statistics');
     }
   };
 
-  // Fetch book data
+  // Fetch all books
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API_BASE}/books`);
-      setBooks(res.data);
+      const response = await axios.get('/api/books', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      
+      if (Array.isArray(response.data)) {
+        setBooks(response.data);
+      } else {
+        console.warn('Unexpected response format:', response.data);
+        setBooks([]);
+      }
     } catch (error) {
-      message.error('Failed to fetch book data');
+      console.error('Failed to fetch books data:', error);
+      message.error('Failed to fetch books data');
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch user data
-  const fetchUsers = async () => {
-    setLoading(true);
+  // Add new book
+  const handleAddBook = async (values) => {
     try {
-      const res = await axios.get(`${API_BASE}/users`);
-      setUsers(res.data);
+      setLoading(true);
+      
+      const bookData = {
+        title: values.title,
+        author: values.author,
+        isbn: values.isbn,
+        genre: values.genre || '',
+        language: values.language || '',
+        shelf_number: values.shelf_number || '',
+        available_copies: parseInt(values.available_copies)
+      };
+      
+      const response = await axios.post('/api/admin/books', bookData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      
+      message.success('Book added successfully');
+      setShowModal(false);
+      form.resetFields();
+      fetchBooks();
     } catch (error) {
-      message.error('Failed to fetch user data');
+      console.error('Failed to add book:', error);
+      message.error(`Failed to add book: ${error.response?.data || error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch borrow records
-  const fetchBorrows = async () => {
-    setLoading(true);
+  // Delete book confirmation
+  const deleteBook = (id) => {
+    if (window.confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
+      handleDeleteBook(id);
+    }
+  };
+  
+  // Handle book deletion
+  const handleDeleteBook = async (id) => {
     try {
-      const res = await axios.get(`${API_BASE}/borrow`);
-      setBorrows(res.data);
+      setLoading(true);
+      const response = await axios({
+        method: 'DELETE',
+        url: `/api/admin/books/${id}`,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      
+      message.success('Book deleted successfully');
+      fetchBooks();
     } catch (error) {
-      message.error('Failed to fetch borrow records');
+      console.error('Failed to delete book:', error);
+      message.error(`Failed to delete book: ${error.response?.data || error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Initialize data on mount
-  useEffect(() => {
-    fetchStats();
-    fetchBooks();
-    fetchUsers();
-    fetchBorrows();
-  }, []);
-
-  // Table columns configuration
+  // Book table columns
   const bookColumns = [
-    { title: 'Title', dataIndex: 'title', sorter: (a, b) => a.title.localeCompare(b.title) },
-    { title: 'Author', dataIndex: 'author' },
-    { title: 'ISBN', dataIndex: 'isbn' },
+    { 
+      title: 'Title', 
+      dataIndex: 'title', 
+      key: 'title',
+      sorter: (a, b) => a.title.localeCompare(b.title)
+    },
+    { 
+      title: 'Author', 
+      dataIndex: 'author', 
+      key: 'author' 
+    },
+    { 
+      title: 'ISBN', 
+      dataIndex: 'isbn', 
+      key: 'isbn' 
+    },
     { 
       title: 'Stock', 
-      dataIndex: 'available_copies',
-      render: text => <Tag color={text > 0 ? 'green' : 'red'}>{text}</Tag>
+      dataIndex: 'available_copies', 
+      key: 'available_copies',
+      render: (text) => <Tag color={text > 0 ? 'green' : 'red'}>{text}</Tag>
     },
     {
       title: 'Actions',
+      key: 'action',
       render: (_, record) => (
-        <div>
-          <Button type="link" onClick={() => handleEditBook(record)}>Edit</Button>
-          <Button type="link" danger onClick={() => handleDeleteBook(record.id)}>Delete</Button>
-        </div>
+        <Button
+          type="primary"
+          danger
+          icon={<DeleteOutlined />}
+          onClick={() => deleteBook(record.id)}
+        >
+          Delete
+        </Button>
       )
     }
   ];
 
-  // Add new book
-  const handleAddBook = async values => {
-    try {
-      await axios.post(`${API_BASE}/books`, values);
-      message.success('Book added successfully');
-      fetchBooks();
-      setShowModal(false);
-      form.resetFields();
-    } catch (error) {
-      message.error('Failed to add book');
-    }
-  };
-
-  // Delete book
-  const handleDeleteBook = async id => {
-    try {
-      await axios.delete(`${API_BASE}/books/${id}`);
-      message.success('Deleted successfully');
-      fetchBooks();
-    } catch (error) {
-      message.error('Failed to delete');
-    }
-  };
-
-  // Edit book
-  const handleEditBook = async (values, id) => {
-    try {
-      await axios.put(`${API_BASE}/books/${id}`, values);
-      message.success('Updated successfully');
-      fetchBooks();
-      setShowModal(false);
-    } catch (error) {
-      message.error('Failed to update');
-    }
-  };
-
-  // Update user role
-  const handleRoleUpdate = async (userId, newRole) => {
-    try {
-      await axios.put(`${API_BASE}/users/${userId}`, { role: newRole });
-      message.success('Role updated successfully');
-      fetchUsers();
-    } catch (error) {
-      message.error('Failed to update role');
-    }
-  };
+  if (!isAuthenticated() || (user && user.role !== 'admin')) {
+    return (
+      <Alert
+        message="Access Denied"
+        description="You need administrator privileges to access this page."
+        type="error"
+        showIcon
+      />
+    );
+  }
 
   return (
     <div style={{ padding: 24 }}>
-      {/* Statistics card section remains unchanged */}
+      <Row gutter={[24, 24]} style={{ marginBottom: 24 }}>
+        <Col xs={24} sm={8}>
+          <Card>
+            <Statistic
+              title="Total Books"
+              value={stats.totalBooks}
+              prefix={<BookOutlined />}
+              suffix="books"
+            />
+          </Card>
+        </Col>
+      </Row>
       
       <Tabs defaultActiveKey="1" onChange={setActiveTab}>
         <TabPane tab={<span><BookOutlined />Book Management</span>} key="1">
           <Card
             title="Book List"
             extra={
-              <Button type="primary" icon={<PlusOutlined />} onClick={() => setShowModal(true)}>
+              <Button 
+                type="primary" 
+                icon={<PlusOutlined />} 
+                onClick={() => setShowModal(true)}
+              >
                 Add New Book
               </Button>
             }
@@ -450,106 +501,69 @@ export default function AdminDashboard() {
               rowKey="id"
               loading={loading}
               bordered
-            />
-          </Card>
-        </TabPane>
-
-        {/* User Management TabPane */}
-        <TabPane tab={<span><UserOutlined />User Management</span>} key="2">
-          <Card title="User List">
-            <Table
-              columns={[
-                { title: 'Username', dataIndex: 'username' },
-                { 
-                  title: 'Role', 
-                  dataIndex: 'role',
-                  render: (text, record) => (
-                    <Tag 
-                      color={text === 'admin' ? 'gold' : 'blue'}
-                      onClick={() => {
-                        Modal.confirm({
-                          title: 'Change User Role',
-                          content: `Are you sure you want to change ${record.username}'s role?`,
-                          onOk: () => handleRoleUpdate(record.id, text === 'admin' ? 'user' : 'admin')
-                        });
-                      }}
-                    >
-                      {text}
-                    </Tag>
-                  )
-                },
-                { title: 'Registration Date', dataIndex: 'registered' }
-              ]}
-              dataSource={users}
-              rowKey="id"
-              loading={loading}
-              bordered
-            />
-          </Card>
-        </TabPane>
-
-        {/* Borrow Records TabPane */}
-        <TabPane tab={<span><BarChartOutlined />Borrow Records</span>} key="3">
-          <Card title="All Borrow Records">
-            <Table
-              columns={[
-                { title: 'User', dataIndex: ['user', 'username'] },
-                { title: 'Book', dataIndex: ['book', 'title'] },
-                { title: 'Borrow Date', dataIndex: 'borrowDate' },
-                { 
-                  title: 'Due Date', 
-                  dataIndex: 'dueDate',
-                  render: text => (
-                    <span style={{ color: new Date(text) < new Date() ? 'red' : 'inherit' }}>
-                      {text}
-                    </span>
-                  )
-                },
-                { 
-                  title: 'Status', 
-                  dataIndex: 'status',
-                  render: text => (
-                    <Tag color={text === 'active' ? 'green' : 'volcano'}>
-                      {text === 'active' ? 'Active' : 'Returned'}
-                    </Tag>
-                  )
-                }
-              ]}
-              dataSource={borrows}
-              rowKey="id"
-              loading={loading}
-              bordered
+              pagination={{ pageSize: 10 }}
             />
           </Card>
         </TabPane>
       </Tabs>
 
-      {/* Add/Edit Book Modal */}
+      {/* Add Book Modal */}
       <Modal 
         title="Add New Book" 
-        visible={showModal} 
+        open={showModal}
         onOk={() => form.submit()}
         onCancel={() => {
           setShowModal(false);
           form.resetFields();
         }}
+        confirmLoading={loading}
       >
         <Form form={form} layout="vertical" onFinish={handleAddBook}>
-          <Form.Item label="Title" name="title" rules={[{ required: true }]}>
+          <Form.Item 
+            label="Title" 
+            name="title" 
+            rules={[{ required: true, message: 'Please enter the title' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Author" name="author" rules={[{ required: true }]}>
+          <Form.Item 
+            label="Author" 
+            name="author" 
+            rules={[{ required: true, message: 'Please enter the author' }]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="ISBN" name="isbn" rules={[{ required: true }]}>
+          <Form.Item 
+            label="ISBN" 
+            name="isbn" 
+            rules={[{ required: true, message: 'Please enter the ISBN' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item 
+            label="Genre" 
+            name="genre"
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item 
+            label="Language" 
+            name="language"
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item 
+            label="Shelf Number" 
+            name="shelf_number"
+          >
             <Input />
           </Form.Item>
           <Form.Item 
             label="Stock Quantity" 
             name="available_copies"
-            rules={[{ required: true, type: 'number', min: 0 }]}
+            rules={[{ required: true, message: 'Please enter stock quantity', type: 'number', min: 0 }]}
           >
-            <InputNumber style={{ width: '100%' }} />
+            <InputNumber style={{ width: '100%' }} min={0} />
           </Form.Item>
         </Form>
       </Modal>

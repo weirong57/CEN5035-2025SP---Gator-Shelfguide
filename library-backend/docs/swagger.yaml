@@ -1,38 +1,21 @@
-basePath: /
 definitions:
   models.Book:
     properties:
       author:
-        description: 作者
-        example: John Doe
         type: string
       available_copies:
-        description: 可借数量
-        example: 3
         type: integer
       genre:
-        description: 类型
-        example: Programming
         type: string
       id:
-        description: 图书 ID
-        example: 101
         type: integer
       isbn:
-        description: ISBN
-        example: "9781234567890"
         type: string
       language:
-        description: 语言
-        example: English
         type: string
       shelf_number:
-        description: 书架号
-        example: A-12
         type: string
       title:
-        description: 标题
-        example: Golang Basics
         type: string
     type: object
   models.BorrowRequest:
@@ -44,6 +27,33 @@ definitions:
       userId:
         description: 用户 ID
         example: 1
+        type: integer
+    type: object
+  models.BorrowingRecord:
+    properties:
+      author:
+        description: 图书作者
+        type: string
+      book_id:
+        type: integer
+      borrowed_at:
+        type: string
+      due_date:
+        type: string
+      id:
+        type: integer
+      isbn:
+        description: 图书ISBN
+        type: string
+      returned_at:
+        type: string
+      status:
+        description: Borrowing, Returned, Overdue
+        type: string
+      title:
+        description: 图书标题
+        type: string
+      user_id:
         type: integer
     type: object
   models.LoginCredentials:
@@ -85,6 +95,13 @@ definitions:
     type: object
   models.User:
     properties:
+      created_at:
+        description: 用户创建时间
+        type: string
+      id:
+        description: 用户ID
+        example: 1
+        type: integer
       password:
         example: securePass123
         type: string
@@ -95,13 +112,89 @@ definitions:
         example: alice123
         type: string
     type: object
-host: localhost:3000
 info:
   contact: {}
-  description: This is the back-end API for an online library management system
-  title: Library Management API 文档
-  version: "1.0"
 paths:
+  /admin/books:
+    post:
+      consumes:
+      - application/json
+      description: 管理员添加图书到数据库中 (Add a new book with full information)
+      parameters:
+      - description: 图书信息 (Book Information)
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 添加成功
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: 请求数据错误
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: 添加图书 (Admin only)
+      tags:
+      - 管理员功能 (Admin)
+  /admin/books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 管理员根据图书 ID 删除图书 (Delete a book by ID)
+      parameters:
+      - description: 图书 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 删除成功
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 无效 ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 图书未找到
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: 删除图书 (Admin only)
+      tags:
+      - 管理员功能 (Admin)
   /books:
     get:
       consumes:
@@ -131,81 +224,7 @@ paths:
       summary: 获取所有图书 (Retrieve all books)
       tags:
       - 图书管理 (Book Management)
-    post:
-      consumes:
-      - application/json
-      description: 将新图书添加到数据库中 (Add a new book with full information)
-      parameters:
-      - description: 图书信息 (Book Information)
-        in: body
-        name: book
-        required: true
-        schema:
-          $ref: '#/definitions/models.Book'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: 添加成功响应 (Success Response)
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: 请求数据错误 (Invalid request body)
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 数据库错误 (Database error)
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: 添加图书 (Add a new book to library)
-      tags:
-      - 图书管理 (Book Management)
   /books/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: 根据图书 ID 删除图书信息 (Delete a book record by its ID)
-      parameters:
-      - description: 图书 ID (Book ID)
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 删除成功 (Success Response)
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: 无效 ID (Invalid book ID)
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: 图书未找到 (Book not found)
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: 服务器错误 (Server error)
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: 删除指定图书 (Delete a book by ID)
-      tags:
-      - 图书管理 (Book Management)
     get:
       consumes:
       - application/json
@@ -666,4 +685,80 @@ paths:
       summary: 添加图书书评 (Create a new review)
       tags:
       - 书评 (Review)
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据用户 ID 获取用户名和注册时间 (Get username and registration time by user
+        ID)
+      parameters:
+      - description: 用户 ID (User ID)
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功响应 (Success Response)
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: 无效用户 ID (Invalid user ID)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 用户未找到 (User not found)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 获取用户信息 (Retrieve user profile)
+      tags:
+      - 用户管理 (User Management)
+  /users/{id}/records:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的借阅历史记录，包括书名、作者、ISBN、借阅时间等 (Get user's borrowing history with
+        book details)
+      parameters:
+      - description: 用户 ID (User ID)
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 借阅记录列表 (Borrowing records list)
+          schema:
+            items:
+              $ref: '#/definitions/models.BorrowingRecord'
+            type: array
+        "400":
+          description: 无效用户 ID (Invalid user ID)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 数据库错误 (Database error)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: 获取用户借阅记录 (Retrieve user borrowing history)
+      tags:
+      - 用户管理 (User Management)
 swagger: "2.0"

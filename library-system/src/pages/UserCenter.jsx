@@ -1,337 +1,178 @@
-<<<<<<< HEAD
-/*
-// src/pages/UserCenter.jsx
-=======
-
-/*// src/pages/UserCenter.jsx
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
-import { useState } from 'react';
-import { Table, Button, Tag, Modal, message } from 'antd';
-
-// Mock data
-const mockUser = {
-  id: 1,
-  username: 'John Doe',
-  role: 'Regular User',
-  avatar: 'https://randomuser.me/api/portraits/men/85.jpg'
-};
-
-const mockBorrows = [
-  {
-    id: 1,
-    book: {
-      id: 101,
-      title: 'JavaScript Advanced Programming',
-      author: 'Nicholas C. Zakas',
-      isbn: '978-7-115-33091-5',
-      cover: 'https://img1.doubanio.com/view/subject/l/public/s8958650.jpg'
-    },
-    borrowDate: '2023-07-15',
-    dueDate: '2023-08-15',
-    returned: false
-  },
-  {
-    id: 2,
-    book: {
-      id: 102,
-      title: 'React Design Patterns',
-      author: 'Craig',
-      isbn: '978-7-121-44321-6',
-      cover: 'https://img9.doubanio.com/view/subject/l/public/s33834075.jpg'
-    },
-    borrowDate: '2023-07-20',
-    dueDate: '2023-08-05', // Overdue test data
-    returned: false
-  },
-  {
-    id: 3,
-    book: {
-      id: 103,
-      title: 'Node.js in Action',
-      author: 'Mike Cantelon',
-      isbn: '978-7-115-45678-9',
-      cover: 'https://img2.doubanio.com/view/subject/l/public/s29427993.jpg'
-    },
-    borrowDate: '2023-06-10',
-    dueDate: '2023-07-10',
-    returned: true // Returned test data
-  }
-];
-
-export default function UserCenter() {
-  const [borrows, setBorrows] = useState(mockBorrows);
-  const [currentUser] = useState(mockUser);
-
-  // Simulate return operation
-  const handleReturn = (record) => {
-    Modal.confirm({
-      title: `Confirm to return "${record.book.title}"?`,
-      content: 'This is a frontend demo and will not submit real data',
-      onOk: () => {
-        setBorrows(prev => 
-          prev.map(item => 
-            item.id === record.id 
-              ? { ...item, returned: true } 
-              : item
-          )
-        );
-        message.success('Return simulated successfully!');
-      }
-    });
-  };
-
-  // Table columns configuration
-  const columns = [
-    {
-      title: 'Book Information',
-      dataIndex: 'book',
-      render: (book) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          < img 
-            src={book.cover} 
-            alt="Cover" 
-            style={{ 
-              width: 60, 
-              height: 80, 
-              marginRight: 16,
-              borderRadius: 4,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }}
-          />
-          <div>
-            <h4 style={{ marginBottom: 4 }}>{book.title}</h4>
-            <div style={{ color: '#666' }}>
-              <Tag color="blue">{book.author}</Tag>
-              <Tag>ISBN: {book.isbn}</Tag>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: 'Borrow Date',
-      dataIndex: 'borrowDate',
-      width: 120,
-      sorter: (a, b) => new Date(a.borrowDate) - new Date(b.borrowDate)
-    },
-    {
-      title: 'Due Date',
-      dataIndex: 'dueDate',
-      width: 120,
-      render: (text, record) => {
-        const isOverdue = new Date(text) < new Date();
-        return (
-          <span style={{ 
-            color: isOverdue ? '#ff4d4f' : '#389e0d',
-            fontWeight: 500
-          }}>
-            {text}
-            {isOverdue && <Tag color="red" style={{ marginLeft: 8 }}>Overdue</Tag>}
-          </span>
-        );
-      }
-    },
-    {
-      title: 'Status',
-      width: 100,
-      render: (record) => (
-        <Tag color={record.returned ? 'default' : 'success'}>
-          {record.returned ? 'Returned' : 'Borrowing'}
-        </Tag>
-      )
-    },
-    {
-      title: 'Action',
-      width: 120,
-      render: (record) => (
-        !record.returned && (
-          <Button 
-            type="primary" 
-            ghost
-            onClick={() => handleReturn(record)}
-          >
-            Return Now
-          </Button>
-        )
-      )
-    }
-  ];
-
-  return (
-    <div style={{ padding: 24 }}>
-      <div style={{ 
-        marginBottom: 24,
-        padding: 24,
-        background: '#fff',
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        display: 'flex',
-        alignItems: 'center'
-      }}>
-        < img 
-          src={currentUser.avatar} 
-          alt="Avatar"
-          style={{ 
-            width: 64,
-            height: 64,
-            borderRadius: '50%',
-            marginRight: 24
-          }}
-        />
-        <div>
-          <h2 style={{ marginBottom: 8 }}>{currentUser.username}</h2>
-          <Tag color="gold">{currentUser.role}</Tag>
-        </div>
-      </div>
-
-      <div style={{ 
-        background: '#fff',
-        padding: 24,
-        borderRadius: 8,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-      }}>
-        <h3 style={{ marginBottom: 16 }}>📚 My Borrowing Records</h3>
-        <Table
-          columns={columns}
-          dataSource={borrows}
-          rowKey="id"
-          pagination={{ 
-            pageSize: 5,
-            showTotal: total => `Total ${total} records`
-          }}
-          locale={{
-            emptyText: (
-              <div style={{ padding: 40, textAlign: 'center' }}>
-                < img 
-                  src="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg" 
-                  alt="empty"
-                  style={{ width: 80, marginBottom: 16 }}
-                />
-                <p style={{ color: 'rgba(0,0,0,0.25)' }}>No borrowing records</p >
-              </div>
-            )
-          }}
-        />
-      </div>
-    </div>
-  );
-}*/
-// src/pages/UserCenter.jsx
-<<<<<<< HEAD
-import React from 'react';
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
 import { useEffect, useState } from 'react';
 import { 
   Table, 
-  Button, 
   Card, 
   Tag, 
-  Modal, 
   message, 
   Spin,
-  Alert 
+  Alert,
+  Tabs,
+  Empty,
+  Row,
+  Col,
+  Statistic
 } from 'antd';
 import { 
   UserOutlined,
-  LoadingOutlined,
-  BookOutlined
+  BookOutlined,
+  HistoryOutlined,
+  ClockCircleOutlined
 } from '@ant-design/icons';
-import apiClient from '../api/client';
+import axios from 'axios';
+import { useAuth } from '../AuthContext.jsx'; // 导入认证上下文
 
-const LoadingIndicator = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+const { TabPane } = Tabs;
 
 export default function UserCenter() {
   const [borrows, setBorrows] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('1');
+  
+  // 使用认证上下文获取当前用户信息
+  const { user, isAuthenticated } = useAuth();
 
-  // Fetch user data and borrowing records
+  // 当认证状态或用户信息改变时加载数据
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        // Get current user
-        const user = await apiClient.get('/users/me');
-        setCurrentUser({
-          ...user,
-          createdAt: new Date(user.createdAt)
-        });
+    if (isAuthenticated() && user) {
+      loadUserData();
+    }
+  }, [user, isAuthenticated]);
 
-        // Get borrowing records
-        const borrowsData = await apiClient.get('/borrow', {
-          params: { userId: user.id }
+  // 标签页切换时加载对应数据
+  useEffect(() => {
+    if (currentUser) {
+      if (activeTab === '1') {
+        loadBorrowingRecords();
+      }
+    }
+  }, [activeTab, currentUser]);
+
+  // 加载用户信息
+  const loadUserData = async () => {
+    try {
+      setLoading(true);
+      
+      if (!user || !user.id) {
+        throw new Error('User ID not available');
+      }
+      
+      console.log('加载用户信息，用户ID:', user.id);
+      
+      // 调用后端API获取用户信息
+      const response = await axios.get(`/api/users/${user.id}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      
+      if (response.data) {
+        setCurrentUser(response.data);
+      } else {
+        throw new Error('Failed to fetch user data');
+      }
+      
+      // 加载初始标签页数据
+      if (activeTab === '1') {
+        await loadBorrowingRecords();
+      }
+    } catch (error) {
+      console.error('Failed to load user data:', error);
+      setError('Failed to load user data, please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 加载用户借阅记录
+  const loadBorrowingRecords = async () => {
+    try {
+      setLoading(true);
+      
+      if (!user || !user.id) {
+        throw new Error('User ID not available');
+      }
+      
+      console.log(`正在请求借阅记录: /api/users/${user.id}/borrowings`);
+      
+      // 调用后端API获取借阅记录
+      const response = await axios.get(`/api/users/${user.id}/borrowings`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      
+      console.log('借阅记录原始数据:', response.data);
+      
+      if (Array.isArray(response.data)) {
+        // 处理借阅记录
+        const processedBorrows = response.data.map(record => {
+          console.log('处理记录:', record, 'returned_at值:', record.returned_at);
+          
+          // 检查返回状态
+          const isReturned = record.returned_at && record.returned_at.Valid === true;
+          
+          return {
+            id: record.id || Math.random().toString(36).substring(7),
+            book: {
+              id: record.book_id,
+              title: record.title,
+              author: record.author,
+              isbn: record.isbn
+            },
+            borrowDate: record.borrowed_at,
+            dueDate: record.due_date,
+            returned: isReturned,
+            status: record.status
+          };
         });
         
-        setBorrows(processBorrowData(borrowsData));
-      } catch (err) {
-        setError(err.message);
-        message.error('Failed to load data');
-      } finally {
-        setLoading(false);
+        console.log('处理后的借阅记录:', processedBorrows);
+        setBorrows(processedBorrows);
+      } else {
+        console.warn('API返回的不是数组格式:', response.data);
+        setBorrows([]);
       }
-    };
-
-    loadData();
-  }, []);
-
-  // Transform API response to frontend format
-  const processBorrowData = (data) => {
-    return data.map(item => ({
-      key: item.id,
-      id: item.id,
-      book: {
-        id: item.book.id,
-        title: item.book.title,
-        author: item.book.author,
-        isbn: item.book.isbn
-      },
-      borrowDate: new Date(item.borrowDate).toLocaleDateString(),
-      dueDate: new Date(item.dueDate).toLocaleDateString(),
-      returned: item.status === 'RETURNED'
-    }));
+    } catch (error) {
+      console.error('Failed to load borrowing records:', error);
+      message.error('Failed to load borrowing history');
+      setBorrows([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle book return
-  const handleReturn = async (record) => {
-    Modal.confirm({
-      title: `Confirm return "${record.book.title}"?`,
-      content: 'Please ensure the book is in good condition',
-      async onOk() {
-        try {
-          await apiClient.post('/borrow/return', {
-            bookId: record.book.id,
-            userId: currentUser.id
-          });
-          
-          // Update local state
-          setBorrows(prev => 
-            prev.map(item => 
-              item.id === record.id 
-                ? { ...item, returned: true } 
-                : item
-            )
-          );
-          
-          message.success('Book returned successfully');
-        } catch (err) {
-          message.error(err || 'Return failed');
-        }
-      }
-    });
+  // 格式化日期显示
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Unknown';
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch (error) {
+      return dateString;
+    }
   };
 
-  // Table columns configuration
-  const columns = [
+  // 检查是否逾期
+  const isOverdue = (dueDate) => {
+    if (!dueDate) return false;
+    return new Date(dueDate) < new Date();
+  };
+
+  // 借阅记录表格列
+  const borrowColumns = [
     {
       title: 'Book Information',
       dataIndex: 'book',
+      key: 'book',
       render: (book) => (
-        <div className="book-info">
-          <h4>{book.title}</h4>
-          <div className="meta">
-            <Tag icon={<UserOutlined />} color="blue">{book.author}</Tag>
-            <Tag icon={<BookOutlined />}>ISBN: {book.isbn}</Tag>
+        <div>
+          <div style={{ fontWeight: 'bold' }}>{book.title}</div>
+          <div>
+            <Tag color="blue">{book.author}</Tag>
+            <Tag>ISBN: {book.isbn}</Tag>
           </div>
         </div>
       )
@@ -339,50 +180,55 @@ export default function UserCenter() {
     {
       title: 'Borrow Date',
       dataIndex: 'borrowDate',
-      sorter: (a, b) => new Date(a.borrowDate) - new Date(b.borrowDate)
+      key: 'borrowDate',
+      render: (date) => formatDate(date)
     },
     {
       title: 'Due Date',
       dataIndex: 'dueDate',
-      render: (text, record) => (
+      key: 'dueDate',
+      render: (date, record) => (
         <span style={{ 
-          color: new Date(record.dueDate) < new Date() ? '#ff4d4f' : '#389e0d',
-          fontWeight: 500
+          color: isOverdue(date) && !record.returned ? '#ff4d4f' : 'inherit',
+          fontWeight: isOverdue(date) && !record.returned ? 'bold' : 'normal'
         }}>
-          {text}
+          {formatDate(date)}
+          {isOverdue(date) && !record.returned && (
+            <Tag color="red" style={{ marginLeft: 8 }}>Overdue</Tag>
+          )}
         </span>
       )
     },
     {
       title: 'Status',
-      render: (record) => (
+      key: 'status',
+      render: (_, record) => (
         <Tag color={record.returned ? 'default' : 'success'}>
-          {record.returned ? 'Returned' : 'Borrowing'}
+          {record.status || (record.returned ? 'Returned' : 'Borrowing')}
         </Tag>
-      )
-    },
-    {
-      title: 'Action',
-      render: (record) => (
-        !record.returned && (
-          <Button 
-            type="primary" 
-            ghost
-            onClick={() => handleReturn(record)}
-            disabled={loading}
-          >
-            Return
-          </Button>
-        )
       )
     }
   ];
 
+  // 认证状态检查
+  if (!isAuthenticated()) {
+    return (
+      <Alert
+        type="warning"
+        message="Authentication Required"
+        description="Please log in to view your account information."
+        showIcon
+        style={{ margin: 24 }}
+      />
+    );
+  }
+
+  // 错误处理
   if (error) {
     return (
       <Alert
         type="error"
-        message="Loading Error"
+        message="Error"
         description={error}
         showIcon
         style={{ margin: 24 }}
@@ -392,59 +238,102 @@ export default function UserCenter() {
 
   return (
     <div style={{ padding: 24 }}>
-      <Spin spinning={loading} indicator={LoadingIndicator}>
-<<<<<<< HEAD
-        {/* User Profile Section */}
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
-        <Card
-          title={<><UserOutlined /> User Profile</>}
-          style={{ marginBottom: 24 }}
-        >
-          {currentUser && (
-            <div className="user-info">
-              <h3>{currentUser.username}</h3>
-              <Tag color={currentUser.role === 'ADMIN' ? 'gold' : 'blue'}>
-                {currentUser.role.toLowerCase()}
-              </Tag>
-              <div style={{ marginTop: 8 }}>
-                <Tag color="geekblue">
-                  Registered: {currentUser.createdAt.toLocaleDateString()}
-                </Tag>
-              </div>
-            </div>
-          )}
-        </Card>
-
-<<<<<<< HEAD
-        {/* Borrowing History Section */}
-=======
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
-        <Card title={<><BookOutlined /> Borrowing History</>}>
-          <Table
-            columns={columns}
-            dataSource={borrows}
-            rowKey="id"
-            pagination={{ 
-              pageSize: 5,
-              showTotal: total => `Total ${total} records`
-            }}
-            locale={{
-              emptyText: (
-                <div style={{ padding: 40, textAlign: 'center' }}>
-                  <p style={{ color: 'rgba(0,0,0,0.25)' }}>
-                    No borrowing records found
-                  </p >
+      <Spin spinning={loading && !currentUser}>
+        {currentUser && (
+          <Card
+            title={<><UserOutlined /> User Information</>}
+            style={{ marginBottom: 24 }}
+          >
+            <Row gutter={24}>
+              <Col span={24} md={8}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
+                  <Avatar icon={<UserOutlined />} size={64} style={{ marginRight: 16 }} />
+                  <div>
+                    <h3>{currentUser.username}</h3>
+                    <Tag color={currentUser.role === 'admin' ? 'gold' : 'blue'}>
+                      {currentUser.role || 'User'}
+                    </Tag>
+                  </div>
                 </div>
-              )
-            }}
-          />
-        </Card>
+              </Col>
+              <Col span={24} md={16}>
+                <Row gutter={16}>
+                  <Col span={8}>
+                    <Statistic
+                      title="Registration Date"
+                      value={formatDate(currentUser.created_at)}
+                      prefix={<ClockCircleOutlined />}
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="Borrowed Books"
+                      value={borrows.length}
+                      prefix={<BookOutlined />}
+                    />
+                  </Col>
+                  <Col span={8}>
+                    <Statistic
+                      title="Current Borrowings"
+                      value={borrows.filter(b => !b.returned).length}
+                      prefix={<BookOutlined />}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Card>
+        )}
+
+        <Tabs activeKey={activeTab} onChange={setActiveTab}>
+          <TabPane 
+            tab={<span><HistoryOutlined /> Borrowing History</span>}
+            key="1"
+          >
+            <Spin spinning={loading && currentUser}>
+              <Table
+                columns={borrowColumns}
+                dataSource={borrows}
+                rowKey="id"
+                pagination={{ 
+                  pageSize: 5,
+                  showTotal: total => `Total ${total} records`
+                }}
+                locale={{
+                  emptyText: (
+                    <Empty 
+                      description="No borrowing records found"
+                      image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    />
+                  )
+                }}
+              />
+            </Spin>
+          </TabPane>
+        </Tabs>
       </Spin>
     </div>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 69b6a626ab6e097a85c6c8e210f6039cc6bfad22
+
+// Avatar组件定义
+const Avatar = ({ icon, size = 32, style = {} }) => {
+  return (
+    <div 
+      style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        background: '#1890ff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#fff',
+        fontSize: size / 2,
+        ...style
+      }}
+    >
+      {icon}
+    </div>
+  );
+};
