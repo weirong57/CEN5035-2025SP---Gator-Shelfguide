@@ -119,7 +119,7 @@ This will typically start the frontend application, and the output will provide 
   4. Open your web browser and navigate to the frontend URL provided by the 
    `npm run dev` output (e.g., `http://localhost:5173`).
 
-## 📽️ Final Presentation Demo / 项目最终演示
+## 📽️ Final Presentation Demo / 
 
 <video width="100%" controls>
   <source src="https://raw.githubusercontent.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/Main/Video/Final%20Presentation%20Demo.mp4" type="video/mp4">
@@ -127,10 +127,8 @@ This will typically start the frontend application, and the output will provide 
 </video>
 
 > This demo video showcases the major backend and frontend functionalities of the Library Management System.  
-> 本演示视频展示了图书管理系统的核心后端与前端功能。
 
 
-> This demo video showcases the major backend and frontend functionalities of the Library Management System.  
 
 
 
