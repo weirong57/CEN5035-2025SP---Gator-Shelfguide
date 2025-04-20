@@ -60,7 +60,7 @@ cd CEN5035-2025SP---Gator-Shelfguide
 ### 2. Database Establishment
 - Requirement: A running MySQL server (v8.0+) instance is required.
 - SQL Script: You will need the library_db_init.sql script.
-  - `[Link to library_db_init.sql - TBD]`
+  - `https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/library_manual_setup/library_db_init.sql`
 - Execution:
   1. Open MySQL Workbench (or another MySQL client).
   2. Connect to your local MySQL server.
@@ -78,10 +78,10 @@ cd CEN5035-2025SP---Gator-Shelfguide
 cd library-backend
 ```
 - Configure Environment Variables:
-1. Copy `.env.example` to `.env`
-2. Edit the `.env` file to match your local MySQL settings:
-  - `DB_USER`, `DB_PASSWORD`
-  - `JWT_SECRET`: any secret string used for token generation
+  1. Copy `.env.example` to `.env`
+  2. Edit the `.env` file to match your local MySQL settings:
+    - `DB_USER`, `DB_PASSWORD`
+    - `JWT_SECRET`: any secret string used for token generation
 - Install Dependencies: (Go handles dependencies via modules, often automatic with build/run)
   ```bash
   go mod tidy
@@ -111,13 +111,13 @@ This will typically start the frontend application, and the output will provide 
 
 
 ## Running the Application
-1. Ensure your MySQL database server is running and the library_db database 
+  1. Ensure your MySQL database server is running and the library_db database 
    has been initialized using the `library_db_init.sql` script.
-2. Start the backend server from the library-backend directory (`go run 
+  2. Start the backend server from the library-backend directory (`go run 
    main.go`).
-3. Start the frontend development server from the library-system directory 
+  3. Start the frontend development server from the library-system directory 
    (`npm run dev`).
-4. Open your web browser and navigate to the frontend URL provided by the 
+  4. Open your web browser and navigate to the frontend URL provided by the 
    `npm run dev` output (e.g., `http://localhost:5173`).
 
 ## Final Presentation Demo
