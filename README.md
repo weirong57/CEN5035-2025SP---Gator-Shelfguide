@@ -80,7 +80,7 @@ Replace placeholder values with your actual configuration.
   ```bash
   go mod tidy
   ```
-  - Run the Backend:
+- Run the Backend:
   ```bash
   go run main.go
   ```
@@ -105,3 +105,64 @@ This will typically start the frontend application, and the output will provide 
 
 ### 4. Database Setup
 - Requirement: A running MySQL server instance is required.
+- Schema Initialization:
+  - Ensure you have created a database (e.g., `library_db`) on your MySQL   
+    server that matches the DB_NAME in your `.env` file.
+  - The necessary tables and schema structure are defined in the     
+    full_library_db.sql file provided separately. You need to execute this 
+    SQL script against your target database using a MySQL client (MySQL 
+    Workbench, command line, etc.) to set up the required tables.
+- `[Instructions for executing full_library_db.sql - TBD]`
+
+## Running the Application
+1. Ensure your MySQL database server is running and the database schema has 
+   been initialized using the provided SQL script.
+2. Start the backend server from the library-backend directory (`go run 
+   main.go`).
+3. Start the frontend development server from the library-system directory 
+   (`npm run dev`).
+4. Open your web browser and navigate to the frontend URL provided by the 
+   `npm run dev` output (e.g., `http://localhost:5173`).
+
+## Final Presentation Demo
+[Link to Demo Video - TBD]
+
+## Running Unit Tests
+
+### Backend (Go)
+```bash
+# Navigate to backend directory (if not already there)
+cd library-backend
+
+# Run unit tests for controllers package (add other packages if needed)
+go test -v ./controllers
+
+# Optional: Run all tests in the backend project
+# go test -v ./...
+```
+
+[Link to Backend Tests Demo Video - TBD]
+
+### Frontend
+```bash
+[Instructions for running frontend tests - TBD]
+```
+
+[Link to Frontend Tests Demo Video - TBD]
+
+## Usage
+- Register a new user account or log in with existing credentials.
+- Browse or search for books.
+- Click on a book to view details and reviews.
+- Use the borrow/return/reserve buttons as needed.
+- Administrators can log in with admin credentials to access administrative 
+  functions (e.g., via a dedicated Admin page or specific UI elements) to 
+  manage books and users.
+- [More specific usage details - TBD]
+
+## API Documentation
+Link to API Documentation:
+https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/SPRINT4.md
+
+
+     
