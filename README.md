@@ -80,8 +80,8 @@ cd library-backend
 - Configure Environment Variables:
   1. Copy `.env.example` to `.env`
   2. Edit the `.env` file to match your local MySQL settings:
-    - `DB_USER`, `DB_PASSWORD`
-    - `JWT_SECRET`: any secret string used for token generation
+      - `DB_USER`, `DB_PASSWORD`
+      - `JWT_SECRET`: any secret string used for token generation
 - Install Dependencies: (Go handles dependencies via modules, often automatic with build/run)
   ```bash
   go mod tidy
