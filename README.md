@@ -57,25 +57,31 @@ git clone [https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide.git](h
 cd CEN5035-2025SP---Gator-Shelfguide
 ```
 
-### 2. Backend Setup (Go)
+### 2. Database Establishment
+- Requirement: A running MySQL server (v8.0+) instance is required.
+- SQL Script: You will need the library_db_init.sql script.
+  - `[Link to library_db_init.sql - TBD]`
+- Execution:
+  1. Open MySQL Workbench (or another MySQL client).
+  2. Connect to your local MySQL server.
+  3. Open the `library_db_init.sql` script file.
+  4. Execute the script (e.g., by clicking the ⚡ execute button in 
+     Workbench).
+- Outcome: This will create the `library_db` database and populate it with  
+  the necessary tables and initial book records (e.g., C++ Primer, 
+  Algorithms, Database). No default user accounts are created; users must 
+  be registered via the application.
+
+### 3. Backend Setup (Go)
 - Navigate to Backend Directory:
 ```bash
 cd library-backend
 ```
 - Configure Environment Variables:
-Create a `.env` file in the backend directory (`library-backend`). Populate it with your database credentials and a JWT secret. Example:
-
-```bash
-# .env file content
-DB_USER=your_mysql_user
-DB_PASSWORD=your_mysql_password
-DB_HOST=localhost 
-DB_PORT=3306 # Or your MySQL port
-DB_NAME=library_db # Or the name you used
-JWT_SECRET=your_strong_jwt_secret_key_here 
-PORT=8080 # Or the port you want the backend to run on
-```
-Replace placeholder values with your actual configuration.
+1. Copy `.env.example` to `.env`
+2. Edit the `.env` file to match your local MySQL settings:
+  - `DB_USER`, `DB_PASSWORD`
+  - `JWT_SECRET`: any secret string used for token generation
 - Install Dependencies: (Go handles dependencies via modules, often automatic with build/run)
   ```bash
   go mod tidy
@@ -87,7 +93,7 @@ Replace placeholder values with your actual configuration.
 The backend server should start, typically on the port specified in `.env` 
 or defaulting(check main.go)
 
-### 3. Frontend Setup
+### 4. Frontend Setup
 - Navigate to Frontend Directory:
 ```bash
 cd ../library-system
@@ -103,20 +109,10 @@ npm run dev
 ```
 This will typically start the frontend application, and the output will provide the URL to access it (e.g., `http://localhost:5173`).
 
-### 4. Database Setup
-- Requirement: A running MySQL server instance is required.
-- Schema Initialization:
-  - Ensure you have created a database (e.g., `library_db`) on your MySQL   
-    server that matches the DB_NAME in your `.env` file.
-  - The necessary tables and schema structure are defined in the     
-    full_library_db.sql file provided separately. You need to execute this 
-    SQL script against your target database using a MySQL client (MySQL 
-    Workbench, command line, etc.) to set up the required tables.
-- `[Instructions for executing full_library_db.sql - TBD]`
 
 ## Running the Application
-1. Ensure your MySQL database server is running and the database schema has 
-   been initialized using the provided SQL script.
+1. Ensure your MySQL database server is running and the library_db database 
+   has been initialized using the `library_db_init.sql` script.
 2. Start the backend server from the library-backend directory (`go run 
    main.go`).
 3. Start the frontend development server from the library-system directory 
