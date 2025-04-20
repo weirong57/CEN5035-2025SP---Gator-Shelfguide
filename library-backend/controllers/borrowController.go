@@ -23,8 +23,17 @@ import (
 // @Failure 404 {object} map[string]string "图书未找到或无库存 (Book not found or unavailable)"
 // @Failure 500 {object} map[string]string "数据库错误 (Database error)"
 // @Router /borrow [post]
+// BorrowBook 借阅图书 (Borrow a Book)
 func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	log.Println("📥 BorrowBook called")
+
+	// 从请求上下文中获取 userId
+	userID, ok := r.Context().Value("userID").(int)
+	if !ok {
+		log.Println("❌ 无法获取用户ID")
+		http.Error(w, "User ID not found", http.StatusUnauthorized)
+		return
+	}
 
 	// 1. 解析客户端发送的 JSON 请求体
 	var request models.BorrowRequest
@@ -33,8 +42,10 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
 	}
-	log.Printf("📨 接收到借阅请求：user_id=%d, book_id=%d\n", request.UserID, request.BookID)
+	log.Printf("📨 接收到借阅请求：user_id=%d, book_id=%d\n", userID, request.BookID)
 
+	request.UserID = userID
+	
 	// 2. 启动数据库事务
 	tx, err := config.DB.Begin()
 	if err != nil {
@@ -90,7 +101,7 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 	dueDate := borrowedAt.AddDate(0, 0, 14)
 	_, err = tx.Exec(
 		"INSERT INTO borrowingrecords (user_id, book_id, borrowed_at, due_date) VALUES (?, ?, ?, ?)",
-		request.UserID, request.BookID, borrowedAt, dueDate,
+		userID, request.BookID, borrowedAt, dueDate, // 使用 userID 替代 request.UserID
 	)
 	if err != nil {
 		log.Println("❌ 插入借阅记录失败:", err)
@@ -120,6 +131,7 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 
 
 
+
 // ReturnBook 归还图书 (Return a Book)
 // @Summary 归还图书 (User returns a book)
 // @Description 用户归还图书，更新记录与库存，计算逾期罚款 (User returns a borrowed book, updates record and stock, calculates fine)
@@ -132,9 +144,17 @@ func BorrowBook(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {object} map[string]string "无有效借阅记录 (No active borrow record found)"
 // @Failure 500 {object} map[string]string "数据库错误 (Database error)"
 // @Router /borrow/return [post]
+// ReturnBook 归还图书 (Return a Book)
 func ReturnBook(w http.ResponseWriter, r *http.Request) {
+	log.Println("📩 ReturnBook controller triggered")
 
-	log.Println("📩 ReturnBook controller triggered") // ✅ 添加这行
+	// 从请求上下文中获取 userId
+	userID, ok := r.Context().Value("userID").(int)
+	if !ok {
+		log.Println("❌ 无法获取用户ID")
+		http.Error(w, "User ID not found", http.StatusUnauthorized)
+		return
+	}
 
 	var request models.BorrowRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
@@ -142,7 +162,7 @@ func ReturnBook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
 	}
-	log.Printf("🔁 接收到还书请求：user_id=%d, book_id=%d\n", request.UserID, request.BookID)
+	log.Printf("🔁 接收到还书请求：user_id=%d, book_id=%d\n", userID, request.BookID)
 
 	// Start a transaction
 	tx, err := config.DB.Begin()
@@ -158,7 +178,7 @@ func ReturnBook(w http.ResponseWriter, r *http.Request) {
 	var dueDate time.Time
 	err = tx.QueryRow(
 		"SELECT id, due_date FROM borrowingrecords WHERE user_id = ? AND book_id = ? AND returned_at IS NULL ORDER BY borrowed_at DESC LIMIT 1",
-		request.UserID, request.BookID,
+		userID, request.BookID, // 使用 userID 替代 request.UserID
 	).Scan(&recordID, &dueDate)
 
 	if err == sql.ErrNoRows {

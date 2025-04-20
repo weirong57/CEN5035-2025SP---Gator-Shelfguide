@@ -43,6 +43,7 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	query := "SELECT * FROM Books"
 	params := []interface{}{}
 
+// 搜索条件
 	if search != "" {
 		query += " WHERE title LIKE ? OR author LIKE ? OR genre LIKE ?"
 		like := "%" + search + "%"
@@ -66,10 +67,35 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	var books []models.Book
 	for rows.Next() {
 		var book models.Book
-		if err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.ISBN, &book.Genre, &book.Language, &book.ShelfNumber, &book.AvailableCopies); err != nil {
+		var genre sql.NullString  // 使用 sql.NullString 处理可能为 NULL 的字段
+		var language sql.NullString // 使用 sql.NullString 处理可能为 NULL 的字段
+		var shelfNumber sql.NullString // 使用 sql.NullString 处理可能为 NULL 的字段
+		if err := rows.Scan(&book.ID, &book.Title, &book.Author, &book.ISBN, &genre, &language, &shelfNumber, &book.AvailableCopies); err != nil {
 			log.Println("Error scanning row:", err)
 			continue
 		}
+
+		// 明确检查 genre 字段是否为 NULL
+		if genre.Valid {
+			book.Genre = genre.String
+		} else {
+			book.Genre = "Unknown"
+		}
+
+		// 明确检查 language 字段是否为 NULL
+		if language.Valid {
+			book.Language = language.String
+		} else {
+			book.Language = "Unknown"
+		}
+
+		// 明确检查 shelf_number 字段是否为 NULL
+		if shelfNumber.Valid {
+			book.ShelfNumber = shelfNumber.String
+		} else {
+			book.ShelfNumber = "Unknown"
+		}
+
 		books = append(books, book)
 	}
 
@@ -99,8 +125,11 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var book models.Book
-	err = config.DB.QueryRow("SELECT * FROM Books WHERE id = ?", bookId).Scan(
-		&book.ID, &book.Title, &book.Author, &book.Genre, &book.Language, &book.ShelfNumber, &book.AvailableCopies, &book.ISBN,
+	var genre sql.NullString // 使用 sql.NullString 处理可能为 NULL 的字段
+	var language sql.NullString // 使用 sql.NullString 处理可能为 NULL 的字段
+	var shelfNumber sql.NullString // 使用 sql.NullString 处理可能为 NULL 的字段
+	err = config.DB.QueryRow("SELECT id, title, author, genre, language, shelf_number, available_copies, isbn FROM Books WHERE id = ?", bookId).Scan(
+		&book.ID, &book.Title, &book.Author, &genre, &language, &shelfNumber, &book.AvailableCopies, &book.ISBN,
 	)
 
 	if err == sql.ErrNoRows {
@@ -112,10 +141,30 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 处理 genre 字段的 NULL 值
+	if genre.Valid {
+		book.Genre = genre.String
+	} else {
+		book.Genre = "Unknown"
+	}
+
+	// 处理 language 字段的 NULL 值
+	if language.Valid {
+		book.Language = language.String
+	} else {
+		book.Language = "Unknown"
+	}
+
+	// 处理 shelf_number 字段的 NULL 值
+	if shelfNumber.Valid {
+		book.ShelfNumber = shelfNumber.String
+	} else {
+		book.ShelfNumber = "Unknown"
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(book)
 }
-
 // AddBook 添加新图书 (Add a New Book)
 // @Summary 添加图书 (Add a new book to library)
 // @Description 将新图书添加到数据库中 (Add a new book with full information)

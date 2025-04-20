@@ -74,6 +74,7 @@ func GetUserBorrowingRecords(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("📚 查询用户借阅记录: user_id = %d\n", userId)
 
+	// 修改查询，返回所有借阅记录
 	query := `
 		SELECT b.id, b.title, b.author, b.isbn, br.borrowed_at, br.due_date, br.returned_at
 		FROM borrowingrecords br
@@ -98,6 +99,14 @@ func GetUserBorrowingRecords(w http.ResponseWriter, r *http.Request) {
 			log.Println("❌ 行扫描失败:", err)
 			continue
 		}
+
+		// 判断是否已归还
+		if record.ReturnedAt.Valid {
+			record.Status = "Returned" // 已归还
+		} else {
+			record.Status = "Borrowing" // 当前借阅
+		}
+
 		records = append(records, record)
 	}
 

@@ -1,13 +1,15 @@
 package main
 
 import (
-	"fmt"
+	
 	"log"
 	"net/http"
 	"os"
 	"strings"
 
 	"library-backend/config"
+	"library-backend/controllers"
+
 	_ "library-backend/docs"
 	"library-backend/middleware"
 	"library-backend/routes"
@@ -17,15 +19,9 @@ import (
 	"github.com/rs/cors"
 
 	// ✅ 确保 Swagger 文档正确导入
-
 	httpSwagger "github.com/swaggo/http-swagger" // ✅ 引入 Swagger 组件
 )
 
-// @title			Library Management API 文档
-// @version		1.0
-// @description	This is the back-end API for an online library management system
-// @host			localhost:3000
-// @BasePath		/
 func main() {
 	// 读取 .env 文件
 	if err := godotenv.Load(); err != nil {
@@ -59,9 +55,8 @@ func main() {
 	routes.ReservationRoutes(apiRouter)
 
 	// 添加受 JWT 保护的路由
-	r.Handle("/protected", middleware.VerifyToken(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "You accessed a protected route!")
-	}))).Methods("GET")
+	r.Handle("/borrow", middleware.VerifyToken(http.HandlerFunc(controllers.BorrowBook))).Methods("POST")
+	r.Handle("/borrow/return", middleware.VerifyToken(http.HandlerFunc(controllers.ReturnBook))).Methods("POST")
 
 	staticDir := "../library-system/dist"
 	fs := http.FileServer(http.Dir(staticDir))                                                // ✅ ADDED
