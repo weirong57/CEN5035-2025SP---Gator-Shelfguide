@@ -1,6 +1,6 @@
-# 🚀 Sprint 4 - Final Sprint Report (Backend Team)
+# 🚀 **Sprint 4 - Final Sprint Report (Backend Team)**
 
-## 📌 Overview
+## 📌 **Overview**
 
 Sprint 4 marks the completion and final integration of all core backend functionalities for the Gator ShelfGuide Library Management System. As backend developers, our focus was on ensuring a robust, secure, and scalable API to support all user and admin operations within the application.
 
@@ -13,33 +13,32 @@ This sprint primarily involved:
 
 ---
 
-## 🔧 Key Backend Tasks Completed
+## 🔧 **Key Backend Tasks Completed**
 
-| Task | Description |
-|------|-------------|
-| 🔐 JWT Authentication | Implemented secure login and registration with JWT-based authentication. |
-| 📚 Book Management | Built CRUD APIs to manage book listings with full admin control. |
-| 🧾 Review System | Developed endpoints for users to add and fetch reviews with ratings. |
-| 📦 Borrow/Return System | Enabled borrowing and returning of books with validations. |
-| 🕐 Reservation System | Added support for reserving and cancelling book reservations. |
-| 📄 Middleware | Added token verification middleware to protect private routes. |
-| 🧪 Testing & Debugging | Used Postman and unit tests to validate API behavior. |
-| 📜 API Documentation | Created detailed and structured API documentation (see below). |
+| Task                       | Description                                                                 |
+|----------------------------|-----------------------------------------------------------------------------|
+| 🔐 JWT Authentication      | Implemented secure login and registration with JWT-based authentication.  |
+| 📚 Book Management         | Built CRUD APIs to manage book listings with full admin control.           |
+| 🧾 Review System           | Developed endpoints for users to add and fetch reviews with ratings.       |
+| 📦 Borrow/Return System    | Enabled borrowing and returning of books with validations.                 |
+| 🕐 Reservation System      | Added support for reserving and cancelling book reservations.              |
+| 📄 Middleware              | Added token verification middleware to protect private routes.             |
+| 🧪 Testing & Debugging     | Used Postman and unit tests to validate API behavior.                      |
+| 📜 API Documentation      | Created detailed and structured API documentation (see below).             |
 
 ---
 
-# 📘 Library Management System API Documentation
+# 📘 **Library Management System API Documentation**
 
 This document provides a detailed explanation of all backend API endpoints for the Library Management System, including HTTP methods, paths, parameter structures, response formats, and permission requirements.
 
 ---
 
-## 🧑‍💻 User Authentication Endpoints
+## 🧑‍💻 **User Authentication Endpoints**
 
-### 🔐 POST `/api/register` – User Registration
+### 🔐 **POST `/api/register`** – **User Registration**
 - **Description**: Allows users to register a new account, with an option to register as a normal user or admin.
 - **Headers**: `Content-Type: application/json`
-- **Permission**: Public
 - **Request Body**:
 ```json
 {
@@ -57,10 +56,9 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### 🔐 POST `/api/login` – User Login
+### 🔐 **POST `/api/login`** – **User Login**
 - **Description**: Login using username and password to receive a JWT authorization token.
 - **Headers**: `Content-Type: application/json`
-- **Permission**: Public
 - **Request Body**:
 ```json
 {
@@ -78,55 +76,53 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-## 📚 Book Management Endpoints
+## 📚 **Book Management Endpoints**
 
-### 📖 GET `/api/books` – Get Book List
+### 📖 **GET `/api/books`** – **Get Book List**
 - **Description**: Retrieve information for all books in the system.
 - **Permission**: Public
 - **Sample Response**:
 ```json
-  {
-    "id": 1,
-    "title": "Clean Code",
-    "author": "Robert C. Martin",
-    "genre": "Programming",
-    "language": "English",
-    "available_copies": 5,
-    "shelf_number": "A01",
-    "isbn": "9780132350884"
-  }
+{
+  "id": 1,
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "genre": "Programming",
+  "language": "English",
+  "available_copies": 5,
+  "shelf_number": "A01",
+  "isbn": "9780132350884"
+}
 ```
 
 ---
 
-### 📖 GET `/api/books/{id}` – Get Book by ID
+### 📖 **GET `/api/books/{id}`** – **Get Book by ID**
 - **Description**: Retrieve detailed information of a specific book by its ID.
 - **Path Parameters**:
   - `id` (integer): ID of the book to fetch.
 - **Permission**: Public
-- **Sample Request**:
-  - `GET /api/books/1`
 - **Sample Response**:
 ```json
-  {
-    "id": 1,
-    "title": "Clean Code",
-    "author": "Robert C. Martin",
-    "genre": "Programming",
-    "language": "English",
-    "available_copies": 5,
-    "shelf_number": "A01",
-    "isbn": "9780132350884"
-  }
+{
+  "id": 1,
+  "title": "Clean Code",
+  "author": "Robert C. Martin",
+  "genre": "Programming",
+  "language": "English",
+  "available_copies": 5,
+  "shelf_number": "A01",
+  "isbn": "9780132350884"
+}
 ```
 
 ---
 
-### ➕ POST `/api/books` – Add New Book
+### ➕ **POST `/api/books`** – **Add New Book**
 - **Description**: Admin can add a new book to the system.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Permission**: Admin
 - **Request Body**:
 ```json
@@ -149,16 +145,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### ✏️ PUT `/api/books/{id}` – Update Book Info
+### ✏️ **PUT `/api/books/{id}`** – **Update Book Info**
 - **Description**: Admin can update existing book information.
 - **Path Parameters**:
   - `id` (integer): ID of the book to update.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
-- **Permission**: Admin
-- **Sample Request**:
-  - `GET /api/books/1`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Request Body**:
 ```json
 {
@@ -180,15 +173,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### ❌ DELETE `/api/books/{id}` – Delete Book
+### ❌ **DELETE `/api/books/{id}`** – **Delete Book**
 - **Description**: Admin can delete a book from the system.
 - **Path Parameters**:
   - `id` (integer): ID of the book to delete.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
+  - `Authorization: Bearer <token>`
 - **Permission**: Admin
-- **Sample Request**:
-  - `DELETE /api/books/1`
 - **Sample Response**:
 ```json
 {
@@ -198,13 +189,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-## 📦 Borrow and Return Endpoints
+## 📦 **Borrow and Return Endpoints**
 
-### 📥 POST `/api/borrow` – Borrow a Book
+### 📥 **POST `/api/borrow`** – **Borrow a Book**
 - **Description**: A logged-in user can borrow a book.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Permission**: Authenticated User
 - **Request Body**:
 ```json
@@ -222,11 +213,11 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### 📤 POST `/api/borrow/return` – Return a Book
+### 📤 **POST `/api/borrow/return`** – **Return a Book**
 - **Description**: A logged-in user can return a borrowed book.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Permission**: Authenticated User
 - **Request Body**:
 ```json
@@ -244,13 +235,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-## 📌 Book Reservation Endpoints
+## 📌 **Book Reservation Endpoints**
 
-### 🕐 POST `/api/reservations` – Create Reservation
+### 🕐 **POST `/api/reservations`** – **Create Reservation**
 - **Description**: Create a reservation for a book.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Permission**: Authenticated User
 - **Request Body**:
 ```json
@@ -268,11 +259,11 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### ❌ POST `/api/reservations/cancel` – Cancel Reservation
+### ❌ **POST `/api/reservations/cancel`** – **Cancel Reservation**
 - **Description**: Cancel a previously made reservation.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Permission**: Authenticated User
 - **Request Body**:
 ```json
@@ -290,10 +281,10 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### 🔍 GET `/api/reservations` – Get User Reservations
+### 🔍 **GET `/api/reservations`** – **Get User Reservations**
 - **Description**: Retrieve all reservation records of the current user.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
+  - `Authorization: Bearer <token>`
 - **Permission**: Authenticated User
 - **Sample Response**:
 ```json
@@ -308,13 +299,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-## 📝 Book Review Endpoints
+## 📝 **Book Review Endpoints**
 
-### ✍️ POST `/api/reviews` – Add Review
+### ✍️ **POST `/api/reviews`** – **Add Review**
 - **Description**: A user can add a review and rating to a book.
 - **Headers**:
-  -  `Authorization: Bearer <token>`
-  -  `Content-Type: application/json`
+  - `Authorization: Bearer <token>`
+  - `Content-Type: application/json`
 - **Permission**: Authenticated User
 - **Request Body**:
 ```json
@@ -334,13 +325,13 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-### 🗂️ GET `/api/reviews` – Get Reviews
+### 🗂️ **GET `/api/reviews`** – **Get Reviews**
 - **Description**: Retrieve all reviews or reviews for a specific book.
 - **Query Parameters (optional)**:
-  - `book_id` (integer): Fliter reviews by a specific book.
+  - `book_id` (integer): Filter reviews by a specific book.
 - **Permission**: Public
 - **Sample Request**:
-  - `GET /api/reviews?book_id=2
+  - `GET /api/reviews?book_id=2`
 - **Sample Response**:
 ```json
 {
@@ -355,17 +346,16 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ---
 
-📌 All endpoints requiring authentication must include the following header:
-```http
-Authorization: Bearer <token>
-```
+### **General API Requirements:**
+- **Authentication**: All routes requiring authentication must include the following header:
+  ```http
+  Authorization: Bearer <token>
+  ```
+- **Content Type**: All requests must use the `application/json` content type:
+  ```http
+  Content-Type: application/json
+  ```
 
-📌 All requests use JSON format and must include:
-```http
-Content-Type: application/json
-```
+--- 
 
----
-
-For PDF export or integration into documentation platforms, contact the system maintainer or development team.
-
+For further documentation or API updates, feel free to contact the backend team!
