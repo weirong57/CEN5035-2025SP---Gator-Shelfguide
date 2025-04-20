@@ -157,7 +157,7 @@ go test -v ./controllers
 
 ## API Documentation
 Link to API Documentation:
-https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/SPRINT4.md
+https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/issues/18
 
 
      
