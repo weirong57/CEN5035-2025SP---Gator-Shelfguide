@@ -10,7 +10,13 @@ This sprint primarily involved:
 - Testing and documenting all API endpoints with sample payloads.
 - Ensuring JWT-based security and token verification middleware.
 - Addressing bug fixes and optimizing endpoints for deployment.
-
+---
+**Key Frontend Tasks Completed**
+- 1.Modify all pages' response methods to fit API provided by backend.
+- 2.Redesign some pages to fit the function.
+- 3.Integrate frontend with backend.
+- 4.Write authentication part so that the system can get information from JWT.
+- 5.Testing new pages.
 ---
 
 ## 🔧 **Key Backend Tasks Completed**
