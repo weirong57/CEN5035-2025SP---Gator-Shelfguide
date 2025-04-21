@@ -142,13 +142,21 @@ npm run dev
   4. Open your web browser and navigate to the frontend URL provided by the 
    `npm run dev` output (e.g., `http://localhost:5173`).
 
-## 🎬 Final Presentation Demo 
+---
 
-[🎥 Click here to watch the local demo video](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Video/Final%20Presentation%20Demo.mp4)
+## 🎬 Final Presentation Demo
 
-🔗 [Click here to watch the demo video on YouTube ](https://youtu.be/Wr-74u61lyk?si=N-xYrtfw9LU0-F3A)
+[![Watch the Final Demo](https://img.youtube.com/vi/Wr-74u61lyk/maxresdefault.jpg)](https://www.youtube.com/watch?v=Wr-74u61lyk)
 
-> This video showcases the core features and usage of our library management system.  
+🎥 **Local Demo Video:**  
+[Click here to watch the local demo video (GitHub-hosted)](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Video/Final%20Presentation%20Demo.mp4)
+
+🔗 **YouTube Link:**  
+[Click here to watch on YouTube](https://www.youtube.com/watch?v=Wr-74u61lyk)
+
+---
+
+如需补充展示脚本或配套文字讲解，也可以告诉我，我可以继续帮你生成！
 
 
 ## Running Unit Tests
