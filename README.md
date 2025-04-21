@@ -161,7 +161,8 @@ npm run dev
 
 ### Frontend
 ```bash
-[Instructions for running frontend tests - TBD]
+cd library-system
+npm test
 ```
 
 [Link to Frontend Tests Demo Video - TBD]
