@@ -66,7 +66,7 @@ Before you begin, ensure you have the following installed on your system:
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide.git](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide.git)
+git clone https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide.git
 cd CEN5035-2025SP---Gator-Shelfguide
 ```
 
@@ -116,6 +116,10 @@ cd ../library-system
 npm install
 ```
 `(Note: Resolve any package.json issues or missing dependencies first)`
+-Build the front end:
+```bash
+npm run build
+```
 -Run the Frontend Development Server:
 ```bash
 npm run dev
