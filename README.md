@@ -156,8 +156,6 @@ npm run dev
 
 ---
 
-如需补充展示脚本或配套文字讲解，也可以告诉我，我可以继续帮你生成！
-
 
 ## Running Unit Tests
 
