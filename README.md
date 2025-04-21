@@ -140,7 +140,7 @@ npm run dev
    (`npm run build`).
   3. Start the backend server from the library-backend directory (`go run main.go`).
  
-  4. Open your web browser and navigate to the URL provided (e.g., `http://localhost:3000`).
+  4. Open your web browser(Microsoft Edge is recommended) and navigate to the URL provided (e.g., `http://localhost:3000`).
 
 ---
 
