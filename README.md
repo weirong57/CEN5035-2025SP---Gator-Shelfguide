@@ -172,15 +172,33 @@ go test -v ./controllers
 
 [Link to Frontend Tests Demo Video - TBD]
 
-## Usage
-- Register a new user account or log in with existing credentials.
-- Browse or search for books.
-- Click on a book to view details and reviews.
-- Use the borrow/return/reserve buttons as needed.
-- Administrators can log in with admin credentials to access administrative 
-  functions (e.g., via a dedicated Admin page or specific UI elements) to 
-  manage books and users.
-- [More specific usage details - TBD]
+##📖 Usage Guide | 
+Register or Log In
+New users can create an account by registering with a username and password. Existing users can log in to access borrowing and review features. Upon login, a JWT token is issued for authenticated actions.
+
+Browse or Search for Books
+Navigate to the book list to explore all available titles. You can use the search bar to filter books by title, author, or genre.
+
+View Book Details
+Click on any book to view its full details, including ISBN, language, available copies, and user reviews.
+
+Borrow or Return a Book
+
+Borrow: If available, click the "Borrow" button to borrow the book. The system will reduce the available stock and record the borrow time.
+
+Return: Use the "Return" button when you're ready to return the book. The system updates the return time and calculates overdue fines if applicable.
+
+Leave a Review
+After borrowing a book, you may leave a rating and comment through the review section. Only users who have borrowed the book are eligible to leave a review.
+
+Admin Access
+Users with an administrator role can log in with special credentials to manage the system. Admins can:
+
+Add, update, or delete books
+
+View and manage user accounts
+
+Monitor system data via admin-specific pages or controls
 
 ## API Documentation
 Link to API Documentation:
