@@ -107,25 +107,31 @@ The backend server should start, typically on the port specified in `.env`
 or defaulting(check main.go)
 
 ### 4. Frontend Setup
-- Navigate to Frontend Directory:
+
+- **Navigate to the frontend directory**:
 ```bash
 cd ../library-system
 ```
-- Install Dependencies:
+
+- **Install dependencies**:
 ```bash
 npm install
 ```
-`(Note: Resolve any package.json issues or missing dependencies first)`
--Build the front end:
+> 💡 _Make sure your `package.json` is valid and all required packages are listed. If you encounter issues, try deleting `node_modules` and `package-lock.json`, then run `npm install` again._
+
+- **Build the frontend** (for production deployment):
 ```bash
 npm run build
 ```
--Run the Frontend Development Server:
+> This command will generate an optimized production build in the `dist` directory.
+
+- **Run the development server** (for local testing and development):
 ```bash
 npm run dev
 ```
-This will typically start the frontend application, and the output will provide the URL to access it (e.g., `http://localhost:5173`).
+> This starts the frontend application in development mode. The terminal will output the local URL, typically `http://localhost:5173`.
 
+---
 
 ## Running the Application
   1. Ensure your MySQL database server is running and the library_db database 
@@ -146,6 +152,15 @@ This will typically start the frontend application, and the output will provide 
 
 
 ## Running Unit Tests
+
+### Frontend
+```bash
+[Instructions for running frontend tests - TBD]
+```
+
+[Link to Frontend Tests Demo Video - TBD]
+
+
 ### Backend (Go)
 ```bash
 # Navigate to backend directory (if not already there)
@@ -159,13 +174,6 @@ go test -v ./controllers
 ```
 
 [Link to Backend Tests Demo Video - https://youtu.be/OfPh8-QHlV8]
-
-### Frontend
-```bash
-[Instructions for running frontend tests - TBD]
-```
-
-[Link to Frontend Tests Demo Video - TBD]
 
 ---
 
