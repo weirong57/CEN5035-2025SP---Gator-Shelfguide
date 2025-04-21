@@ -136,11 +136,11 @@ npm run dev
 ## Running the Application
   1. Ensure your MySQL database server is running and the library_db database 
    has been initialized using the `library_db_init.sql` script.
-  2. Start the backend server from the library-backend directory (`go run main.go`).
-  3. Start the frontend development server from the library-system directory 
-   (`npm run dev`).
-  4. Open your web browser and navigate to the frontend URL provided by the 
-   `npm run dev` output (e.g., `http://localhost:5173`).
+  2. Make sure the frontend has been packaged.
+   (`npm run build`).
+  3. Start the backend server from the library-backend directory (`go run main.go`).
+ 
+  4. Open your web browser and navigate to the URL provided (e.g., `http://localhost:3000`).
 
 ---
 
