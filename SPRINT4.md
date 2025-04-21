@@ -25,7 +25,7 @@ The frontend team focus on the implementation of authorization function. Now the
 | **Yichen Pan**             | lishuang1103             | Represented the frontend team in frontend-backend integration. Implemented the frontend for authorization functionality. Refined the admin interface. |
 | **Anirudh Ramesh** | Anir11   | Designed all test scripts, tested and debugged newly added features, and validated the system's functional correctness post frontend-backend integration.|
 
-
+Note: To ensure code security and consistency, the final version of the project is submitted by Rong Wei.
 
 
 
