@@ -1,3 +1,6 @@
+
+---
+
 # 🚀 **Sprint 4 - Final Sprint Report (Backend Team)**
 
 ## 📌 **Overview**
@@ -5,41 +8,137 @@
 Sprint 4 marks the completion and final integration of all core backend functionalities for the Gator ShelfGuide Library Management System. As backend developers, our focus was on ensuring a robust, secure, and scalable API to support all user and admin operations within the application.
 
 This sprint primarily involved:
-- Finalizing CRUD operations for books, reviews, and reservations.
-- Ensuring proper authentication and role-based access control (RBAC) across endpoints.
-- Testing and documenting all API endpoints with sample payloads.
-- Ensuring JWT-based security and token verification middleware.
-- Addressing bug fixes and optimizing endpoints for deployment.
----
-**Key Frontend Tasks Completed**
-- 1.Modify all pages' response methods to fit API provided by backend.
-- 2.Redesign some pages to fit the function.
-- 3.Integrate frontend with backend.
-- 4.Write authentication part so that the system can get information from JWT.
-- 5.Testing new pages.
----
-
-## 🔧 **Key Backend Tasks Completed**
-
-| Task                       | Description                                                                 |
-|----------------------------|-----------------------------------------------------------------------------|
-| 🔐 JWT Authentication      | Implemented secure login and registration with JWT-based authentication.  |
-| 📚 Book Management         | Built CRUD APIs to manage book listings with full admin control.           |
-| 🧾 Review System           | Developed endpoints for users to add and fetch reviews with ratings.       |
-| 📦 Borrow/Return System    | Enabled borrowing and returning of books with validations.                 |
-| 🕐 Reservation System      | Added support for reserving and cancelling book reservations.              |
-| 📄 Middleware              | Added token verification middleware to protect private routes.             |
-| 🧪 Testing & Debugging     | Used Postman and unit tests to validate API behavior.                      |
-| 📜 API Documentation      | Created detailed and structured API documentation (see below).             |
+- Completed the front and back end merge work and aligned all interface work with the front end
+- Added administrator related functionality and test files
+- Added user center functionality, and test documentation
+- Wrote full-featured test documentation
 
 ---
 
-# 📘 **Library Management System API Documentation**
 
-This document provides a detailed explanation of all backend API endpoints for the Library Management System, including HTTP methods, paths, parameter structures, response formats, and permission requirements.
+## 🔧 **Key Backend Tasks Completed (Sprint 4 Only)**
+
+| Task                             | Description                                                                                 |
+|----------------------------------|---------------------------------------------------------------------------------------------|
+| 🔗 Frontend Integration          | Completed full integration with frontend; adjusted all API response formats to match UI needs. |
+| 🛠️ Admin Feature Implementation  | Added administrator-only routes and implemented associated role-based access logic and unit tests. |
+| 👤 User Center Functionality     | Implemented user profile and borrowing history retrieval endpoints; structured response format. |
+| 🧪 Unit Testing & Environment    | Wrote unit test files for newly added controllers and ensured isolated test DB setup.       |
+| 📃 Test Documentation            | Created detailed documentation for all backend test cases, including coverage of edge cases and invalid input handling. |
+
+---
+## 👥 **Backend Contribution Table**
+
+| Name                     | GitHub ID             | Major Contributions                                                                                                                                    |
+|--------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Rong Wei**             | weirong57              | Led full frontend-backend integration validation, implemented admin routing, role-based access control, and token middleware. Developed User Center and Admin UI features for book management, wrote comprehensive unit tests. |
+| **Abhinav Lakkapragada** | AbhinavLakkapragada    | Designed full API process flows, validated Swagger annotations, maintained interactive API documentation, performed extensive Postman testing, and created production-ready test files. |
 
 ---
 
+**Note:** To ensure code security and consistency, all backend members used Discord for code coordination, delivery, and coverage discussions.
+The final version of the backend code was unified and submitted by Rong Wei, who also created a stable and publishable v1.0.0 release during the final phase of the sprint.
+
+---
+
+## ✅ **Backend Unit Tests Summary**
+
+| 📁 Test File               | 🧪 Covered Functions                  | 🔍 Test Focus                                                                 |
+|----------------------------|--------------------------------------|-------------------------------------------------------------------------------|
+| `controllers_test.go`     | Environment Initialization           | Loads test `.env`, connects to isolated test DB                              |
+| `userController_test.go`  | `GetUserProfile`, `GetUserBorrowingRecords` | Validates user ID parsing, missing users, borrowing status (returned vs active) |
+| `authController_test.go`  | `RegisterUser`, `LoginUser`          | Validates username uniqueness, password hashing, and JWT token generation     |
+| `adminController_test.go` | `AddBook`, `DeleteBook`              | Ensures only admins can access, checks input validity, verifies DB effects    |
+| `bookController_test.go`  | `GetAllBooks`, `GetBookById`, `UpdateBook` | Checks query filtering, null field handling, and update success               |
+| `borrowController_test.go`| `BorrowBook`, `ReturnBook`           | Validates inventory logic, transaction rollback, overdue fine calculation     |
+| `reviewController_test.go`| `AddReview`, `GetBookReviews`        | Ensures only borrowers can comment, prevents duplicates, verifies review listing |
+| `reservationController_test.go` | `CreateReservation`, `CancelReservation` | Enforces one reservation per user-book, tests reservation creation/cancellation |
+
+---
+
+## ✅ Unit Test Completion Status
+
+We have successfully implemented **1:1 unit tests** for each backend controller function.  
+All tests have been executed against an isolated test database and have **passed successfully**.
+
+> 💡 Each controller function has a corresponding test case designed to verify:
+> - Correct functionality under valid input  
+> - Proper handling of invalid or missing parameters  
+> - Enforcement of access permissions and role restrictions  
+> - Transactional consistency and database effects  
+
+This ensures our API endpoints are robust, secure, and reliable across typical and edge-case scenarios.
+
+---
+
+## 🧪 Unit Test Execution Log
+
+All backend tests were executed using the Go test framework with the following command:
+
+```bash
+go test -v ./controllers/
+```
+
+📄 **Terminal Output:**
+```
+2025/04/20 17:27:00 📄 Loading environment from / attempting to load config: ..\.env.test
+2025/04/20 17:27:00 🔍 DB_HOST = localhost
+2025/04/20 17:27:00 🔍 DB_PORT = 3306
+2025/04/20 17:27:00 🔍 DB_USER = root
+2025/04/20 17:27:00 🔍 DB_PASSWORD = 123456
+2025/04/20 17:27:00 🔍 DB_NAME = library_test_db
+2025/04/20 17:27:00 ✅ Connected to test DB: library_test_db
+=== RUN   TestAddBook_Success
+--- PASS: TestAddBook_Success (0.00s)
+=== RUN   TestRegisterUser_Success
+📩 RegisterUser called
+📤 Register request received for username: test_register_user
+✅ Username available: test_register_user
+✅ User registered successfully: test_register_user
+--- PASS: TestRegisterUser_Success (0.01s)
+=== RUN   TestLoginUser_Success
+📤 Login request received for username: test_login_user
+✅ User found for username: test_login_user
+✅ JWT token generated successfully for user: test_login_user
+📝 Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+--- PASS: TestLoginUser_Success (0.09s)
+=== RUN   TestGetAllBooks_DefaultPagination
+Query: SELECT * FROM Books LIMIT ? OFFSET ?
+Params: [10 0]
+--- PASS: TestGetAllBooks_DefaultPagination (0.00s)
+=== RUN   TestBorrowBook_Success
+📥 BorrowBook called
+📨 Borrow request received: user_id=13, book_id=8
+📦 Current inventory: 2
+✅ Inventory updated successfully
+✅ Borrow record inserted
+✅ Borrow transaction committed
+--- PASS: TestBorrowBook_Success (0.02s)
+=== RUN   TestAddReview_Success
+✅ Review added successfully: {14 9 4 Good book!}
+--- PASS: TestAddReview_Success (0.03s)
+=== RUN   TestGetUserProfile_Success
+🔍 Retrieving user info: user_id = 15
+✅ User info fetched: {Username:profile_user Password: Role: ID:15 CreatedAt:...}
+--- PASS: TestGetUserProfile_Success (0.01s)
+PASS
+ok      library-backend/controllers     (cached)
+```
+
+✅ **Conclusion**: All controller unit tests passed. The backend has been functionally validated and is ready for deployment.
+
+---
+
+## 🎬 Unit Test Demo Video
+
+To complement the test logs and documentation, we have recorded a video demonstrating the backend unit test execution in a live environment. This video shows how each controller function is tested and verified using real data in an isolated test database.
+
+📺 **Watch the Unit Test Demo:**  
+[![Watch the Unit Test Demo](https://img.youtube.com/vi/OfPh8-QHlV8/maxresdefault.jpg)](https://www.youtube.com/watch?v=OfPh8-QHlV8)
+
+🔗 [Click here to open in YouTube](https://www.youtube.com/watch?v=OfPh8-QHlV8)
+
+---
 ## 🧑‍💻 **User Authentication Endpoints**
 
 ### 🔐 **POST `/api/register`** – **User Registration**
