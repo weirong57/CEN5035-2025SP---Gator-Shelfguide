@@ -18,7 +18,7 @@ To ensure data security and consistency, the system leverages a well-structured 
 This project was developed as part of the CEN5035 Software Engineering course at the University of Florida.
 
 
-## 🚀 Key Features | 
+## 🚀 Key Features 
 
 🔐 JWT Authentication
 
@@ -134,25 +134,14 @@ This will typically start the frontend application, and the output will provide 
 
 ## 🎬 Final Presentation Demo 
 
-[![Watch the video ](https://img.youtube.com/vi/Wr-74u61lyk/maxresdefault.jpg)](https://youtu.be/Wr-74u61lyk?si=N-xYrtfw9LU0-F3A)
+[🎥 Click here to watch the local demo video](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Video/Final%20Presentation%20Demo.mp4)
 
 🔗 [Click here to watch the demo video on YouTube ](https://youtu.be/Wr-74u61lyk?si=N-xYrtfw9LU0-F3A)
 
 > This video showcases the core features and usage of our library management system.  
 
 
-
-
-
-
-
-
-
-
 ## Running Unit Tests
-
-
-
 ### Backend (Go)
 ```bash
 # Navigate to backend directory (if not already there)
@@ -207,7 +196,8 @@ Users with an administrator role can log in with special credentials to manage t
 📎 **Link to Full API Docs:**  
 [`Back-end API Interface Documentation`](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Back-end%20API%20Interface%20Documentation.md)
 
-
+### 🙌 Acknowledgements
+This project was developed as part of CEN5035 Software Engineering (Spring 2025) at the University of Florida. 
 
 
      
