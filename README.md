@@ -151,6 +151,8 @@ This will typically start the frontend application, and the output will provide 
 
 ## Running Unit Tests
 
+
+
 ### Backend (Go)
 ```bash
 # Navigate to backend directory (if not already there)
@@ -163,7 +165,7 @@ go test -v ./controllers
 # go test -v ./...
 ```
 
-[Link to Backend Tests Demo Video - TBD]
+[Link to Backend Tests Demo Video - https://youtu.be/OfPh8-QHlV8]
 
 ### Frontend
 ```bash
@@ -172,37 +174,40 @@ go test -v ./controllers
 
 [Link to Frontend Tests Demo Video - TBD]
 
-###📖 Usage Guide | 
-Register or Log In
+---
+
+### 📖 Usage Guide
+
+**Register or Log In**  
 New users can create an account by registering with a username and password. Existing users can log in to access borrowing and review features. Upon login, a JWT token is issued for authenticated actions.
 
-Browse or Search for Books
+**Browse or Search for Books**  
 Navigate to the book list to explore all available titles. You can use the search bar to filter books by title, author, or genre.
 
-View Book Details
+**View Book Details**  
 Click on any book to view its full details, including ISBN, language, available copies, and user reviews.
 
-Borrow or Return a Book
+**Borrow or Return a Book**  
+- **Borrow:** If available, click the **"Borrow"** button to borrow the book. The system will reduce the available stock and record the borrow time.  
+- **Return:** Use the **"Return"** button when you're ready to return the book. The system updates the return time and calculates overdue fines if applicable.
 
-Borrow: If available, click the "Borrow" button to borrow the book. The system will reduce the available stock and record the borrow time.
-
-Return: Use the "Return" button when you're ready to return the book. The system updates the return time and calculates overdue fines if applicable.
-
-Leave a Review
+**Leave a Review**  
 After borrowing a book, you may leave a rating and comment through the review section. Only users who have borrowed the book are eligible to leave a review.
 
-Admin Access
-Users with an administrator role can log in with special credentials to manage the system. Admins can:
+**Admin Access**  
+Users with an administrator role can log in with special credentials to manage the system. Admins can:  
+- Add, update, or delete books  
+- View and manage user accounts  
+- Monitor system data via admin-specific pages or controls
 
-Add, update, or delete books
+---
 
-View and manage user accounts
+## 📘 API Documentation
 
-Monitor system data via admin-specific pages or controls
+📎 **Link to Full API Docs:**  
+[`Back-end API Interface Documentation`](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Back-end%20API%20Interface%20Documentation.md)
 
-## API Documentation
-Link to API Documentation:
-`https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Back-end%20API%20Interface%20Documentation.md`
+
 
 
      
