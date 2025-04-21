@@ -12,7 +12,7 @@ The frontend team focus on the implementation of authorization function. Now the
 | Name                     | GitHub ID             | Major Contributions                                                                                                                                    |
 |--------------------------|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Yichen Pan**             | lishuang1103             | Represented the frontend team in frontend-backend integration. Implemented the frontend for authorization functionality. Refined the admin interface. |
-| **Anirudh Ramesh** | AbhinavLakkapragada    | Designed full API process flows, validated Swagger annotations, maintained interactive API documentation, performed extensive Postman testing, and created production-ready test files. |
+| **Anirudh Ramesh** | Anir11   | Designed all test scripts, tested and debugged newly added features, and validated the system's functional correctness post frontend-backend integration.|
 
 
 
