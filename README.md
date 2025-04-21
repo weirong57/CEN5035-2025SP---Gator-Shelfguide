@@ -129,12 +129,8 @@ npm run build
 ```bash
 npm run dev
 ```
-> This starts the frontend application in development mode. The terminal will output the local URL, typically `http://localhost:5173`.
-- **packaging frontend** (integrate with backend):
-```bash
-npm run build
-```
-> Then the system can run on backend.
+> This starts the frontend application in development mode. The terminal will output the local URL, typically `http://localhost:5173`.(To interact with backend, please use go run main.go and start at local URL like http://localhost:3000)
+
 ---
 
 ## Running the Application
