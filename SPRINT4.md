@@ -5,7 +5,18 @@
 ## 📌 **Overview**
 
 The frontend team focus on the implementation of authorization function. Now the system can get the information of users from JWT. Meanwhile, we modified bookreview pages to fit review function. We also modified usercenter part to show borrowing history. The routing configuration for the admin page has been restructured and integrated with JWT authentication, enabling a more logical access path through the login interface. Additionally, we have optimized the admin interface's visual design to enhance usability, particularly streamlining the book addition/removal functionality for improved operational efficiency. Finally, we have collaborated with backend team members to fully implement all system functionalities. Additionally, all tests for the newly added frontend components have successfully passed.
+---
 
+
+## 🔧 **Key Frontend Tasks Completed (Sprint 4 Only)**
+
+| Task                             | Description                                                                                 |
+|----------------------------------|---------------------------------------------------------------------------------------------|
+| 🔗 Backend Integration          | Completed full integration with backend; adjusted all API response formats to match UI needs. |
+| 🛠️ Admin page Implementation  |  Restructure the routing configuration for the admin page. Redesign the admin page to fit the function. |
+| 👤Pages modified    | Modified pages implementation to fit functions.(User center, Book review)  |
+| 📃 Authentication Implementation           | Implementation of Authentication, allowing the system getting user information. |
+| 🧪 Unit Testing & Environment    | Wrote unit test files for newly added function.       |
 ---
 ## 👥 **Frontend Contribution Table**
 
