@@ -199,13 +199,11 @@ Click on any book to view its full details, including ISBN, language, available 
 - **Return:** Use the **"Return"** button when you're ready to return the book. The system updates the return time and calculates overdue fines if applicable.
 
 **Leave a Review**  
-After borrowing a book, you may leave a rating and comment through the review section. Only users who have borrowed the book are eligible to leave a review.
+After borrowing a book, you may leave a rating and comment through the review section. Only users who have borrowed the book are eligible to leave a review. One user can make one comment for one book.
 
 **Admin Access**  
-Users with an administrator role can log in with special credentials to manage the system. Admins can:  
-- Add, update, or delete books  
-- View and manage user accounts  
-- Monitor system data via admin-specific pages or controls
+Users with an administrator role can log in with special credentials to manage the system. Admins can Add or delete books through admin page. To set one account as admin, please sign up through the sign up page. Then set the role of this account as 'admin' in the database. To login to the admin page, please use login page and enter by accounts which roles are set as admin.
+
 
 ---
 
