@@ -11,33 +11,46 @@
 
 ## Overview
 
-Gator Shelfguide is a comprehensive library management system designed to streamline book borrowing, returns, reservations, and administrative tasks for libraries. This project allows users to easily search for books, manage their borrowings, and interact with library services, while providing administrators with tools to manage the library's collection and user activities.
+This is a fully functional backend for a Library Management System built with Golang and MySQL, featuring a clear modular architecture and high maintainability. It supports essential features such as user authentication, book management, borrowing and returning operations, a review system, and administrator role control, making it ideal for education, academic coursework, or small-scale library platforms.
+
+To ensure data security and consistency, the system leverages a well-structured relational database schema. All operations are wrapped in transactions to maintain atomicity, and foreign key constraints are used to prevent issues like unauthorized reviews or accidental data deletion. This design guarantees data integrity and reliability even under concurrent usage scenarios.
 
 This project was developed as part of the CEN5035 Software Engineering course at the University of Florida.
 
-## Features
 
-**User Features:**
-* User registration and login with authentication (JWT).
-* Search for books using keywords (title, author, genre).
-* Browse available books and view details.
-* Borrow available books with due date tracking.
-* Return borrowed books.
-* View personal borrowing history and status.
-* Place reservations on unavailable books.
-* Cancel existing reservations.
-* Add reviews (rating and comment) for borrowed books.
-* View reviews for books.
-* Receive notifications/view fines for overdue books (Implementation details TBD).
+## 🚀 Key Features | 
 
-**Administrator Features:**
-* Login with distinct administrator privileges.
-* Add new books to the library collection.
-* Delete books from the collection.
-* Modify existing book details (title, author, genre, language, shelf number, copies, ISBN).
-* View borrowing records for users (Implementation details TBD - e.g., all records or specific user).
-* Manage user comments/reviews (Implementation details TBD - e.g., delete inappropriate reviews).
-* Organize books (primarily via modifying book details).
+🔐 JWT Authentication
+
+- Supports user registration and login, with JWT tokens issued upon successful login  
+- Role-based access control: Different permissions for regular users and administrators
+
+📚 Book Management
+
+- Retrieve all books, search by keywords, and view detailed book information  
+- Admins can add, update, and delete book entries
+
+📦 Borrowing & Returning Books
+
+- Users can borrow books (automatically reducing available stock) and generate borrowing records  
+- Supports returning books and automatically calculates overdue days and late fees
+
+✍️ Review System
+
+- Only users who have borrowed a book can leave reviews, preventing spam  
+- Supports star rating (1~5) and review comments, with public review listings
+
+👤 User Profile & Borrowing History
+
+- View registered user profile information and borrowing history (active or returned)
+
+🧪 Unit Test Ready
+
+- Includes test database initialization to support backend logic testing and validation
+
+🌐 RESTful API with Swagger Documentation
+
+- All endpoints are annotated with standard Swagger comments, generating interactive API documentation automatically
 
 ## Prerequisites
 
