@@ -333,7 +333,7 @@ This document provides a detailed explanation of all backend API endpoints for t
 
 ### 🗂️ **GET `/api/reviews`** – **Get Reviews**
 - **Description**: Retrieve all reviews or reviews for a specific book.
-- **Query Parameters (optional)**:
+- **Query Parameters**:
   - `book_id` (integer): Filter reviews by a specific book.
 - **Permission**: Public
 - **Sample Request**:
