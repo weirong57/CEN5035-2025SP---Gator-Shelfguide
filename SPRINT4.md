@@ -1,5 +1,16 @@
 
 ---
+# 🚀 **Sprint 4 - Final Sprint Report (Frontend Team)**
+
+
+
+
+
+
+
+
+
+---
 
 # 🚀 **Sprint 4 - Final Sprint Report (Backend Team)**
 
@@ -340,70 +351,6 @@ To complement the test logs and documentation, we have recorded a video demonstr
 
 ---
 
-## 📌 **Book Reservation Endpoints**
-
-### 🕐 **POST `/api/reservations`** – **Create Reservation**
-- **Description**: Create a reservation for a book.
-- **Headers**:
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Permission**: Authenticated User
-- **Request Body**:
-```json
-{
-  "user_id": 1,
-  "book_id": 2
-}
-```
-- **Sample Response**:
-```json
-{
-  "message": "Reservation created successfully"
-}
-```
-
----
-
-### ❌ **POST `/api/reservations/cancel`** – **Cancel Reservation**
-- **Description**: Cancel a previously made reservation.
-- **Headers**:
-  - `Authorization: Bearer <token>`
-  - `Content-Type: application/json`
-- **Permission**: Authenticated User
-- **Request Body**:
-```json
-{
-  "user_id": 1,
-  "book_id": 2
-}
-```
-- **Sample Response**:
-```json
-{
-  "message": "Reservation cancelled successfully"
-}
-```
-
----
-
-### 🔍 **GET `/api/reservations`** – **Get User Reservations**
-- **Description**: Retrieve all reservation records of the current user.
-- **Headers**:
-  - `Authorization: Bearer <token>`
-- **Permission**: Authenticated User
-- **Sample Response**:
-```json
-{
-  "reservation_id": 101,
-  "user_id": 1,
-  "book_id": 2,
-  "book_title": "The Pragmatic Programmer",
-  "reserved_on": "2025-04-15T10:00:00Z"
-}
-```
-
----
-
 ## 📝 **Book Review Endpoints**
 
 ### ✍️ **POST `/api/reviews`** – **Add Review**
@@ -460,7 +407,14 @@ To complement the test logs and documentation, we have recorded a video demonstr
   ```http
   Content-Type: application/json
   ```
+---
 
---- 
+## 📘 API Documentation
 
-For further documentation or API updates, feel free to contact the backend team!
+For a complete reference of all backend API endpoints, request/response structures, and permission annotations, please refer to the full documentation below:
+
+🔗 **Full API Documentation (Markdown):**  
+[https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Back-end%20API%20Interface%20Documentation.md](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Back-end%20API%20Interface%20Documentation.md)
+
+
+
