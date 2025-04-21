@@ -4,7 +4,7 @@
 
 | NAME                  | GITHUB NAME     | EMAIL                     |
 | :-------------------- | :-------------- | :------------------------ |
-| Rong Wei              | weirong57       | rong.weig@ufl.edu         |
+| Rong Wei              | weirong57       | rong.wei@ufl.edu         |
 | Abhinav Lakkapragada  | AbhinavLakkapragada | lakkapragada.a@ufl.edu    |
 | Anirudh Ramesh        | Anir11          | ramesh.anirudh@ufl.edu    |
 | Yichen Pan            | lishuang1103    | panyichen@ufl.edu         |
