@@ -172,7 +172,7 @@ go test -v ./controllers
 
 [Link to Frontend Tests Demo Video - TBD]
 
-##📖 Usage Guide | 
+###📖 Usage Guide | 
 Register or Log In
 New users can create an account by registering with a username and password. Existing users can log in to access borrowing and review features. Upon login, a JWT token is issued for authenticated actions.
 
