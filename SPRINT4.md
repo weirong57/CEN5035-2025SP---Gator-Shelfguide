@@ -27,8 +27,10 @@ The frontend team focus on the implementation of authorization function. Now the
 
 Note: To ensure code security and consistency, the final version of the project is submitted by Rong Wei.
 
-
-
+---
+## 👥 **Frontend Unit Test**
+- All testing codes are listed in folder:/library-system/src/pages/tests/
+- 
 ---
 
 # 🚀 **Sprint 4 - Final Sprint Report (Backend Team)**
