@@ -30,14 +30,14 @@ Note: To ensure code security and consistency, the final version of the project 
 ---
 ## 👥 **Frontend Unit Test**
 - All testing codes are listed in folder:/library-system/src/pages/tests/
-- Running methods:
-- -cd library-system
-- -npm test (run’s unit tests on all the functions at once, and shows how many have passed)
-- Test result:
+- **Running methods:**
+- cd library-system
+- npm test (run’s unit tests on all the functions at once, and shows how many have passed)
+- **Test result:**
 - Test Suites: 5 passed, 5 total 
-Tests:       
+- Tests:       
 18 passed, 18 total 
-Time:        
+- Time:        
 29.89 s
 - Video: https://youtu.be/4qoNnepj3Eg
 ---
