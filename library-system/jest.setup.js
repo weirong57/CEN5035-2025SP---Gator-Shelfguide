@@ -1,6 +1,11 @@
 // jest.setup.js
 require('@testing-library/jest-dom');
 
+// Polyfill TextEncoder/TextDecoder for Jest/JSDOM environment
+import { TextEncoder, TextDecoder } from 'util';
+Object.assign(global, { TextDecoder, TextEncoder, Uint8Array });
+
+// Keep your existing matchMedia mock
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
