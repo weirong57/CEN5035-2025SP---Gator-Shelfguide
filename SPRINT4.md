@@ -168,6 +168,10 @@ To complement the test logs and documentation, we have recorded a video demonstr
 
 🔗 [Click here to open in YouTube](https://www.youtube.com/watch?v=OfPh8-QHlV8)
 
+
+📺 **Detailed Explanation of Back-end API**  
+
+🔗 [Click here to open in YouTube](https://youtu.be/LH643uwT-vY?si=coRFrzjLLuTvN1lA)
 ---
 ## 🧑‍💻 **User Authentication Endpoints**
 
