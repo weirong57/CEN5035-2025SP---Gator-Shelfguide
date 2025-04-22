@@ -130,6 +130,15 @@ npm run build
 npm run dev
 ```
 > This starts the frontend application in development mode. The terminal will output the local URL, typically `http://localhost:5173`.(To interact with backend, please use go run main.go and start at local URL like http://localhost:3000)
+- **frontend testing requirements** :
+```bash
+npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react        
+jest-environment-jsdom @testing-library/react @testing-library/jest-dom  
+@testing-library/user-event identity-obj-proxy
+
+npm install --save-dev @testing-library/user-event
+```
+
 
 ---
 
