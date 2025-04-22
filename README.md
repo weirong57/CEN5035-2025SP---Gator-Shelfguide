@@ -154,8 +154,8 @@ npm install --save-dev @testing-library/user-event
 ---
 
 ## 🎬 Final Presentation Demo
-
-[![Watch the Final Demo](https://img.youtube.com/vi/Wr-74u61lyk/maxresdefault.jpg)](https://www.youtube.com/watch?v=Wr-74u61lyk)
+🎥 **Final Demo:**
+- [![Watch the Final Demo](https://img.youtube.com/vi/Wr-74u61lyk/maxresdefault.jpg)](https://www.youtube.com/watch?v=Wr-74u61lyk)
 
 🎥 **Local Demo Video:**  
 [Click here to watch the local demo video (GitHub-hosted)](https://github.com/weirong57/CEN5035-2025SP---Gator-Shelfguide/blob/Main/Video/Final%20Presentation%20Demo.mp4)
